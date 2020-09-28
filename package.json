@@ -1,0 +1,25 @@
+{
+  "name": "paneron-plugin-kit",
+  "version": "1.0.0-dev",
+  "main": "index.js",
+  "repository": "https://github.com/paneron/plugin-kit",
+  "author": "Ribose Inc. <open.source@ribose.com>",
+  "scripts": {
+    "build": "rm -r compiled dist; mkdir compiled dist; tsc --outDir compiled; babel compiled --out-dir dist; cp package.json compiled/*.d.ts compiled/*.js.map dist/"
+  },
+  "files": [
+    "index.js",
+    "index.js.map",
+    "index.d.ts",
+    "types.js",
+    "types.js.map",
+    "types.d.ts"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@types/react": "^16.9.49"
+  }
+}
