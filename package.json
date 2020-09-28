@@ -1,5 +1,5 @@
 {
-  "name": "paneron-plugin-kit",
+  "name": "@riboseinc/paneron-plugin-kit",
   "version": "1.0.0-dev",
   "main": "index.js",
   "repository": "https://github.com/paneron/plugin-kit",
