@@ -9,9 +9,14 @@ export type RendererPlugin = Promise<{
 
 export type Plugin = MainPlugin | RendererPlugin;
 
-interface ObjectContentSet {
-  [objectPath: string]: string | null
+// TODO: Duplication in Paneron core
+interface ObjectDataset {
+  [objectPath: string]: ObjectData
 }
+
+type ObjectData = null
+  | { value: string, encoding: string }
+  | { value: Uint8Array, encoding: undefined }
 
 
 export type ObjectsChangedEventHook = (
@@ -34,7 +39,7 @@ export type UseObjectPathsHook = (
 export type UseObjectDataHook = (
   objects: Record<string, true>
 ) => {
-  value: ObjectContentSet
+  value: ObjectDataset
   errors: Error[]
   isUpdating: boolean
   refresh: () => void
@@ -47,7 +52,7 @@ export interface RepositoryViewProps {
   useObjectsChangedEvent: ObjectsChangedEventHook
   useObjectPaths: UseObjectPathsHook
   useObjectData: UseObjectDataHook
-  changeObjects: (changeset: ObjectContentSet, commitMessage: string) => Promise<{
+  changeObjects: (changeset: ObjectDataset, commitMessage: string) => Promise<{
     success: true
   }>
 }
