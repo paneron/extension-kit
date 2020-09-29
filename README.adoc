@@ -50,6 +50,7 @@ Anything you want to import should be provided by Paneron.
 * "@riboseinc/paneron-plugin-kit"
 * "@riboseinc/paneron-registry-kit"
 * "electron-log"
+* "js-yaml"
 * "react-window"
 * "throttle-debounce"
 * "react"
