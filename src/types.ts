@@ -13,10 +13,13 @@ export type Plugin = MainPlugin | RendererPlugin;
 interface ObjectDataset {
   [objectPath: string]: ObjectData
 }
-
 type ObjectData = null
   | { value: string, encoding: string }
   | { value: Uint8Array, encoding: undefined }
+interface ObjectQuery {
+  pathPrefix: string
+  contentSubstring?: string
+}
 
 
 export type ObjectsChangedEventHook = (
@@ -26,7 +29,7 @@ export type ObjectsChangedEventHook = (
 
 
 export type UseObjectPathsHook = (
-  query: Record<string, any>
+  query: ObjectQuery
 ) => {
   value: string[]
   errors: Error[]
