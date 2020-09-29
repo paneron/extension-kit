@@ -1,0 +1,51 @@
+= Paneron plugin kit
+
+== Plugin development
+
+NOTE: Currently, only plugins released under `@riboseinc` NPM scope are supported.
+Plugin name must be prefixed with `plugin-` (e.g., `plugin-foo-registry`).
+
+=== Setup
+
+. Create a new repository using Paneron plugin template repository (link to be added).
+
+. Clone Paneron repository (link to be added) and build Paneron locally.
+
+. Create a directory named `plugins-dev` somewhere on your machine.
+
+==== Iteration
+
+After you make changes:
+
+. Rebuild the plugin from root directory.
++
+[source,sh]
+--
+$ yarn build
+--
+
+. Copy _contents_ of `dist/` into `plugins-dev/@riboseinc/<your-plugin-NPM-package-name>`.
+
+. Launch your local build of Paneron using a command like this:
++
+[source,sh]
+--
+$ env PANERON_PLUGIN_DIR=/path/to/your/plugins-dev/directory yarn dev
+--
+
+==== Release
+
+When ready, release NPM package and test on production Paneron build.
+
+=== What you can import in your plugin
+
+NOTE: A plugin should not have any "dependencies" in package.json.
+Anything you want to import should be provided by Paneron.
+
+* "@blueprintjs/core"
+* "@blueprintjs/datetime"
+* "@blueprintjs/icons"
+* "@blueprintjs/select"
+* "@emotion/core"
+* "electron-log"
+* "react"
