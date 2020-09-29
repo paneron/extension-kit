@@ -49,9 +49,9 @@ export type UseObjectDataHook = (
   _reqCounter: number
 }
 
-
 export interface RepositoryViewProps {
   title: string
+  react: typeof React
   useObjectsChangedEvent: ObjectsChangedEventHook
   useObjectPaths: UseObjectPathsHook
   useObjectData: UseObjectDataHook
