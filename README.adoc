@@ -47,5 +47,7 @@ Anything you want to import should be provided by Paneron.
 * "@blueprintjs/icons"
 * "@blueprintjs/select"
 * "@emotion/core"
+* "@riboseinc/paneron-plugin-kit"
+* "@riboseinc/paneron-registry-kit"
 * "electron-log"
 * "react"
