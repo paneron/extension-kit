@@ -74,3 +74,5 @@ const MyRepositoryView: React.FC<RepositoryViewProps> = function ({ react, title
   const [value, setValue] = react.useState(null);
   return <react.Fragment>Welcome to repository {title}!</react.Fragment>
 }
+
+This may change in future.

@@ -1,6 +1,6 @@
 {
   "name": "@riboseinc/paneron-plugin-kit",
-  "version": "1.0.0-dev6",
+  "version": "1.0.0-alpha1",
   "main": "index.js",
   "repository": "https://github.com/paneron/plugin-kit",
   "author": "Ribose Inc. <open.source@ribose.com>",
