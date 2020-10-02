@@ -57,7 +57,7 @@ of extension mechanism at this point in time.
 
 . An extension must not have any dependencies specified in package.json.
   Anything you want to import should be provided by Paneron (see below what is).
-  (You can use devDependencies, though).
+  (You can use devDependencies, though.)
 
 . An extension cannot browser window’s native functions.
   If you need `setTimeout()`, use `setTimeout` prop passed to your top-level extension component.
