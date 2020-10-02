@@ -2,7 +2,7 @@
   "name": "@riboseinc/paneron-extension-kit",
   "version": "1.0.0-alpha2",
   "main": "index.js",
-  "repository": "https://github.com/paneron/plugin-kit",
+  "repository": "https://github.com/paneron/extension-kit",
   "author": "Ribose Inc. <open.source@ribose.com>",
   "scripts": {
     "build": "rm -r compiled dist; mkdir compiled dist; tsc --outDir compiled; babel compiled --out-dir dist; cp package.json compiled/*.d.ts compiled/*.js.map dist/"
