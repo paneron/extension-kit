@@ -66,7 +66,10 @@ export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 
 export interface RepositoryViewProps {
   title: string
+
   React: typeof React
+  setTimeout: typeof window["setTimeout"]
+
   useObjectsChangedEvent: ObjectsChangedEventHook
   useObjectPaths: ObjectPathsHook
   useObjectData: ObjectDataHook
