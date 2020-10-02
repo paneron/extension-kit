@@ -1,47 +1,47 @@
-= Paneron plugin kit
+= Paneron extension kit
 
-== Plugin development
+== Extension development
 
-NOTE: Currently, only plugins released under `@riboseinc` NPM scope are supported.
-Plugin name must be prefixed with `plugin-` (e.g., `plugin-foo-registry`).
+NOTE: Currently, only extensions released under `@riboseinc` NPM scope are supported.
+Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-foo-registry`).
 
 === Setup
 
-. Create a new repository using Paneron plugin template repository (link to be added).
+. Create a new repository using Paneron extension template repository (link to be added).
 
 . Clone Paneron repository (link to be added) and build Paneron locally.
 
-. Create a directory named `plugins-dev` somewhere on your machine.
+. Create a directory named `paneron-extension-dev` somewhere on your machine.
 
 ==== Iteration
 
 After you make changes:
 
-. Rebuild the plugin from root directory.
+. Rebuild the extension from repository root:
 +
 [source,sh]
 --
 $ yarn build
 --
 
-. Copy _contents_ of `dist/` into `plugins-dev/@riboseinc/<your-plugin-NPM-package-name>`.
+. Copy the _contents_ of `dist/` into `paneron-extension-dev/@riboseinc/paneron-extension-<your-extension-name>`.
 
 . Launch your local build of Paneron using a command like this:
 +
 [source,sh]
 --
-$ env PANERON_PLUGIN_DIR=/path/to/your/plugins-dev/directory yarn dev
+$ env PANERON_PLUGIN_DIR=/path/to/your/paneron-extension-dev/directory yarn dev
 --
 
 ==== Release
 
 When ready, release NPM package and test on production Paneron build.
 
-=== Rules of Paneron plugins
+=== Rules of Paneron extensions
 
 ==== Depending on other modules
 
-A plugin should not have any dependencies specified in package.json.
+An extension should not have any dependencies specified in package.json.
 Anything you want to import should be provided by Paneron.
 
 Here are modules you can import:
@@ -51,7 +51,7 @@ Here are modules you can import:
 * "@blueprintjs/icons"
 * "@blueprintjs/select"
 * "@emotion/core"
-* "@riboseinc/paneron-plugin-kit"
+* "@riboseinc/paneron-extension-kit"
 * "@riboseinc/paneron-registry-kit"
 * "electron-log"
 * "js-yaml"
@@ -60,7 +60,7 @@ Here are modules you can import:
 
 ==== Using React
 
-A plugin cannot import React directly. Due to how resolving plugins at runtime works currently,
+An extension cannot import React directly. Due to how resolving extensions at runtime works currently,
 importing React in your components will cause two React instances to be running, which will break hooks.
 
 Instead, your components will be passed a `react` prop.
