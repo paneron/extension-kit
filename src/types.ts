@@ -60,6 +60,7 @@ export interface ValueHook<T> {
 export type ObjectDataRequest = Record<string, 'utf-8' | undefined>;
 
 export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
+export type ObjectSyncStatusHook = () => ValueHook<Record<string, FileChangeType>>
 export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
 export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 
@@ -72,8 +73,12 @@ export interface RepositoryViewProps {
 
   useObjectsChangedEvent: ObjectsChangedEventHook
   useObjectPaths: ObjectPathsHook
+  useObjectSyncStatus: ObjectSyncStatusHook
   useObjectData: ObjectDataHook
   useRemoteUsername: RemoteUsernameHook
   makeRandomID: () => Promise<string>
   changeObjects: (changeset: ObjectChangeset, commitMessage: string) => Promise<CommitOutcome>
 }
+
+
+export type FileChangeType = 'modified' | 'added' | 'removed' | 'unchanged';
