@@ -77,8 +77,8 @@ import React from 'react';
 
 const MyRepositoryView: React.FC<RepositoryViewProps> = function (props) {
   const [value, setValue] = props.React.useState(null);
-  return <>Welcome to repository {title}!</>
-}
+  return <div style={{ padding: '1rem' }}>Welcome to repository {props.title}!</div>;
+};
 --
 
 As usual, for a more complete example check out the basic extension template repository.
