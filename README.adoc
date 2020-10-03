@@ -59,7 +59,7 @@ of extension mechanism at this point in time.
   Anything you want to import should be provided by Paneron (see below what is).
   (You can use devDependencies, though.)
 
-. An extension cannot browser window’s native functions.
+. An extension cannot call browser window’s native functions.
   If you need `setTimeout()`, use `setTimeout` prop passed to your top-level extension component.
 
 . An extension cannot import and use React’s tools (e.g., hooks like `useState()`).
