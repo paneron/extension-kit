@@ -77,7 +77,7 @@ export interface RepositoryViewProps {
   useObjectData: ObjectDataHook
   useRemoteUsername: RemoteUsernameHook
   makeRandomID: () => Promise<string>
-  changeObjects: (changeset: ObjectChangeset, commitMessage: string) => Promise<CommitOutcome>
+  changeObjects: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) => Promise<CommitOutcome>
 }
 
 
