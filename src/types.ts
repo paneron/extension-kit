@@ -1,4 +1,5 @@
 // Repository view props—belongs to Paneron
+import type { FileFilter } from 'electron';
 import type React from 'react';
 
 export interface MainPlugin {}
@@ -65,6 +66,13 @@ export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDat
 export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 
 
+export interface OpenDialogProps {
+  prompt: string
+  filters?: FileFilter[]
+  allowMultiple?: boolean
+}
+
+
 export interface RepositoryViewProps {
   title: string
 
@@ -77,6 +85,7 @@ export interface RepositoryViewProps {
   useObjectData: ObjectDataHook
   useRemoteUsername: RemoteUsernameHook
   makeRandomID: () => Promise<string>
+  requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<ObjectDataset>
   changeObjects: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) => Promise<CommitOutcome>
 }
 
