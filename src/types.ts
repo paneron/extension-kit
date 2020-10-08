@@ -3,7 +3,7 @@ import type React from 'react';
 
 export interface MainPlugin {}
 
-type PluginComponentProps = Pick<RepositoryViewProps, 'React'>;
+type PluginComponentProps = Pick<RepositoryViewProps, 'React' | 'setTimeout'>;
 export type PluginFC<T> = React.FC<PluginComponentProps & T>;
 export type RendererPlugin = Promise<{
   repositoryView?: PluginFC<any>
