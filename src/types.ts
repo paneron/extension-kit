@@ -89,6 +89,10 @@ export interface RepositoryViewProps {
   makeAbsolutePath: (path: string) => string
 
   requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<ObjectDataset>
+
+  addFileFromFilesystem?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) =>
+    Promise<CommitOutcome & { addedObjects: ObjectDataset }>
+
   changeObjects: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) =>
     Promise<CommitOutcome>
 }
