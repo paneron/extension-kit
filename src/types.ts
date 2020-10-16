@@ -86,7 +86,8 @@ export interface RepositoryViewProps {
   useRemoteUsername: RemoteUsernameHook
   makeRandomID: () => Promise<string>
   requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<ObjectDataset>
-  changeObjects: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) => Promise<CommitOutcome>
+  changeObjects: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) =>
+    Promise<CommitOutcome>
 }
 
 
