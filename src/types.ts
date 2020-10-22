@@ -59,7 +59,7 @@ export interface ValueHook<T> {
   _reqCounter: number
 }
 
-export type ObjectDataRequest = Record<string, 'utf-8' | undefined>;
+export type ObjectDataRequest = Record<string, 'utf-8' | 'binary'>;
 
 export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
 export type ObjectSyncStatusHook = () => ValueHook<Record<string, FileChangeType>>
