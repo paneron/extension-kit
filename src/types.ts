@@ -1,4 +1,3 @@
-// Repository view props—belongs to Paneron
 import type { FileFilter } from 'electron';
 import type React from 'react';
 
@@ -43,7 +42,6 @@ export interface CommitOutcome {
 
 
 export type ObjectsChangedEventHook = (
-  // TODO: Duplicated in Paneron core
   eventCallback: (event: { objects?: Record<string, 'added' | 'modified' | 'removed' | true> }) => Promise<void>,
   args: any[],
 ) => void
@@ -57,7 +55,6 @@ export interface ValueHook<T> {
   _reqCounter: number
 }
 
-// TODO: Duplicated within Paneron core
 export type ObjectDataRequest = Record<string, 'utf-8' | undefined>;
 
 export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
