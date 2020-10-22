@@ -3,8 +3,12 @@ import type React from 'react';
 
 export interface MainPlugin {}
 
-type PluginComponentProps = Pick<RepositoryViewProps, 'React' | 'setTimeout'>;
+type PluginComponentProps = {
+  React: typeof React
+  setTimeout?: typeof window["setTimeout"]
+}
 export type PluginFC<T> = React.FC<PluginComponentProps & T>;
+
 export type RendererPlugin = Promise<{
   repositoryView?: PluginFC<any>
 }>
@@ -70,11 +74,8 @@ export interface OpenDialogProps {
 }
 
 
-export interface RepositoryViewProps {
+export interface RepositoryViewProps extends PluginComponentProps {
   title: string
-
-  React: typeof React
-  setTimeout: typeof window["setTimeout"]
 
   useObjectsChangedEvent: ObjectsChangedEventHook
   useObjectPaths: ObjectPathsHook
