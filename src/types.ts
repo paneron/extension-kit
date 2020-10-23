@@ -3,7 +3,7 @@ import type React from 'react';
 
 export interface MainPlugin {}
 
-type PluginComponentProps = {
+export type PluginComponentProps = {
   React: typeof React
   setTimeout?: typeof window["setTimeout"]
 }
