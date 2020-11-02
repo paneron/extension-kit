@@ -13,7 +13,10 @@
     "*.d.ts",
     "widgets/**/*.js",
     "widgets/**/*.js.map",
-    "widgets/**/*.d.ts"
+    "widgets/**/*.d.ts",
+    "i18n/**/*.js",
+    "i18n/**/*.js.map",
+    "i18n/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
