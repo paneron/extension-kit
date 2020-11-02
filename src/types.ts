@@ -62,6 +62,7 @@ export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
 export type ObjectSyncStatusHook = () => ValueHook<Record<string, FileChangeType>>
 export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
 export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
+export type AuthorEmailHook = () => ValueHook<{ email: string }>
 
 
 export interface OpenDialogProps {
@@ -79,6 +80,8 @@ export interface RepositoryViewProps extends PluginComponentProps {
   useObjectSyncStatus: ObjectSyncStatusHook
   useObjectData: ObjectDataHook
   useRemoteUsername: RemoteUsernameHook
+  useAuthorEmail: AuthorEmailHook
+
   makeRandomID: () => Promise<string>
 
   makeAbsolutePath: (path: string) => string
