@@ -86,6 +86,8 @@ export interface RepositoryViewProps extends PluginComponentProps {
 
   makeAbsolutePath: (path: string) => string
 
+  getRuntimeNodeModulePath?: (moduleName: string) => string
+
   requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<ObjectDataset>
 
   addFileFromFilesystem?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) =>
