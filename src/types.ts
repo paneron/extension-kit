@@ -3,10 +3,7 @@ import type React from 'react';
 
 export interface MainPlugin {}
 
-export type PluginComponentProps = {
-  React: typeof React
-  setTimeout?: typeof window["setTimeout"]
-}
+export type PluginComponentProps = {}
 export type PluginFC<T> = React.FC<PluginComponentProps & T>;
 
 export type RendererPlugin = Promise<{
