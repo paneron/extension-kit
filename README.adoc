@@ -1,5 +1,7 @@
 = Paneron extension kit
 
+The kit currently contains a set of Paneron types relevant for extension development.
+
 == Extension development
 
 Paneron extensions are written in TypeScript based on React, and can make use of Blueprint 3 UI components.
@@ -61,43 +63,28 @@ of extension mechanism at this point in time.
 
 . An extension cannot call browser window’s native functions.
   If you need `setTimeout()`, use `setTimeout` prop passed to your top-level extension component.
-
-. An extension cannot import and use React’s tools (e.g., hooks like `useState()`).
-  Instead, React instance passed via the `React` prop must be used.
-
-If these rules are not observed, you may end up getting a confusing blank screen
+  Using `Blob` or `addEventListener()` is not possible currently.
++
+If this rule is not observed, you may end up getting a confusing blank screen
 after opening a repository using your extension and “DevTools was disconnected from the page” in console.
-
-Here’s how using a `useState()` hook might look like:
-
-[source,tsx]
---
-// This is only to enable JSX support.
-import React from 'react';
-
-const MyRepositoryView: React.FC<RepositoryViewProps> = function (props) {
-  const [value, setValue] = props.React.useState(null);
-  return <div style={{ padding: '1rem' }}>Welcome to repository {props.title}!</div>;
-};
---
-
-As usual, for a more complete example check out the basic extension template repository.
 
 ==== Modules you can import
 
 Here are the modules you can import:
 
+* "react"
+* "react-window"
+* "@emotion/core"
+* "@emotion/styled"
+* "emotion"
+* "@riboseinc/paneron-extension-kit"
+* "@riboseinc/paneron-registry-kit"
 * "@blueprintjs/core"
 * "@blueprintjs/datetime"
 * "@blueprintjs/icons"
 * "@blueprintjs/select"
-* "@emotion/core"
-* "@riboseinc/paneron-extension-kit"
-* "@riboseinc/paneron-registry-kit"
 * "electron-log"
 * "js-yaml"
-* "react" (but note quirks above)
-* "react-window"
 * "throttle-debounce"
 
 Again, you must not have anything in your dependencies,
@@ -106,16 +93,17 @@ for TypeScript development convenience.
 
 === Using Emotion for styling components
 
-Taking the above example, here is how it could be written using Emotion:
+Here’s how a simple component can be written using Emotion:
 
 [source,tsx]
 --
 /** @jsx jsx */
 
+import React, { useState } from 'react';
 import { css, jsx } from '@emotion/core';
 
 const MyRepositoryView: React.FC<RepositoryViewProps> = function (props) {
-  const [value, setValue] = props.React.useState(null);
+  const [value, setValue] = useState(null);
   return <div css={css`padding: 1rem;`}>Welcome to repository {props.title}!</div>;
 };
 --
@@ -130,12 +118,11 @@ keep the React import and add `@jsxFrag` pragma:
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React from 'react';
-
+import React, { useState } from 'react';
 import { css, jsx } from '@emotion/core';
 
 const MyRepositoryView: React.FC<RepositoryViewProps> = function (props) {
-  const [value, setValue] = props.React.useState(null);
+  const [value, setValue] = useState(null);
   return <>
     <div css={css`padding: 1rem;`}>Welcome to repository {props.title}!</div>
   </>;
