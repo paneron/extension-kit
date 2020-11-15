@@ -9,13 +9,25 @@ Paneron extensions are written in TypeScript based on React, and can make use of
 An extension is essentially a React component that is given as props
 some functions that simplify interaction with underlying data repository.
 
+[NOTE]
+====
+These guidelines are for Paneron 1.0.0-alpha17. Before that version the process was slightly different.
+Specifying PANERON_PLUGIN_DIR environment variable is no longer suggested.
+====
+
 === Setup
+
+. Think of an ID for your extension (e.g., my-extension).
 
 . Create a new repository using Paneron extension template repository (https://github.com/paneron/extension-template-basic).
 
+. Clone the repository you’ve created, and edit package.json to fill in your extension name, description, and author (see placeholders).
+
 . For testing purposes, obtain Paneron source code (clone https://github.com/paneron/paneron) and build the project locally.
 
-. Create a directory named `paneron-extension-dev` somewhere on your machine.
+. Inside Paneron app data directory, create subdirectory chain 'plugins/@riboseinc/paneron-extension-my-extension'.
++
+That is where Paneron will expect your extension built form to reside.
 
 ==== Iteration
 
@@ -28,13 +40,13 @@ After you make changes:
 $ yarn build
 --
 
-. Copy the _contents_ of `dist/` into `paneron-extension-dev/@riboseinc/paneron-extension-<your-extension-name>`.
+. Copy the _contents_ of `dist/` into the directory you created during the last stage of setup above.
 
 . Launch your local build of Paneron using a command like this, from within Paneron repository root:
 +
 [source,sh]
 --
-$ env PANERON_PLUGIN_DIR=/path/to/your/paneron-extension-dev/directory yarn dev
+$ env PANERON_DEV_PLUGIN=my-extension yarn dev
 --
 
 ==== Release
@@ -42,7 +54,9 @@ $ env PANERON_PLUGIN_DIR=/path/to/your/paneron-extension-dev/directory yarn dev
 An extension must be released as a separate NPM package, specifying entry as `plugin.js`
 (see template extension for example packaging).
 
-When ready & tested, release your extension on NPM:
+When ready & tested, release your extension on NPM
+by running this command from within `dist/` subdirectory
+in your extension repository:
 
 [source,sh]
 --
@@ -50,7 +64,9 @@ $ npm publish
 --
 
 NOTE: Currently, only extensions released under `@riboseinc` NPM scope are supported.
-Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-foo-registry`).
+Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-my-extension`).
+
+To test your extension after it’s released, .
 
 === Rules of Paneron extensions
 
