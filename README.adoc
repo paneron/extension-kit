@@ -70,7 +70,7 @@ in your extension repository:
 $ npm publish --access public
 --
 
-NOTE: `--access public` is only necessary first time you publish the extension. (See [NPM CLI docs](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages).)
+NOTE: `--access public` is only necessary first time you publish the extension. (See link:https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages[NPM CLI docs].)
 
 NOTE: Currently, only extensions released under `@riboseinc` NPM scope are supported.
 Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-my-extension`).
