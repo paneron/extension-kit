@@ -139,7 +139,7 @@ const MyRepositoryView: React.FC<Record<never, never>> = function () {
 [NOTE]
 ====
 If using React fragment shorthand syntax (`<>…</>`),
-keep the React import and add `@jsxFrag` pragma:
+use `@jsxFrag` pragma:
 
 [source,tsx]
 --
