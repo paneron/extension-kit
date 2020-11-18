@@ -40,7 +40,7 @@ $ env PANERON_PLUGIN_DIR=/path/to/your/paneron-extension-dev/directory yarn dev
 ==== Release
 
 An extension must be released as a separate NPM package, specifying entry as `plugin.js`
-(see template extension for example packaging).
+(see the template extension for example packaging).
 
 When ready & tested, release your extension on NPM:
 
