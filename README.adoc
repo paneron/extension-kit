@@ -23,7 +23,7 @@ Specifying PANERON_PLUGIN_DIR environment variable is no longer suggested.
 
 . Think of an ID for your extension (e.g., my-extension).
 
-. On GitHub, create a new repository using Paneron extension template repository (https://github.com/paneron/extension-template-basic).
+. On GitHub, create a new repository using Paneron extension template repository (https://github.com/paneron/extension-template-basic) or registry extension template repository (https://github.com/paneron/extension-template-registry).
 
 . Clone the repository you’ve created and edit package.json to fill in your extension name, description, and author (see placeholders).
 
