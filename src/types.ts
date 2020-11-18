@@ -3,11 +3,8 @@ import type React from 'react';
 
 export interface MainPlugin {}
 
-export type PluginComponentProps = {}
-export type PluginFC<T> = React.FC<PluginComponentProps & T>;
-
 export type RendererPlugin = Promise<{
-  repositoryView?: PluginFC<any>
+  repositoryView?: React.FC<ExtensionContext>
 }>
 
 export type Plugin = MainPlugin | RendererPlugin;
@@ -72,7 +69,7 @@ export interface OpenDialogProps {
 }
 
 
-export interface RepositoryViewProps extends PluginComponentProps {
+export interface ExtensionContext {
   title: string
 
   useObjectsChangedEvent: ObjectsChangedEventHook
