@@ -35,3 +35,16 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 export const DatasetContext = React.createContext<DatasetContextSpec>(INITIAL_CONTEXT);
 
 
+/* A higher-order component that:
+
+   - takes dataset view component that takes no props;
+   - returns a component that takes dataset context as props,
+     and renders dataset view wrapped inside dataset context provider. */
+export function withDatasetContext(Component: React.FC<Record<never, never>>):
+React.FC<DatasetContextSpec> {
+  return (props: DatasetContextSpec) => (
+    <DatasetContext.Provider value={props}>
+      <Component />
+    </DatasetContext.Provider>
+  );
+}

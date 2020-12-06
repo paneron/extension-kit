@@ -56,19 +56,3 @@ export const makeExtension: ExtensionMaker = async (options) => {
   return plugin;
 
 }
-
-
-/* A higher-order component that:
-
-   - takes repository view component, which takes no props;
-   - returns a component that takes extension context as props,
-     and renders repository view component
-     wrapped inside extension view context provider. */
-function withExtensionContext(Component: React.FC<Record<never, never>>):
-React.FC<ExtensionContext> {
-  return (props: ExtensionContext) => (
-    <ExtensionViewContext.Provider value={props}>
-      <Component />
-    </ExtensionViewContext.Provider>
-  );
-}
