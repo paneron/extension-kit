@@ -1,8 +1,5 @@
 import React from 'react';
-import { ExtensionContext, ValueHook } from './types';
-
-
-export interface ExtensionViewContextSpec extends ExtensionContext {}
+import { DatasetContext as DatasetContextSpec, ValueHook } from './types';
 
 
 function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
@@ -15,23 +12,26 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
   });
 }
 
-const INITIAL_CONTEXT: ExtensionViewContextSpec = {
+const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
-  useAuthorEmail: getValueHookPlaceholder({ email: '' }),
-  useRemoteUsername: getValueHookPlaceholder({ username: '' }),
   useObjectPaths: getValueHookPlaceholder([]),
   useObjectSyncStatus: getValueHookPlaceholder({}),
   useObjectData: getValueHookPlaceholder({}),
+  useObjectsChangedEvent: () => {},
 
   requestFileFromFilesystem: async () => ({}),
 
   changeObjects: async () => ({}),
-  useObjectsChangedEvent: () => {},
 
   makeRandomID: async () => '',
-  makeAbsolutePath: () => '',
+
+  //useAuthorEmail: getValueHookPlaceholder({ email: '' }),
+  //useRemoteUsername: getValueHookPlaceholder({ username: '' }),
+  //makeAbsolutePath: () => '',
 }
 
 
-export const ExtensionViewContext = React.createContext<ExtensionViewContextSpec>(INITIAL_CONTEXT);
+export const DatasetContext = React.createContext<DatasetContextSpec>(INITIAL_CONTEXT);
+
+
