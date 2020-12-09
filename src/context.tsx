@@ -28,7 +28,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   //useAuthorEmail: getValueHookPlaceholder({ email: '' }),
   //useRemoteUsername: getValueHookPlaceholder({ username: '' }),
-  //makeAbsolutePath: () => '',
+
+  makeAbsolutePath: () => '',
 }
 
 

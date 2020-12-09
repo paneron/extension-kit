@@ -30,6 +30,10 @@ export interface DatasetContext {
   changeObjects?: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) =>
     Promise<CommitOutcome>
 
+  // Provides a full system-absolute path to given path relative to dataset,
+  // which is useful in rare cases.
+  makeAbsolutePath: (path: string) => string
+
   // Invokes file selection dialog,
   // adds selected file(s) to the repository at given location,
   // prompts the user to commit changes to the repository,
