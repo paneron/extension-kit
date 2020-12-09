@@ -58,7 +58,7 @@ export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDat
 
 // TODO: Make paths here dataset-relative.
 export type ObjectsChangedEventHook = (
-  eventCallback: (event: { objects?: Record<string, 'added' | 'modified' | 'removed' | true> }) => Promise<void>,
+  eventCallback: (event: { objects?: Record<string, Omit<FileChangeType, 'unchanged'> | true> }) => Promise<void>,
   args: any[],
 ) => void
 
