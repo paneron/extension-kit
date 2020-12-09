@@ -17,7 +17,9 @@ export interface DatasetContext {
 
   getRuntimeNodeModulePath?: (moduleName: string) => string
 
-  // Invokes file selection dialog, returns file data, does not alter the data
+  // Invokes file selection dialog and returns file data when user confirms.
+  // This does not mutate dataset / Git repo contents, changeObjects still
+  // must be invoked later in order to commit newly added or replaced file.
   requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<ObjectDataset>
 
   // Generates a UUID. Not really useful in read-only mode
