@@ -51,14 +51,16 @@ export interface ValueHook<T> {
   _reqCounter: number
 }
 
+// These hooks take and return dataset-relative (not repo-relative) object paths.
+export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
+export type ObjectSyncStatusHook = () => ValueHook<Record<string, FileChangeType>>
+export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
+
+// TODO: Make paths here dataset-relative.
 export type ObjectsChangedEventHook = (
   eventCallback: (event: { objects?: Record<string, 'added' | 'modified' | 'removed' | true> }) => Promise<void>,
   args: any[],
 ) => void
-
-export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
-export type ObjectSyncStatusHook = () => ValueHook<Record<string, FileChangeType>>
-export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
 
 //export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 //export type AuthorEmailHook = () => ValueHook<{ email: string }>
