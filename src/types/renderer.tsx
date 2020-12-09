@@ -15,8 +15,6 @@ export interface DatasetContext {
   useObjectSyncStatus: ObjectSyncStatusHook
   useObjectData: ObjectDataHook
 
-  getRuntimeNodeModulePath?: (moduleName: string) => string
-
   // Invokes file selection dialog and returns file data when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
   // must be invoked later in order to commit newly added or replaced file.
@@ -33,6 +31,11 @@ export interface DatasetContext {
   // Provides a full system-absolute path to given path relative to dataset,
   // which is useful in rare cases.
   makeAbsolutePath: (path: string) => string
+
+  // This may be useful in rare cases with poorly-integrated third-party libraries.
+  // Only works for dependencies with corresponding unpackAsar entries
+  // in Paneron’s electron-builder config.
+  getRuntimeNodeModulePath?: (moduleName: string) => string
 
   // Invokes file selection dialog,
   // adds selected file(s) to the repository at given location,
