@@ -22,6 +22,12 @@ export interface ObjectDataset {
 }
 
 
+/* Maps a set of object paths to object’s change status. */
+export interface ObjectChangeStatusSet {
+  [objectPath: string]: FileChangeType
+}
+
+
 /* Describes a query to retrieve which objects exist without knowing their paths. */
 export interface ObjectQuery {
   pathPrefix: string

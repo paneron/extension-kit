@@ -2,6 +2,7 @@ import type { FileFilter } from 'electron';
 import {
   CommitOutcome, FileChangeType,
   ObjectChangeset,
+  ObjectChangeStatusSet,
   ObjectDataRequest, ObjectDataset,
   ObjectQuery,
 } from './data';
@@ -62,7 +63,7 @@ export interface ValueHook<T> {
 
 // These hooks take and return dataset-relative (not repo-relative) object paths.
 export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
-export type ObjectSyncStatusHook = () => ValueHook<Record<string, FileChangeType>>
+export type ObjectSyncStatusHook = () => ValueHook<ObjectChangeStatusSet>
 export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
 
 // TODO: Make paths here dataset-relative.
