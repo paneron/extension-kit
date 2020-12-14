@@ -11,6 +11,9 @@ import {
 export interface DatasetContext {
   title: string
 
+  // Below functions, when take or return object paths, use dataset-relative paths
+  // and convert them to and from repo-relative paths under the hood as needed.
+
   useObjectsChangedEvent: ObjectsChangedEventHook
   useObjectPaths: ObjectPathsHook
   useObjectSyncStatus: ObjectSyncStatusHook
