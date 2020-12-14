@@ -2,6 +2,8 @@ import type React from 'react';
 import { DatasetMigrationFunction } from './migrations';
 import { DatasetContext } from './renderer';
 
+
+/* The interface that extension instance exposes to Paneron in main thread. */
 export interface MainPlugin {
   // False means another version of the host app must be used (probably a newer one).
   isCompatible: (withHostAppVersion: string) => boolean
@@ -12,6 +14,8 @@ export interface MainPlugin {
   getInitialMigration: () => MigrationModule
 }
 
+
+/* The interface that extension instance exposes to Paneron in renderer thread. */
 export interface RendererPlugin {
   mainView?: React.FC<DatasetContext>
 }
