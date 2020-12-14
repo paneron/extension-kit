@@ -3,7 +3,7 @@ import { ObjectChangeset } from "./data";
 interface DatasetMigrationOptions {
   datasetRootPath: string
   versionBefore?: string
-  onProgress: (message: string) => void
+  onProgress?: (message: string) => void
 }
 
 /* Changeset describing changes that will make the dataset
