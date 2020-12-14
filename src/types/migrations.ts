@@ -1,6 +1,6 @@
 import { ObjectChangeset } from "./data";
 
-interface DatasetMigrationOptions {
+export interface DatasetMigrationOptions {
   datasetRootPath: string
   versionBefore?: string
   onProgress?: (message: string) => void
