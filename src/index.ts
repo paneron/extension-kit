@@ -77,11 +77,14 @@ export const makeExtension: ExtensionMaker = async (options) => {
       ),
       getMigration: (datasetVersion) => (
         Object.entries(options.datasetMigrations).
-        find(([migrationVersionSpec, _]) =>
+        filter(([migrationVersionSpec, _]) =>
           semver.satisfies(datasetVersion, migrationVersionSpec)
-        )?.[1]?.() ||
-        null
+        ).
+        map(([versionSpec, migration]) =>
+          ({ versionSpec, migration })
+        )[0]
       ),
+      getInitialMigration: options.datasetInitializer,
     };
 
   } else if (process.type === 'renderer') {
