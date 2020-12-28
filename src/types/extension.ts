@@ -9,7 +9,10 @@ export interface MainPlugin {
   isCompatible: (withHostAppVersion: string) => boolean
 
   // Non-null result means migration must be applied for user to proceed.
-  getMigration: (datasetVersion: string) => { versionSpec: string, migration: () => MigrationModule } | undefined
+  getMigration: (datasetVersion: string) => {
+    versionSpec: string
+    migration: () => MigrationModule 
+  } | undefined
 
   getInitialMigration: () => MigrationModule
 }
