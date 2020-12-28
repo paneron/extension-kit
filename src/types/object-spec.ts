@@ -1,4 +1,4 @@
-export interface ObjectSpec<T extends Record<string, any> = any> extends SerDes<T> {
+export interface ObjectSpec<T extends Record<string, any> = any> {
 
   /* Determines whether serialize/deserialize functions provided by this rule
      should be used for given object.
@@ -15,16 +15,28 @@ export interface ObjectSpec<T extends Record<string, any> = any> extends SerDes<
     path?: (objectPath: string) => boolean
   }
 
-  views: {
-    default: () => Promise<{ default: React.FC<{ objectData: T }> }>
-  }
+  /* Views for objects of this type.
+     Paneron can use these views when showing objects
+     in its own views outside of extension’s main dataset view
+     (e.g., during conflict resolution).
+     Extension may or may not use same views in its main dataset view. */
+  views?: () => Promise<{ default: {
+    detailed?: React.FC<{ objectData: T }>
+    card?: React.FC<{ objectData: T }>
+    inline?: React.FC<{ objectData: T }>
+  } }>
+
 }
+
+
+export interface SerializableObjectSpec<T extends Record<string, any> = any>
+extends ObjectSpec<T>, SerDes<T> {}
 
 
 /* Specifies how to transform an object as runtime in-memory structure
    to a storeable byte array and vice-versa
    (i.e., serializer/deserializer). */
-export interface SerDes<ObjectType extends Record<string, any> = any> {
+interface SerDes<ObjectType extends Record<string, any> = any> {
   serialize: (object: ObjectType) => SerializedObject
   deserialize: (data: SerializedObject) => ObjectType
 }
@@ -32,4 +44,4 @@ export interface SerDes<ObjectType extends Record<string, any> = any> {
 
 /* Represents an object in a serialized state.
    A record that maps paths (relative to object root path) to byte arrays. */
-export type SerializedObject = Record<string, Uint8Array>;
+type SerializedObject = Record<string, Uint8Array>;
