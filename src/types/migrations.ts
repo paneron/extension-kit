@@ -1,4 +1,5 @@
-import { ObjectChangeset } from "./data";
+import { ObjectChangeset } from './data';
+
 
 export interface DatasetMigrationOptions {
   datasetRootPath: string
@@ -17,4 +18,8 @@ interface DatasetMigrationSpec {
    and returns a migration spec.
 
    If current version is not given, assume that a new dataset is initialized. */
-export type DatasetMigrationFunction = (opts: DatasetMigrationOptions) => Promise<DatasetMigrationSpec>;
+export type DatasetMigrationFunction =
+  (opts: DatasetMigrationOptions) => Promise<DatasetMigrationSpec>;
+
+export type MigrationModule =
+  Promise<{ default: DatasetMigrationFunction }>;

@@ -1,5 +1,5 @@
 import type React from 'react';
-import { DatasetMigrationFunction } from './migrations';
+import { MigrationModule } from './migrations';
 import { DatasetContext } from './renderer';
 
 
@@ -21,5 +21,3 @@ export interface RendererPlugin {
 }
 
 export type Extension = MainPlugin | RendererPlugin;
-
-export type MigrationModule = Promise<{ default: DatasetMigrationFunction }>;
