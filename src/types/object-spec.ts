@@ -33,6 +33,9 @@ export interface SerializableObjectSpec<T extends Record<string, any> = any>
 extends ObjectSpec<T>, SerDes<T> {}
 
 
+export interface BinaryObjectSpec extends SerializableObjectSpec<{ binaryData: Uint8Array, asBase64: string }> {}
+
+
 /* Specifies how to transform an object as runtime in-memory structure
    to a storeable byte array and vice-versa
    (i.e., serializer/deserializer). */
