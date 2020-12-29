@@ -45,6 +45,7 @@ export function makeNestedSerializedObjectSpec
 <T extends Record<string, any> = any>(opts: {
   matches: ObjectSpec["matches"]
   views: ObjectSpec["views"]
+
   serializePart: (partData: any) => Uint8Array
   deserializePart: (buffer: Uint8Array) => any
 

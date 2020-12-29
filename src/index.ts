@@ -71,6 +71,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
 
   if (process.type === 'browser') {
     plugin = {
+
       isCompatible: (hostAppVersion: string) => (
         options.requiredHostAppVersion !== undefined &&
         semver.satisfies(hostAppVersion, options.requiredHostAppVersion)
@@ -84,6 +85,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
           ({ versionSpec, migration })
         )[0]
       ),
+
       getInitialMigration: options.datasetInitializer,
     };
 
@@ -101,5 +103,4 @@ export const makeExtension: ExtensionMaker = async (options) => {
   }
 
   return plugin;
-
 }

@@ -15,10 +15,11 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
+  useObjectsChangedEvent: () => {},
+
   useObjectPaths: getValueHookPlaceholder([]),
   useObjectSyncStatus: getValueHookPlaceholder({}),
   useObjectData: getValueHookPlaceholder({}),
-  useObjectsChangedEvent: () => {},
 
   requestFileFromFilesystem: async () => ({}),
 
