@@ -88,10 +88,10 @@ export const makeExtension: ExtensionMaker = async (options) => {
     };
 
   } else if (process.type === 'renderer') {
-    const importResult = await (options.mainView || /* Deprecated */(options as any).repoView)();
+    const mainViewImportResult = await (options.mainView || /* Deprecated */(options as any).repoView)();
 
     plugin = {
-      mainView: withDatasetContext(importResult.default),
+      mainView: withDatasetContext(mainViewImportResult.default),
     };
 
   } else {
