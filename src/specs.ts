@@ -2,26 +2,32 @@ import yaml from 'js-yaml';
 import { ObjectSpec, SerializableObjectSpec } from './types/object-spec';
 
 
-/* Creates a spec for objects, where each is represented as a directory
-   containing serialized files, possibly in nested directories.
+/* Creates a spec for objects, where a serialized object
+   is represented as a tree of buffers
+   (for example, .yaml files in nested directories).
 
-   An object can be made of different “parts”,
-   where a part lives in its own buffer (e.g., file).
+   An object is represented as comprised from “parts”,
+   where each part corresponds to a buffer (e.g., file).
 
-   assembleFromParts and disassembleIntoParts determine how an object
-   is converted between its “canonical” runtime structure
-   and a flat structure that maps slash-separated buffer paths
-   to serializable data pieces for storage.
+   `assembleFromParts()` and `disassembleIntoParts()`
+   determine how an object
+   is converted between its “canonical” full JS runtime structure
+   and a flat object structure that maps slash-separated buffer paths
+   to serializable parts for storage.
 
-   E.g.,
+   The default behavior is such that e.g.
 
        { title: "Hello world", foo: { bar: baz } }
 
-   after defualt disassembly (basic flattening) would be represented as:
+   after disassembly (basic flattening) would be represented as:
 
        { "/title": "Hello world", "/foo/bar": "baz" }
 
-   serializePart and deserializePart convert between buffers and parts.
+   (On disk, title and foo/bar would be paths to files
+   relative to object root path.)
+
+   `serializePart` and `deserializePart` specify how individual part
+   is converted between a buffer and a JS structure.
 
    TODO: Implement partPathExtension, indexPath, partKeyPaths options.
 
