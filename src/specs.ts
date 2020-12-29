@@ -239,8 +239,3 @@ export function parseYAML(buffer: Uint8Array): any {
 export function dumpYAML(data: any): Uint8Array {
   return encoder.encode(yaml.dump(data));
 }
-
-
-export function stripLeadingSlash(fp: string): string {
-  return fp.replace(/^\//, '');
-}
