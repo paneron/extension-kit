@@ -20,6 +20,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
   useObjectPaths: getValueHookPlaceholder([]),
   useObjectSyncStatus: getValueHookPlaceholder({}),
   useObjectData: getValueHookPlaceholder({}),
+  useIndexedData: getValueHookPlaceholder({ data: {} }),
+  useIndexedPaths: getValueHookPlaceholder({ objectPaths: [] }),
 
   requestFileFromFilesystem: async () => ({}),
 

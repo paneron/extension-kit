@@ -18,6 +18,8 @@ export interface DatasetContext {
   useObjectPaths: ObjectPathsHook
   useObjectSyncStatus: ObjectSyncStatusHook
   useObjectData: ObjectDataHook
+  useIndexedData: IndexedDataHook
+  useIndexedPaths: IndexedPathsHook
 
   // Invokes file selection dialog and returns file data when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
@@ -68,6 +70,8 @@ export interface ValueHook<T> {
 export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
 export type ObjectSyncStatusHook = () => ValueHook<ObjectChangeStatusSet>
 export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
+export type IndexedDataHook = (query: { objectPaths: string[] }) => ValueHook<{ data: Record<string, Record<string, any>> }>
+export type IndexedPathsHook = () => ValueHook<{ objectPaths: string[] }>
 
 // TODO: Make paths here dataset-relative.
 export type ObjectsChangedEventHook = (
