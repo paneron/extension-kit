@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { ObjectSpec, SerializableObjectSpec } from './types/object-spec';
+import { BinaryObjectSpec, ObjectSpec, SerializableObjectSpec } from './types/object-spec';
 
 
 /* Creates a spec for objects, where a serialized object
@@ -117,11 +117,15 @@ const SingleFileYAMLSpec: SerializableObjectSpec = {
     ({ '/': Buffer.from(yaml.dump(data, { noRefs: true }), 'utf8') }),
 };
 
-const BinaryAssetSpec: ObjectSpec = {
+const BinaryAssetSpec: BinaryObjectSpec = {
   matches: { pathPrefix: '/assets/' },
+  deserialize: (buffers) =>
+    ({ binaryData: buffers['/'], asBase64: Buffer.from(buffers['/']).toString('base64') }),
+  serialize: (data) =>
+    ({ '/': data.binaryData })
 };
 
-export const DEFAULT_SPECS: (ObjectSpec | SerializableObjectSpec)[] = [
+export const DEFAULT_SPECS: SerializableObjectSpec[] = [
   BinaryAssetSpec,
   SingleFileYAMLSpec,
   SingleFileJSONSpec,
