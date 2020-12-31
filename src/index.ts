@@ -6,7 +6,7 @@ import { Extension } from './types/extension';
 import { ExtensionMaker } from './types/extension-maker';
 import { withDatasetContext } from './context';
 import { ObjectSpec, SerializableObjectSpec } from './types/object-spec';
-import { DEFAULT_SPECS } from './specs';
+import { DEFAULT_SPECS } from './object-specs';
 import { stripLeadingSlash } from './util';
 
 

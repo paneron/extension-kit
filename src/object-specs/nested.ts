@@ -1,5 +1,4 @@
-import yaml from 'js-yaml';
-import { BinaryObjectSpec, ObjectSpec, SerializableObjectSpec } from './types/object-spec';
+import { ObjectSpec, SerializableObjectSpec } from '../types/object-spec';
 
 
 /* Creates a spec for objects, where a serialized object
@@ -47,7 +46,7 @@ import { BinaryObjectSpec, ObjectSpec, SerializableObjectSpec } from './types/ob
 
        { "/title": "Hello world", "/foo/bar": "baz" }
 */
-export function makeNestedSerializedObjectSpec
+export function makeNestedSerializableObjectSpec
 <T extends Record<string, any> = any>(opts: {
   matches: ObjectSpec["matches"]
   views: ObjectSpec["views"]
@@ -101,36 +100,6 @@ export function makeNestedSerializedObjectSpec
 }
 
 
-const SingleFileJSONSpec: SerializableObjectSpec = {
-  matches: { extensions: ['.json'] },
-  deserialize: (buffers) =>
-    JSON.parse(utf8Decoder.decode(buffers['/'])),
-  serialize: (data) =>
-    ({ '/': Buffer.from(JSON.stringify(data), 'utf8') }),
-};
-
-const SingleFileYAMLSpec: SerializableObjectSpec = {
-  matches: { extensions: ['.yaml', '.yml'] },
-  deserialize: (buffers) =>
-    yaml.load(utf8Decoder.decode(buffers['/'])),
-  serialize: (data) =>
-    ({ '/': Buffer.from(yaml.dump(data, { noRefs: true }), 'utf8') }),
-};
-
-const BinaryAssetSpec: BinaryObjectSpec = {
-  matches: { pathPrefix: '/assets/' },
-  deserialize: (buffers) =>
-    ({ binaryData: buffers['/'], asBase64: Buffer.from(buffers['/']).toString('base64') }),
-  serialize: (data) =>
-    ({ '/': data.binaryData })
-};
-
-export const DEFAULT_SPECS: SerializableObjectSpec[] = [
-  BinaryAssetSpec,
-  SingleFileYAMLSpec,
-  SingleFileJSONSpec,
-];
-
 
 /* Aggregates parts (mapped to slash-separated paths) into a nested object.
 
@@ -171,6 +140,40 @@ export function unflattenObject<T extends Record<string, any>>
 
   return result as T;
 }
+
+//export function unflattenObject<T extends Record<string, any>>(
+//  parts: Record<string, any>,
+//): T {
+//  const obj: Record<string, any> = {};
+//  // Ideally should be typed as Partial<T>, but that causes problems down the line.
+//
+//  Object.keys(obj).sort().map((partPath) => {
+//    const pathParts = stripLeadingSlash(partPath).split('/');
+//
+//    // Initialize currentLevel to root
+//    let currentLevel = obj;
+//
+//    const data = parts[partPath];
+//
+//    // Assign data to appropriately nested key in the object
+//    pathParts.map((part) => {
+//      // Check to see if key already exists
+//      const existingPath = currentLevel[part];
+//
+//      if (existingPath) {
+//        // Set current level to nested key’s level
+//        currentLevel = existingPath;
+//      } else {
+//        // Add key and part data to current level
+//        currentLevel[part] = data;
+//        // Set current level to key’s level
+//        currentLevel = currentLevel[part];
+//      }
+//    });
+//  });
+//
+//  return obj as T;
+//}
 
 
 /* Recursively decomposes an arbitrarily nested object into a flat record
@@ -237,16 +240,4 @@ function serializeParts(
     result[p] = partToBuffer(part, p);
   }
   return result;
-}
-
-
-const utf8Decoder = new TextDecoder('utf-8');
-const encoder = new TextEncoder();
-
-export function parseYAML(buffer: Uint8Array): any {
-  return yaml.load(utf8Decoder.decode(buffer));
-}
-
-export function dumpYAML(data: any): Uint8Array {
-  return encoder.encode(yaml.dump(data));
 }
