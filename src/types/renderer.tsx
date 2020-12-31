@@ -11,15 +11,17 @@ import {
 export interface DatasetContext {
   title: string
 
+  useRawObjectsChangedEvent: RawObjectsChangedEventHook
+
   // Below functions, when take or return object paths, use dataset-relative paths
   // and convert them to and from repo-relative paths under the hood as needed.
 
-  useObjectsChangedEvent: ObjectsChangedEventHook
-  useObjectPaths: ObjectPathsHook
-  useObjectSyncStatus: ObjectSyncStatusHook
-  useObjectData: ObjectDataHook
-  useIndexedData: IndexedDataHook
-  useIndexedPaths: IndexedPathsHook
+  useObjectData: IndexedObjectDataHook
+  useObjectPaths: IndexedObjectPathsHook
+
+  useRawObjectPaths: RawObjectPathsHook
+  useRawObjectSyncStatus: RawObjectSyncStatusHook
+  useRawObjectData: RawObjectDataHook
 
   // Invokes file selection dialog and returns file data when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
@@ -66,18 +68,22 @@ export interface ValueHook<T> {
   _reqCounter: number
 }
 
-// These hooks take and return dataset-relative (not repo-relative) object paths.
-export type ObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
-export type ObjectSyncStatusHook = () => ValueHook<ObjectChangeStatusSet>
-export type ObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
-export type IndexedDataHook = (query: { objectPaths: string[] }) => ValueHook<{ data: Record<string, Record<string, any>> }>
-export type IndexedPathsHook = () => ValueHook<{ objectPaths: string[] }>
-
-// TODO: Make paths here dataset-relative.
-export type ObjectsChangedEventHook = (
+export type RawObjectsChangedEventHook = (
   eventCallback: (event: { objects?: Record<string, Omit<FileChangeType, 'unchanged'> | true> }) => Promise<void>,
   args: any[],
 ) => void
+// TODO: Implement (non-raw) indexed object changed event hook, with dataset-relative paths.
+
+// Following hooks take and return dataset-relative (not repo-relative) object paths.
+
+export type IndexedObjectDataHook = (query: { objectPaths: string[] }) => ValueHook<{ data: Record<string, Record<string, any>> }>
+export type IndexedObjectPathsHook = () => ValueHook<{ objectPaths: string[] }>
+
+// These operate on raw data, probably will be deprecated shortly.
+export type RawObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
+export type RawObjectSyncStatusHook = () => ValueHook<ObjectChangeStatusSet>
+export type RawObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
+
 
 //export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 //export type AuthorEmailHook = () => ValueHook<{ email: string }>
