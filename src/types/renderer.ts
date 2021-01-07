@@ -23,6 +23,9 @@ export interface DatasetContext {
   useRawObjectSyncStatus: RawObjectSyncStatusHook
   useRawObjectData: RawObjectDataHook
 
+  getObjectView: (opts: { objectPath: string, viewID?: string }) =>
+    React.FC<DatasetContext & { objectPath: string }>
+
   // Invokes file selection dialog and returns file data when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
   // must be invoked later in order to commit newly added or replaced file.
@@ -52,6 +55,10 @@ export interface DatasetContext {
   // Provisional, probably won’t happen
   // onAddFile?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
 }
+
+
+export type ReadOnlyDatasetContext =
+  Omit<DatasetContext, 'changeObjects' | 'makeRandomID'>;
 
 
 export interface OpenDialogProps {
