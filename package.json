@@ -1,6 +1,6 @@
 {
   "name": "@riboseinc/paneron-extension-kit",
-  "version": "2.0.0-dev1",
+  "version": "2.0.0-dev2",
   "main": "index.js",
   "repository": "https://github.com/paneron/extension-kit",
   "author": "Ribose Inc. <open.source@ribose.com>",
@@ -11,15 +11,9 @@
     "*.js",
     "*.js.map",
     "*.d.ts",
-    "types/**/*.js",
-    "types/**/*.js.map",
-    "types/**/*.d.ts",
-    "widgets/**/*.js",
-    "widgets/**/*.js.map",
-    "widgets/**/*.d.ts",
-    "i18n/**/*.js",
-    "i18n/**/*.js.map",
-    "i18n/**/*.d.ts"
+    "**/*.js",
+    "**/*.js.map",
+    "**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
