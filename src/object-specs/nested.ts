@@ -1,7 +1,7 @@
 import { ObjectSpec, SerializableObjectSpec } from '../types/object-spec';
 
 
-/* Creates a spec for objects, where a serialized object
+/* Creates a spec for objects where a serialized object
    is represented as a tree of buffers
    (for example, .yaml files in nested directories).
 
