@@ -5,30 +5,8 @@ import log from 'electron-log';
 import { Extension } from './types/extension';
 import { ExtensionMaker } from './types/extension-maker';
 import { withDatasetContext } from './context';
-import { ObjectSpec, SerializableObjectSpec } from './types/object-spec';
-import { DEFAULT_SPECS } from './object-specs';
+import { SerializableObjectSpec, DEFAULT_SPECS, matchesPath } from './object-specs';
 import { stripLeadingSlash } from './util';
-
-
-function matchesPath(p: string, rule: ObjectSpec["matches"]): boolean {
-  let matched: boolean = true;
-
-  if (rule.extensions) {
-    let extensionMatched: boolean = false;
-    for (const ext of rule.extensions) {
-      extensionMatched = path.extname(p) === ext;
-    }
-    matched = extensionMatched;
-  }
-  if (matched && rule.pathPrefix) {
-    matched = matched && p.startsWith(rule.pathPrefix);
-  }
-  if (matched && rule.path) {
-    matched = matched && rule.path(p);
-  }
-
-  return matched;
-}
 
 
 /* The default export of Paneron extension’s extension.ts entry file
@@ -36,15 +14,19 @@ function matchesPath(p: string, rule: ObjectSpec["matches"]): boolean {
 export const makeExtension: ExtensionMaker = async (options) => {
   let plugin: Extension;
 
-  if (process.type === 'browser') {
-    const objectSpecs = options.objects || DEFAULT_SPECS;
+  const objectSpecs = options.objects || DEFAULT_SPECS;
 
+  if (process.type === 'browser') {
     plugin = {
 
       isCompatible: (hostAppVersion: string) => (
         options.requiredHostAppVersion !== undefined &&
         semver.satisfies(hostAppVersion, options.requiredHostAppVersion)
       ),
+
+      getObjectSpecs: () => {
+        return objectSpecs;
+      },
 
       objectsToBuffers: (objects) => {
         const buffers: Record<string, Uint8Array> = {};
@@ -151,16 +133,34 @@ export const makeExtension: ExtensionMaker = async (options) => {
     };
 
   } else if (process.type === 'renderer') {
-    const mainViewImportResult = await (options.mainView || /* Deprecated */(options as any).repoView)();
+    const mainViewImportResult = await (
+      options.mainView ||
+      /* Deprecated */(options as any).repoView
+    )();
+
+    const objectSpecsWithCachedViews = (await Promise.all(objectSpecs.
+      filter(spec => spec.views !== undefined).
+      map(async (spec) => ({ ...spec, _viewCache: (await spec.views!()).default }))));
 
     plugin = {
       mainView: withDatasetContext(mainViewImportResult.default),
+
+      getObjectView: ({ objectPath, viewID }) => {
+        const spec = Object.values(objectSpecsWithCachedViews).
+          find(c => matchesPath(objectPath, c.matches));
+        if (spec) {
+          const view = spec._viewCache[viewID || 'default'];
+          return withDatasetContext(view);
+        } else {
+          log.error("Unable to find object view for object path", objectPath, viewID);
+          throw new Error("Cannot find object view");
+        }
+      },
     };
 
   } else {
     log.error("Paneron extension: Unsupported process type", options.name);
     throw new Error("Unsupported process type");
-
   }
 
   return plugin;

@@ -29,8 +29,16 @@ export const PrefixedPathBinaryAssetSpec: BinaryObjectSpec = {
     ({ '/': data.binaryData }),
 };
 
+export const TextFileSpec: SerializableObjectSpec<{ asText: string }> = {
+  matches: {},
+  deserialize: (buffers) =>
+    ({ asText: utf8Decoder.decode(buffers['/']) }),
+  serialize: (data) =>
+    ({ '/': Buffer.from(data.asText, 'utf8') }),
+};
+
 export const KnownBinaryFileSpec: BinaryObjectSpec = {
-  matches: { extensions: ['.jpg', '.jpeg', '.png', '.mp4', '.ai', '.eps'] },
+  matches: { extensions: ['.jpg', '.jpeg', '.png', '.mp4', '.ai', '.eps'] /* Incomplete list. */ },
   deserialize: (buffers) =>
     ({ binaryData: buffers['/'], asBase64: Buffer.from(buffers['/']).toString('base64') }),
   serialize: (data) =>
