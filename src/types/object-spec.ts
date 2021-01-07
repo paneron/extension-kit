@@ -1,4 +1,4 @@
-export interface ObjectSpec<T extends Record<string, any> = any> {
+export interface ObjectSpec {
 
   /* Determines whether serialize/deserialize functions provided by this rule
      should be used for given object.
@@ -20,15 +20,13 @@ export interface ObjectSpec<T extends Record<string, any> = any> {
      in its own views outside of extension’s main dataset view
      (e.g., during conflict resolution).
      Extension may or may not use same views in its main dataset view. */
-  views?: () => Promise<{ default: {
-    detailed?: React.FC<{ objectData: T }>
-    card?: React.FC<{ objectData: T }>
-    inline?: React.FC<{ objectData: T }>
-  } }>
+  views?: () => Promise<{ default: Record<string, React.FC<{ objectPath: string }>> }>
 
 }
 
 
+/* A serializable object consists of one (or more) raw buffers
+   located at (or under) object path. */
 export interface SerializableObjectSpec<T extends Record<string, any> = any>
 extends ObjectSpec<T>, SerDes<T> {}
 

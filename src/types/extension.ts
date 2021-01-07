@@ -1,4 +1,5 @@
 import type React from 'react';
+import { SerializableObjectSpec } from './object-spec';
 import { MigrationModule } from './migrations';
 import { DatasetContext } from './renderer';
 
@@ -16,6 +17,10 @@ export interface MainPlugin {
   } | undefined
 
   getInitialMigration: () => MigrationModule
+
+  getObjectSpecs: () => SerializableObjectSpec[]
+
+  // TODO: Obsolete
 
   // Converts buffers with raw file data per path
   // to structured records (as JS objects) per path.
@@ -38,6 +43,8 @@ export interface MainPlugin {
 /* The interface that extension instance exposes to Paneron in renderer thread. */
 export interface RendererPlugin {
   mainView?: React.FC<DatasetContext>
+  getObjectView: (opts: { objectPath: string, viewID?: string }) =>
+    React.FC<DatasetContext & { objectPath: string }>
 }
 
 export type Extension = MainPlugin | RendererPlugin;
