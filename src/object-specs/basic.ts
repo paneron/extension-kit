@@ -26,7 +26,7 @@ export const PrefixedPathBinaryAssetSpec: BinaryObjectSpec = {
   deserialize: (buffers) =>
     ({ binaryData: buffers['/'], asBase64: Buffer.from(buffers['/']).toString('base64') }),
   serialize: (data) =>
-    ({ '/': data.binaryData })
+    ({ '/': data.binaryData }),
 };
 
 export const KnownBinaryFileSpec: BinaryObjectSpec = {
@@ -34,5 +34,5 @@ export const KnownBinaryFileSpec: BinaryObjectSpec = {
   deserialize: (buffers) =>
     ({ binaryData: buffers['/'], asBase64: Buffer.from(buffers['/']).toString('base64') }),
   serialize: (data) =>
-    ({ '/': data.binaryData })
+    ({ '/': data.binaryData }),
 };
