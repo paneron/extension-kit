@@ -203,7 +203,7 @@ export function flattenObject(
     return result;
   }
 
-  const prefix = _prefix ? _prefix + '.' : '';
+  const prefix = _prefix ? _prefix + '/' : '';
 
   for (const i in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, i)) {
