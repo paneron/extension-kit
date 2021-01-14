@@ -1,3 +1,4 @@
+import path from 'path';
 import { ObjectSpec, SerializableObjectSpec } from '../types/object-spec';
 
 
@@ -203,7 +204,9 @@ export function flattenObject(
     return result;
   }
 
-  const prefix = _prefix ? _prefix + '/' : '';
+  const prefix = _prefix !== false
+    ? (_prefix + path.posix.sep)
+    : path.posix.sep;
 
   for (const i in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, i)) {
