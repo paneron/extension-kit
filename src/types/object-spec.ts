@@ -47,11 +47,6 @@ extends SerializableObjectSpec<{ binaryData: Uint8Array, asBase64: string }> {}
    to a storeable byte array and vice-versa
    (i.e., serializer/deserializer). */
 interface SerDes<ObjectType extends Record<string, any> = any> {
-  serialize: (object: ObjectType) => Buffers
-  deserialize: (data: Buffers) => ObjectType
+  serialize: (object: ObjectType) => Record<string, Uint8Array>
+  deserialize: (data: Record<string, Uint8Array>) => ObjectType
 }
-
-
-/* Represents an object in a serialized state.
-   A record that maps paths (relative to object root path) to byte arrays. */
-type Buffers = Record<string, Uint8Array>;
