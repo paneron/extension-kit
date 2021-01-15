@@ -1,4 +1,4 @@
-// DEPREACTED: These types are legacy:
+// DEPRECATED: These types are legacy:
 // - for binary data at physical level see buffers,
 // - for structured data at logical level see objects.
 
