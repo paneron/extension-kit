@@ -1,3 +1,7 @@
+// DEPREACTED: These types are legacy:
+// - for binary data at physical level see buffers,
+// - for structured data at logical level see objects.
+
 // In context of Git/filesystem based data storage backend,
 // which is currently the only context, “object” below refers to a file,
 // and object path is a string like `folder1/folder2/file.yaml`
