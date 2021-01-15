@@ -1,18 +1,26 @@
+/* Object specs describe how logical structured objects
+   map to physical buffers.
+*/
+
+
 export interface ObjectSpec {
 
   /* Determines whether serialize/deserialize functions provided by this rule
-     should be used for given object.
-     All given conditions will be AND’ed together in the order.
-     If none are given, object is considered matching by default. */
+     should be used for given buffer path.
+     All given conditions will be AND’ed together in order.
+     If none are given, buffer is considered matching by default. */
   matches: {
-    /* Will apply to object paths with given extensions. */
+    /* Will match to buffer paths with given extensions. */
     extensions?: string[]
 
-    /* Will apply to object paths under given prefix, slash-prepended. */
+    /* Will apply to buffer paths under given prefix,
+       slash-prepended, relative to dataset root. */
     pathPrefix?: string
 
-    /* Will apply if this function, called with entire path, returns true. Slowest. */
-    path?: (objectPath: string) => boolean
+    /* Will apply if this function,
+       called with buffer path relative to dataset root, returns true.
+       Slowest. */
+    path?: (bufferPath: string) => boolean
   }
 
   /* Views for objects of this type.
