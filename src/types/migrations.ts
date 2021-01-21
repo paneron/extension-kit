@@ -1,4 +1,4 @@
-import { ObjectChangeset } from './data';
+import { BufferChangeset } from './buffers';
 
 
 export interface DatasetMigrationOptions {
@@ -10,7 +10,7 @@ export interface DatasetMigrationOptions {
 /* Changeset describing changes that will make the dataset
    conform to a version, and that version. */
 interface DatasetMigrationSpec {
-  changeset: ObjectChangeset
+  bufferChangeset: BufferChangeset
   versionAfter: string
 }
 
