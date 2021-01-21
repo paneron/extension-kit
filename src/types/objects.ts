@@ -2,7 +2,8 @@
 
    An object is comprised of one or more **buffers**.
 
-   Object path is taken to be the path to its root buffer.
+   Object path is taken to be the path to its root buffer
+   relative to dataset (not repository as a whole).
 
    Conversion between buffers and objects is specified
    by object specs.
