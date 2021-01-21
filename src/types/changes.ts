@@ -1,6 +1,6 @@
-export type DiffStatus = 'modified' | 'added' | 'removed' | 'unchanged';
+export type ChangeStatus = 'modified' | 'added' | 'removed';
 
-export type ChangeStatus = Omit<DiffStatus, 'unchanged'>;
+export type DiffStatus = ChangeStatus | 'unchanged';
 
 export interface PathDiff {
   [path: string]: DiffStatus
