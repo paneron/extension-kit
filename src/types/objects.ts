@@ -10,11 +10,14 @@
 */
 
 
+/* DEPRECATED. */
 export type Object = Record<string, any>;
+// TODO: Rename this type to avoid the clash with default Object.
+// Options: LogicalObject?
 
 
 export type ObjectDataset = {
-  [objectPath: string]: Object
+  [objectPath: string]: Object | null
 };
 
 
