@@ -19,11 +19,11 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 const READ_ONLY_INITIAL_CONTEXT: ReadOnlyDatasetContextSpec = {
   title: '',
 
-  useRawObjectsChangedEvent: () => {},
+  useBuffersChangedEvent: () => {},
 
-  useRawObjectPaths: getValueHookPlaceholder([]),
-  useRawObjectSyncStatus: getValueHookPlaceholder({}),
-  useRawObjectData: getValueHookPlaceholder({}),
+  //useBufferPaths: getValueHookPlaceholder([]),
+  useBufferChangeStatus: getValueHookPlaceholder({}),
+  useBufferData: getValueHookPlaceholder({}),
   useObjectData: getValueHookPlaceholder({ data: {} }),
   useObjectPaths: getValueHookPlaceholder({ objectPaths: [] }),
 

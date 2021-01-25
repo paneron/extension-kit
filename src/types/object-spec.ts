@@ -7,8 +7,16 @@ export interface ObjectSpec {
 
   /* Determines whether serialize/deserialize functions provided by this rule
      should be used for given buffer path.
+
+     getContainingObjectPath() can be used to get containing object’s path
+     from a given buffer path.
+
      All given conditions will be AND’ed together in order.
-     If none are given, buffer is considered matching by default. */
+     If none are given, buffer is considered matching by default.
+
+     Buffers that are descendants of matching path
+     are considered path of the same object.
+  */
   matches: {
     /* Will match to buffer paths with given extensions. */
     extensions?: string[]
@@ -22,6 +30,10 @@ export interface ObjectSpec {
        Slowest. */
     path?: (bufferPath: string) => boolean
   }
+
+  getContainingObjectPath?: (bufferPath: string) => string | null
+
+  //pathContaining(bufferPath: string): string
 
   /* Views for objects of this type.
      Paneron can use these views when showing objects

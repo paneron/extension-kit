@@ -1,43 +1,53 @@
 import type { FileFilter } from 'electron';
+
 import {
-  CommitOutcome, FileChangeType,
+  BufferDataset,
+} from './buffers';
+
+import {
+  CommitOutcome,
+  ChangeStatus,
+  PathDiff,
+} from './changes';
+
+import {
   ObjectChangeset,
-  ObjectChangeStatusSet,
-  ObjectDataRequest, ObjectDataset,
-  ObjectQuery,
-} from './data';
+} from './objects';
 
 
 export interface DatasetContext {
   title: string
 
-  useRawObjectsChangedEvent: RawObjectsChangedEventHook
+  useBuffersChangedEvent: BuffersChangedEventHook
 
   // Below functions, when take or return object paths, use dataset-relative paths
   // and convert them to and from repo-relative paths under the hood as needed.
 
-  useObjectData: IndexedObjectDataHook
-  useObjectPaths: IndexedObjectPathsHook
+  useObjectData: ObjectDataHook
+  useObjectPaths: ObjectPathsHook
+  //useObjectChangeStatus: ObjectChangeStatusHook
 
-  useRawObjectPaths: RawObjectPathsHook
-  useRawObjectSyncStatus: RawObjectSyncStatusHook
-  useRawObjectData: RawObjectDataHook
+  //useBufferPaths: BufferPathsHook
+  useBufferChangeStatus: BufferChangeStatusHook
+  useBufferData: BufferDatasetHook
 
-  getObjectView: (opts: { objectPath: string, viewID?: string }) =>
-    React.FC<DatasetContext & { objectPath: string }>
+  getObjectView:
+    (opts: { objectPath: string, viewID?: string }) =>
+      React.FC<DatasetContext & { objectPath: string }>
 
-  // Invokes file selection dialog and returns file data when user confirms.
+  // Invokes file selection dialog and returns file data as buffer when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
   // must be invoked later in order to commit newly added or replaced file.
-  requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<ObjectDataset>
+  requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<BufferDataset>
 
   // Generates a UUID. Not really useful in read-only mode
   makeRandomID: () => Promise<string>
 
   // Prompts the user to commit changes to the repository.
   // User can review and change the commit message.
-  changeObjects?: (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) =>
-    Promise<CommitOutcome>
+  changeObjects?:
+    (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) =>
+      Promise<CommitOutcome>
 
   // Provides a full system-absolute path to given path relative to dataset,
   // which is useful in rare cases.
@@ -75,21 +85,24 @@ export interface ValueHook<T> {
   _reqCounter: number
 }
 
-export type RawObjectsChangedEventHook = (
-  eventCallback: (event: { objects?: Record<string, Omit<FileChangeType, 'unchanged'> | true> }) => Promise<void>,
+export type BuffersChangedEventHook = (
+  eventCallback: (event: { buffers?: Record<string, ChangeStatus | true> }) => Promise<void>,
   args: any[],
 ) => void
 // TODO: Implement (non-raw) indexed object changed event hook, with dataset-relative paths.
 
 // Following hooks take and return dataset-relative (not repo-relative) object paths.
 
-export type IndexedObjectDataHook = (query: { objectPaths: string[] }) => ValueHook<{ data: Record<string, Record<string, any>> }>
-export type IndexedObjectPathsHook = () => ValueHook<{ objectPaths: string[] }>
+export type ObjectDataHook =
+  (query: { objectPaths: string[] }) => ValueHook<{ data: Record<string, Record<string, any>> }>
 
-// These operate on raw data, probably will be deprecated shortly.
-export type RawObjectPathsHook = (query: ObjectQuery) => ValueHook<string[]>
-export type RawObjectSyncStatusHook = () => ValueHook<ObjectChangeStatusSet>
-export type RawObjectDataHook = (objects: ObjectDataRequest) => ValueHook<ObjectDataset>
+export type ObjectPathsHook =
+  () => ValueHook<{ objectPaths: string[] }>
+
+//export type BufferPathsHook = (query: ObjectQuery) => ValueHook<string[]>
+export type BufferChangeStatusHook = () => ValueHook<PathDiff>
+export type BufferDatasetHook = (bufferPaths: string[]) => ValueHook<BufferDataset>
+
 
 
 //export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
