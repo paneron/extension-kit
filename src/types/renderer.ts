@@ -23,18 +23,6 @@ export interface DatasetContext {
     (opts: { objectPath: string, viewID?: string }) =>
       React.FC<DatasetContext & { objectPath: string }>
 
-  // Invokes file selection dialog and returns file data as buffer when user confirms.
-  // This does not mutate dataset / Git repo contents, changeObjects still
-  // must be invoked later in order to commit newly added or replaced file.
-  requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<BufferDataset>
-
-  // Generates a UUID (not really useful in read-only mode so may be made optional)
-  makeRandomID: () => Promise<string>
-
-  // Prompts the user to commit changes to the repository.
-  // User can review and change the commit message.
-  updateObjects?: Hooks.Data.UpdateObjects
-
   // Provides a full system-absolute path to given path relative to dataset,
   // which is useful in rare cases.
   makeAbsolutePath: (path: string) => string
@@ -50,11 +38,26 @@ export interface DatasetContext {
   // returns commit outcome.
   // Provisional, probably won’t happen
   // onAddFile?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
+
+
+  // Below are generally useful for write-enabled repositories only
+
+  // Generates a UUID (not really useful in read-only mode so may be made optional)
+  makeRandomID?: () => Promise<string>
+
+  // Prompts the user to commit changes to the repository.
+  // User can review and change the commit message.
+  updateObjects?: Hooks.Data.UpdateObjects
+
+  // Invokes file selection dialog and returns file data as buffer when user confirms.
+  // This does not mutate dataset / Git repo contents, changeObjects still
+  // must be invoked later in order to commit newly added or replaced file.
+  requestFileFromFilesystem?: (opts: OpenDialogProps) => Promise<BufferDataset>
 }
 
 
-export type ReadOnlyDatasetContext =
-  Omit<DatasetContext, 'changeObjects' | 'makeRandomID'>;
+// export type ReadOnlyDatasetContext =
+//   Omit<DatasetContext, 'updateObjects' | 'makeRandomID'>;
 
 
 export interface OpenDialogProps {
@@ -108,12 +111,12 @@ export namespace Hooks {
 
     export type GetObjectDataset =
       (opts: { objectPaths: string[] }) =>
-        ValueHook<ObjectDataset>
+        ValueHook<{ data: ObjectDataset }>
 
     export type UpdateObjects = (opts: {
       objectChangeset: ObjectChangeset
       commitMessage: string
-      _dangerouslySkipValidation?: boolean
+      _dangerouslySkipValidation?: true
     }) => Promise<CommitOutcome>
 
     export type ListenToObjectChanges = (

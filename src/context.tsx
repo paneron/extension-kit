@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   DatasetContext as DatasetContextSpec,
-  ReadOnlyDatasetContext as ReadOnlyDatasetContextSpec,
   ValueHook,
 } from './types';
+import { IndexStatus } from './types/indexes';
 
 
 function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
@@ -16,20 +16,26 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
   });
 }
 
-const READ_ONLY_INITIAL_CONTEXT: ReadOnlyDatasetContextSpec = {
+
+export const INITIAL_INDEX_STATUS: IndexStatus = {
+  objectCount: 0,
+  progress: {
+    phase: 'initializing',
+    total: 0,
+    loaded: 0,
+  },
+}
+
+
+const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
-  useObjectData: getValueHookPlaceholder({}),
+  useObjectData: getValueHookPlaceholder({
+    data: {},
+  }),
 
   useIndexDescription: getValueHookPlaceholder({
-    status: {
-      objectCount: 0,
-      progress: {
-        phase: 'initializing',
-        total: 0,
-        loaded: 0,
-      },
-    },
+    status: INITIAL_INDEX_STATUS,
   }),
 
   useFilteredIndex: getValueHookPlaceholder({
@@ -45,27 +51,9 @@ const READ_ONLY_INITIAL_CONTEXT: ReadOnlyDatasetContextSpec = {
 
   requestFileFromFilesystem: async () => ({}),
 
-  //useAuthorEmail: getValueHookPlaceholder({ email: '' }),
-  //useRemoteUsername: getValueHookPlaceholder({ username: '' }),
-
   makeAbsolutePath: () => '',
 
 } as const;
-
-
-const INITIAL_CONTEXT: DatasetContextSpec = {
-  ...READ_ONLY_INITIAL_CONTEXT,
-
-  updateObjects: async () => ({}),
-  makeRandomID: async () => '',
-} as const;
-
-
-export const DatasetContext =
-  React.createContext<DatasetContextSpec>(INITIAL_CONTEXT);
-
-export const ReadOnlyDatasetContext =
-  React.createContext<ReadOnlyDatasetContextSpec>(INITIAL_CONTEXT);
 
 
 /* A higher-order component that:
@@ -83,13 +71,19 @@ React.FC<DatasetContextSpec> {
 }
 
 
+export const DatasetContext =
+  React.createContext<DatasetContextSpec>(INITIAL_CONTEXT);
+
+
+// export const ReadOnlyDatasetContext =
+//   React.createContext<ReadOnlyDatasetContextSpec>(INITIAL_CONTEXT);
 
 /* Like withDatasetContext(), but uses read-only dataset context. */
-export function withReadOnlyDatasetContext(Component: React.FC<any>):
-React.FC<ReadOnlyDatasetContextSpec> {
-  return (props: ReadOnlyDatasetContextSpec) => (
-    <ReadOnlyDatasetContext.Provider value={props}>
-      <Component />
-    </ReadOnlyDatasetContext.Provider>
-  );
-}
+// export function withReadOnlyDatasetContext(Component: React.FC<any>):
+// React.FC<ReadOnlyDatasetContextSpec> {
+//   return (props: ReadOnlyDatasetContextSpec) => (
+//     <ReadOnlyDatasetContext.Provider value={props}>
+//       <Component />
+//     </ReadOnlyDatasetContext.Provider>
+//   );
+// }
