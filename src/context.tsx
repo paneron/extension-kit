@@ -19,13 +19,26 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 const READ_ONLY_INITIAL_CONTEXT: ReadOnlyDatasetContextSpec = {
   title: '',
 
-  useBuffersChangedEvent: () => {},
+  useObjectData: getValueHookPlaceholder({}),
 
-  //useBufferPaths: getValueHookPlaceholder([]),
-  useBufferChangeStatus: getValueHookPlaceholder({}),
-  useBufferData: getValueHookPlaceholder({}),
-  useObjectData: getValueHookPlaceholder({ data: {} }),
-  useObjectPaths: getValueHookPlaceholder({ objectPaths: [] }),
+  useIndexDescription: getValueHookPlaceholder({
+    status: {
+      objectCount: 0,
+      progress: {
+        phase: 'initializing',
+        total: 0,
+        loaded: 0,
+      },
+    },
+  }),
+
+  useFilteredIndex: getValueHookPlaceholder({
+    indexID: '',
+  }),
+
+  useObjectPathFromFilteredIndex: getValueHookPlaceholder({
+    objectPath: '',
+  }),
 
   getObjectView: (opts: { objectPath: string }) =>
     () => <>{opts.objectPath}</>,
@@ -43,7 +56,7 @@ const READ_ONLY_INITIAL_CONTEXT: ReadOnlyDatasetContextSpec = {
 const INITIAL_CONTEXT: DatasetContextSpec = {
   ...READ_ONLY_INITIAL_CONTEXT,
 
-  changeObjects: async () => ({}),
+  updateObjects: async () => ({}),
   makeRandomID: async () => '',
 } as const;
 
