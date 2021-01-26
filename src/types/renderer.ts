@@ -17,6 +17,8 @@ export interface DatasetContext {
   useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
   useObjectPathFromFilteredIndex: Hooks.Indexes.GetFilteredObject
 
+  useDecodedBlob: Hooks.UseDecodedBlob
+
   //useObjectChangeStatus: ObjectChangeStatusHook
 
   getObjectView:
@@ -76,6 +78,10 @@ export interface ValueHook<T> {
 
 
 export namespace Hooks {
+
+  export type UseDecodedBlob =
+    (opts: { blob: Uint8Array }) =>
+      { asString: string }
 
   export namespace Indexes {
 

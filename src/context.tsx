@@ -34,6 +34,10 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
     data: {},
   }),
 
+  useDecodedBlob: () => ({
+    asString: '',
+  }),
+
   useIndexDescription: getValueHookPlaceholder({
     status: INITIAL_INDEX_STATUS,
   }),
