@@ -1,35 +1,23 @@
 import type { FileFilter } from 'electron';
 
-import {
-  BufferDataset,
-} from './buffers';
-
-import {
-  CommitOutcome,
-  ChangeStatus,
-  PathDiff,
-} from './changes';
-
-import {
-  ObjectChangeset,
-} from './objects';
+import { ObjectDataset, ObjectChangeset } from './objects';
+import { BufferDataset } from './buffers';
+import { CommitOutcome, ChangeStatus } from './changes';
+import { IndexStatus } from './indexes';
 
 
 export interface DatasetContext {
   title: string
 
-  useBuffersChangedEvent: BuffersChangedEventHook
-
   // Below functions, when take or return object paths, use dataset-relative paths
   // and convert them to and from repo-relative paths under the hood as needed.
 
-  useObjectData: ObjectDataHook
-  useObjectPaths: ObjectPathsHook
-  //useObjectChangeStatus: ObjectChangeStatusHook
+  useObjectData: Hooks.Data.GetObjectDataset
+  useIndexDescription: Hooks.Indexes.Describe
+  useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
+  useObjectPathFromFilteredIndex: Hooks.Indexes.GetFilteredObject
 
-  //useBufferPaths: BufferPathsHook
-  useBufferChangeStatus: BufferChangeStatusHook
-  useBufferData: BufferDatasetHook
+  //useObjectChangeStatus: ObjectChangeStatusHook
 
   getObjectView:
     (opts: { objectPath: string, viewID?: string }) =>
@@ -40,14 +28,12 @@ export interface DatasetContext {
   // must be invoked later in order to commit newly added or replaced file.
   requestFileFromFilesystem: (opts: OpenDialogProps) => Promise<BufferDataset>
 
-  // Generates a UUID. Not really useful in read-only mode
+  // Generates a UUID (not really useful in read-only mode so may be made optional)
   makeRandomID: () => Promise<string>
 
   // Prompts the user to commit changes to the repository.
   // User can review and change the commit message.
-  changeObjects?:
-    (changeset: ObjectChangeset, commitMessage: string, ignoreConflicts?: boolean) =>
-      Promise<CommitOutcome>
+  updateObjects?: Hooks.Data.UpdateObjects
 
   // Provides a full system-absolute path to given path relative to dataset,
   // which is useful in rare cases.
@@ -85,23 +71,61 @@ export interface ValueHook<T> {
   _reqCounter: number
 }
 
-export type BuffersChangedEventHook = (
-  eventCallback: (event: { buffers?: Record<string, ChangeStatus | true> }) => Promise<void>,
-  args: any[],
-) => void
-// TODO: Implement (non-raw) indexed object changed event hook, with dataset-relative paths.
 
-// Following hooks take and return dataset-relative (not repo-relative) object paths.
+export namespace Hooks {
 
-export type ObjectDataHook =
-  (query: { objectPaths: string[] }) => ValueHook<{ data: Record<string, Record<string, any>> }>
+  export namespace Indexes {
 
-export type ObjectPathsHook =
-  () => ValueHook<{ objectPaths: string[] }>
+    export type Describe =
+      (opts: { indexID?: string }) =>
+        ValueHook<{ status: IndexStatus }>
 
-//export type BufferPathsHook = (query: ObjectQuery) => ValueHook<string[]>
-export type BufferChangeStatusHook = () => ValueHook<PathDiff>
-export type BufferDatasetHook = (bufferPaths: string[]) => ValueHook<BufferDataset>
+    export type GetOrCreateFiltered =
+      (opts: { queryExpression: string }) =>
+        ValueHook<{ indexID: string }>;
+
+    export type GetFilteredObject =
+      (opts: { indexID: string, position: number }) =>
+        ValueHook<{ objectPath: string }>
+
+    export type ListenToFilteredIndexUpdates = (
+      eventCallback:
+        (evt: { indexID: string }) =>
+          Promise<void>,
+      args: any[],
+    ) => void
+
+    export type ListenToIndexStatusChanges = (
+      eventCallback:
+        (evt: { indexID?: string, status: IndexStatus }) =>
+          Promise<void>,
+      args: any[],
+    ) => void
+
+  }
+
+  export namespace Data {
+
+    export type GetObjectDataset =
+      (opts: { objectPaths: string[] }) =>
+        ValueHook<ObjectDataset>
+
+    export type UpdateObjects = (opts: {
+      objectChangeset: ObjectChangeset
+      commitMessage: string
+      _dangerouslySkipValidation?: boolean
+    }) => Promise<CommitOutcome>
+
+    export type ListenToObjectChanges = (
+      eventCallback:
+        (evt: { objects?: { [objectPath: string]: ChangeStatus | true } }) =>
+          Promise<void>,
+      args: any[],
+    ) => void
+
+  }
+
+}
 
 
 
