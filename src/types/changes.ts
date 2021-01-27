@@ -12,9 +12,13 @@ export interface PathChanges {
 
 export type Change<T extends Uint8Array | Record<string, any>> =
   { newValue: T | null, oldValue?: T | null };
+  // A null value below means nonexistend object at this path.
+  // newValue: null means delete object, if it exists.
+  // oldValue: null means the object previously did not exist.
+  // Undefined oldValue means no consistency check
 
 export type Changeset<C extends Change<any>> = {
-  [path: string]: Change<C>
+  [path: string]: C
 }
 
 /* The result of applying a changeset.

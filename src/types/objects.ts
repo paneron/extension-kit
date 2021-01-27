@@ -9,7 +9,7 @@
    by object specs.
 */
 
-import { Changeset } from './changes';
+import { Change, Changeset } from './changes';
 
 
 /* DEPRECATED. */
@@ -17,21 +17,8 @@ export type Object = Record<string, any>;
 // TODO: Rename this type to avoid the clash with default Object.
 // Options: LogicalObject?
 
+export type ObjectDataset = { [objectPath: string]: Object | null };
 
-export type ObjectDataset = {
-  [objectPath: string]: Object | null
-};
+export type ObjectChange<T extends Object = any> = Change<T>;
 
-
-export type ObjectChange<T extends Object = any> = {
-  // A null value below means nonexistend object at this path.
-  // newValue: null means delete object, if it exists.
-  // oldValue: null means the object previously did not exist.
-  newValue: T | null
-  oldValue?: T | null
-  // Undefined oldValue means no consistency check
-};
-
-
-export type ObjectChangeset<T extends Object = any> =
-  Changeset<ObjectChange<T>>
+export type ObjectChangeset<T extends Object = any> = Changeset<ObjectChange<T>>
