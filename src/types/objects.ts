@@ -9,6 +9,8 @@
    by object specs.
 */
 
+import { Changeset } from './changes';
+
 
 /* DEPRECATED. */
 export type Object = Record<string, any>;
@@ -31,6 +33,5 @@ export type ObjectChange<T extends Object = any> = {
 };
 
 
-export type ObjectChangeset<T extends Object = any> = {
-  [bufferPath: string]: ObjectChange<T>
-};
+export type ObjectChangeset<T extends Object = any> =
+  Changeset<ObjectChange<T>>

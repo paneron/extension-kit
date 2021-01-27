@@ -9,10 +9,11 @@
    Multiple buffers may comprise a single logical **object**.
 */
 
-import { Change } from './changes';
+import { Change, Changeset } from './changes';
+
 
 export type BufferDataset = { [bufferPath: string]: Uint8Array | null };
 
-export type BufferChange = Change<Uint8Array>
+export type BufferChange = Change<Uint8Array>;
 
-export type BufferChangeset = { [bufferPath: string]: BufferChange };
+export type BufferChangeset = Changeset<BufferChange>;

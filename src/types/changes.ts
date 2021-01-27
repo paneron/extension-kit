@@ -13,6 +13,10 @@ export interface PathChanges {
 export type Change<T extends Uint8Array | Record<string, any>> =
   { newValue: T | null, oldValue?: T | null };
 
+export type Changeset<C extends Change<any>> = {
+  [path: string]: Change<C>
+}
+
 /* The result of applying a changeset.
 
    `conflicts` shows how paths don’t match reference data (`oldValue`s)
