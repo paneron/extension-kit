@@ -27,7 +27,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
       },
 
       getMigration: (datasetVersion) => (
-        Object.entries(options.datasetMigrations).
+        Object.entries(options.datasetMigrations || {}).
         filter(([migrationVersionSpec, _]) =>
           semver.satisfies(datasetVersion, migrationVersionSpec)
         ).
@@ -36,7 +36,12 @@ export const makeExtension: ExtensionMaker = async (options) => {
         )[0]
       ),
 
-      getInitialMigration: options.datasetInitializer,
+      getInitialMigration: options.datasetInitializer || (async () => ({
+        default: async () => ({
+          bufferChangeset: {},
+          versionAfter: '1.0',
+        }),
+      })),
     };
 
   } else if (process.type === 'renderer') {

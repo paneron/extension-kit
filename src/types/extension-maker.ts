@@ -17,11 +17,11 @@ export interface ExtensionMakerProps {
      When reading dataset, raw byte data for matching path
      (including descendants, if it’s a directory)
      is passed to spec’s deserialize(). */
-  objects: SerializableObjectSpec[]
+  objects?: SerializableObjectSpec[]
 
   /* Instructs which migration to run if new dataset is being initialized.
      The migration is supposed to return version matching latest extension version. */
-  datasetInitializer: () => MigrationModule
+  datasetInitializer?: () => MigrationModule
 
   /* Instructs a migration to run if current dataset version matches
      one of these specs (in semver format).
@@ -63,7 +63,7 @@ export interface ExtensionMakerProps {
      to carefully specify migration version specs,
      as they could create infinite migration loops if they wanted to.
   */
-  datasetMigrations: {
+  datasetMigrations?: {
     [versionSpec: string]: () => MigrationModule
   }
 }
