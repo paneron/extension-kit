@@ -20,7 +20,7 @@ export interface DatasetContext {
   useDecodedBlob: Hooks.UseDecodedBlob
 
   // Paneron internal clipboard
-  copyObjects: (objects: ObjectDataset) => void
+  copyObjects: (objects: ObjectDataset) => Promise<void>
   requestCopiedObjects: () => Promise<ObjectDataset>
 
   //useObjectChangeStatus: ObjectChangeStatusHook
