@@ -30,8 +30,6 @@ export const INITIAL_INDEX_STATUS: IndexStatus = {
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
-  navigateToObjectPath: async () => void 0,
-
   useObjectData: getValueHookPlaceholder({
     data: {},
   }),

@@ -19,8 +19,6 @@ export interface DatasetContext {
 
   useDecodedBlob: Hooks.UseDecodedBlob
 
-  navigateToObjectPath: (objectPath: string) => Promise<void>
-
   //useObjectChangeStatus: ObjectChangeStatusHook
 
   getObjectView:
