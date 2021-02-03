@@ -30,6 +30,10 @@ export const INITIAL_INDEX_STATUS: IndexStatus = {
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
+  copyObjects: () => void 0,
+
+  requestCopiedObjects: async () => ({}),
+
   useObjectData: getValueHookPlaceholder({
     data: {},
   }),
