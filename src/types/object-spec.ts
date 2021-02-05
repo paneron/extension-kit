@@ -48,7 +48,8 @@ export interface ObjectSpec {
 /* A serializable object consists of one (or more) raw buffers
    located at (or under) object path. */
 export interface SerializableObjectSpec<T extends Record<string, any> = any>
-extends ObjectSpec, SerDes<T> {}
+extends ObjectSpec, SerDes<T> {
+}
 
 
 export interface BinaryObjectSpec
