@@ -60,26 +60,24 @@ type DataType = 'text' | 'number'
 */
 export function makeTreeSerDesRule
 <T extends Record<string, any> & OnlyJSON<Record<string, any>> = any>
-(opts: SerDesOptions):
+():
 SerDesRule<T> {
   const assemble: (data: any) => T = unflattenObject;
   const disassemble: (obj: T) => Record<string, any> = flattenObject;
 
-  function deserializePart(buf: Uint8Array, partPath: string): any {
-    return partSerDes[opts.parts[partPath]?.dataType || 'text'].deserialize(buf);
-  }
-
-  function serializePart(data: any, partPath: string): Uint8Array {
-    return partSerDes[opts.parts[partPath]?.dataType || 'text'].serialize(data);
-  }
-
   return {
     id: SerDesRuleName.tree,
-    deserialize: (rawData) => {
+    deserialize: (rawData, opts: SerDesOptions) => {
+      function deserializePart(buf: Uint8Array, partPath: string): any {
+        return partSerDes[opts.parts[partPath]?.dataType || 'text'].deserialize(buf);
+      }
       const parts = deserializeParts(rawData, deserializePart);
       return assemble(parts);
     },
-    serialize: (obj) => {
+    serialize: (obj, opts: SerDesOptions) => {
+      function serializePart(data: any, partPath: string): Uint8Array {
+        return partSerDes[opts.parts[partPath]?.dataType || 'text'].serialize(data);
+      }
       const parts = disassemble(obj);
       return serializeParts(parts, serializePart);
     },
