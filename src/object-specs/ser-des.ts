@@ -2,6 +2,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import { SerDesRule, SerDesRuleName } from '../types/object-spec';
 import { OnlyJSON } from '../util';
+import { makeTreeSerDesRule } from './tree';
 
 
 const sep = path.posix.sep;
@@ -41,4 +42,18 @@ export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; 
   }),
   serialize: (data) =>
     ({ sep: data.binaryData }),
+};
+
+
+export default function getSerDesRule(ruleName: SerDesRuleName): SerDesRule {
+  return SER_DES_RULES[ruleName];
+}
+
+
+export const SER_DES_RULES: { [key in SerDesRuleName]: SerDesRule } = {
+  [SerDesRuleName.textFile]: textFile,
+  [SerDesRuleName.jsonFile]: jsonFile,
+  [SerDesRuleName.yamlFile]: yamlFile,
+  [SerDesRuleName.binaryFile]: binaryFile,
+  [SerDesRuleName.tree]: makeTreeSerDesRule(),
 };
