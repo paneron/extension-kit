@@ -1,7 +1,6 @@
 import path from 'path';
 import { SerializableObjectSpec } from '../types/object-spec';
 import { JSONFileSpec, KnownBinaryFileSpec, TextFileSpec, YAMLFileSpec } from './basic';
-export { SerializableObjectSpec };
 
 
 export const DEFAULT_SPECS: SerializableObjectSpec[] = [
@@ -38,3 +37,6 @@ export function matchesPath(p: string, rule: SerializableObjectSpec["matches"]):
 
   return matched;
 }
+
+
+export { SerializableObjectSpec };
