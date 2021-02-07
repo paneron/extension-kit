@@ -1,5 +1,5 @@
 import path from 'path';
-import { ObjectSpec, SerializableObjectSpec } from '../types/object-spec';
+import { SerializableObjectSpec } from '../types/object-spec';
 import { JSONFileSpec, KnownBinaryFileSpec, TextFileSpec, YAMLFileSpec } from './basic';
 export { SerializableObjectSpec };
 
@@ -12,7 +12,7 @@ export const DEFAULT_SPECS: SerializableObjectSpec[] = [
 ];
 
 
-export function matchesPath(p: string, rule: ObjectSpec["matches"]): boolean {
+export function matchesPath(p: string, rule: SerializableObjectSpec["matches"]): boolean {
   // Match by default
   let matched: boolean = true;
 
@@ -32,7 +32,8 @@ export function matchesPath(p: string, rule: ObjectSpec["matches"]): boolean {
 
   // Narrow by path-matching function
   if (matched && rule.path) {
-    matched = matched && rule.path(p);
+    const func = new Function('bufferPath', rule.path);
+    matched = matched && func(p);
   }
 
   return matched;

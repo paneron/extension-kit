@@ -1,19 +1,51 @@
 import path from 'path';
-import { ObjectSpec, SerializableObjectSpec } from '../types/object-spec';
+import { SerDesRule, SerDesRuleName } from '../types/object-spec';
+import { OnlyJSON } from '../util';
+
+
+export const utf8Decoder = new TextDecoder('utf-8');
+
+
+interface PartSerDes<T> {
+  deserialize: (buf: Uint8Array) => T
+  serialize: (obj: T) => Uint8Array
+}
+
+
+const stringSerDes: PartSerDes<string> = {
+  deserialize: (buf) => utf8Decoder.decode(buf),
+  serialize: (val) => Buffer.from(val, 'utf-8'),
+};
+
+const numberSerDes: PartSerDes<number> = {
+  deserialize: (buf) => parseInt(utf8Decoder.decode(buf), 10),
+  serialize: (val) => Buffer.from(val.toString(), 'utf-8'),
+};
+
+const partSerDes: { [key in DataType]: PartSerDes<any> } = {
+  'text': stringSerDes,
+  'number': numberSerDes,
+};
+
+
+interface PartSerDesOptions {
+  dataType: DataType
+}
+
+interface SerDesOptions {
+  parts: {
+    [propertyPath: string]: PartSerDesOptions
+  }
+}
+
+type DataType = 'text' | 'number'
 
 
 /* Creates a spec for objects where a serialized object
-   is represented as a tree of buffers
-   (for example, .yaml files in nested directories).
+   is represented as a tree of buffers.
 
    An object is represented as comprised from “parts”,
    where each part corresponds to a buffer (e.g., file).
-
-   `assembleFromParts()` and `disassembleIntoParts()`
-   determine how an object
-   is converted between its “canonical” full JS runtime structure
-   and a flat object structure that maps slash-separated buffer paths
-   to serializable parts for storage.
 
    The default behavior is such that e.g.
 
@@ -25,70 +57,24 @@ import { ObjectSpec, SerializableObjectSpec } from '../types/object-spec';
 
    (On disk, title and foo/bar would be paths to files
    relative to object root path.)
-
-   `serializePart` and `deserializePart` specify how individual part
-   is converted between a buffer and a JS structure.
-
-   TODO: Implement partPathExtension, indexPath, partKeyPaths options.
-
-   The goal is to allow the above object after disassembly
-   to be represented as
-
-       { "/index.yaml": { title: "Hello world" }, "/foo.yaml": { "bar": "baz" } }
-
-   partKeyPaths specifies which object keys (dot-separated for nesting)
-   reside in separate parts/buffers. In above example, it’d be ['foo'].
-   Any key that doesn’t have a match in partKeyPaths
-   goes into “index” part under indexPath.
-   If partKeyPaths is empty list,
-   object is stored as a single part under indexPath.
-   If partKeyPaths is not given,
-   every object key would be treated as its own part:
-
-       { "/title": "Hello world", "/foo/bar": "baz" }
 */
-export function makeNestedSerializableObjectSpec
-<T extends Record<string, any> = any>(opts: {
-  matches: ObjectSpec["matches"]
-  views: ObjectSpec["views"]
+export function makeTreeSerDesRule
+<T extends Record<string, any> & OnlyJSON<Record<string, any>> = any>
+(opts: SerDesOptions):
+SerDesRule<T> {
+  const assemble: (data: any) => T = unflattenObject;
+  const disassemble: (obj: T) => Record<string, any> = flattenObject;
 
-  serializePart: (partData: any) => Uint8Array
-  deserializePart: (buffer: Uint8Array) => any
+  function deserializePart(buf: Uint8Array, partPath: string): any {
+    return partSerDes[opts.parts[partPath]?.dataType || 'text'].deserialize(buf);
+  }
 
-  // These three don’t have effect if assembleFromParts
-  // or disassembleIntoParts is specified.
-  // partPathExtension?: string
-  // indexPath?: string
-  // partKeyPaths?: string[]
-
-  // Assembly is more important, since it would be responsible
-  // for any type coercion if needed.
-  assembleFromParts?: (partData: any) => T
-  // This may not be required, if default disassembly logic is sufficient.
-  disassembleIntoParts?: (obj: T) => Record<string, any>
-}): SerializableObjectSpec {
-  const {
-    matches,
-    views,
-    deserializePart,
-    assembleFromParts,
-    disassembleIntoParts,
-    serializePart,
-  } = opts;
-
-  // const partPathExtension = opts.partPathExtension || '';
-  // const indexPath = opts.indexPath || `index${partPathExtension}`;
-  // const partKeyPaths = opts.partKeyPaths;
-
-  const assemble: (data: any) => T =
-    assembleFromParts || unflattenObject;
-
-  const disassemble: (obj: T) => Record<string, any> =
-    disassembleIntoParts || flattenObject;
+  function serializePart(data: any, partPath: string): Uint8Array {
+    return partSerDes[opts.parts[partPath]?.dataType || 'text'].serialize(data);
+  }
 
   return {
-    matches,
-    views,
+    id: SerDesRuleName.tree,
     deserialize: (rawData) => {
       const parts = deserializeParts(rawData, deserializePart);
       return assemble(parts);

@@ -3,7 +3,7 @@
 */
 
 
-export interface ObjectSpec {
+export interface SerializableObjectSpec {
 
   /* Determines whether serialize/deserialize functions provided by this rule
      should be used for given buffer path.
@@ -28,10 +28,13 @@ export interface ObjectSpec {
     /* Will apply if this function,
        called with buffer path relative to dataset root, returns true.
        Slowest. */
-    path?: (bufferPath: string) => boolean
+    path?: string // function body matching (bufferPath: string) => boolean
   }
 
-  getContainingObjectPath?: (bufferPath: string) => string | null
+  /* References the name of serialization/deserialization rule implementation. */
+  serDesRule: SerDesRuleName
+
+  getContainingObjectPath?: string // function body matching (bufferPath: string) => string | null
 
   //pathContaining(bufferPath: string): string
 
@@ -45,21 +48,27 @@ export interface ObjectSpec {
 }
 
 
-/* A serializable object consists of one (or more) raw buffers
-   located at (or under) object path. */
-export interface SerializableObjectSpec<T extends Record<string, any> = any>
-extends ObjectSpec, SerDes<T> {
+export enum SerDesRuleName {
+  textFile = 'textfile',
+  jsonFile = 'jsonfile',
+  yamlFile = 'yamlfile',
+  tree = 'tree',
+  binaryFile = 'binaryfile',
 }
 
 
 export interface BinaryObjectSpec
-extends SerializableObjectSpec<{ binaryData: Uint8Array, asBase64: string }> {}
+extends SerializableObjectSpec {}
 
 
 /* Specifies how to transform an object as runtime in-memory structure
    to a storeable byte array and vice-versa
    (i.e., serializer/deserializer). */
-interface SerDes<ObjectType extends Record<string, any> = any> {
-  serialize: (object: ObjectType) => Record<string, Uint8Array>
-  deserialize: (data: Record<string, Uint8Array>) => ObjectType
+export interface SerDesRule<
+  ObjectType extends Record<string, any> = any,
+  Opts extends Record<string, any> = any,
+> {
+  id: SerDesRuleName
+  serialize: (object: ObjectType, opts: Opts) => Record<string, Uint8Array>
+  deserialize: (data: Record<string, Uint8Array>, opts: Opts) => ObjectType
 }
