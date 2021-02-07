@@ -4,8 +4,8 @@ import { SerDesRule, SerDesRuleName } from '../types/object-spec';
 import { OnlyJSON } from '../util';
 
 
-export const sep = path.posix.sep;
-export const utf8Decoder = new TextDecoder('utf-8');
+const sep = path.posix.sep;
+const utf8Decoder = new TextDecoder('utf-8');
 
 
 export const textFile: SerDesRule<{ asText: string }> = {
