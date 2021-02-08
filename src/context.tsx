@@ -3,7 +3,7 @@ import {
   DatasetContext as DatasetContextSpec,
   ValueHook,
 } from './types';
-import { IndexStatus } from './types/indexes';
+import { INITIAL_INDEX_STATUS } from './types/indexes';
 
 
 function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
@@ -14,16 +14,6 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
     _reqCounter: -1,
     refresh: () => {},
   });
-}
-
-
-export const INITIAL_INDEX_STATUS: IndexStatus = {
-  objectCount: 0,
-  progress: {
-    phase: 'initializing',
-    total: 0,
-    loaded: 0,
-  },
 }
 
 
