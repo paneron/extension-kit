@@ -21,12 +21,15 @@ export function matchesPath(p: string, rule: SerializableObjectSpec["matches"]):
   }
 
   // Narrow by extension
-  if (rule.extensions) {
+  if (matched && rule.extensions) {
     let extensionMatched: boolean = false;
     for (const ext of rule.extensions) {
       extensionMatched = path.extname(p) === ext;
+      if (extensionMatched) {
+        break;
+      }
     }
-    matched = extensionMatched;
+    matched = matched && extensionMatched;
   }
 
   // Narrow by path-matching function
