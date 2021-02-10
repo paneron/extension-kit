@@ -1,4 +1,3 @@
-import type { FileFilter } from 'electron';
 import {
   CommitOutcome, FileChangeType,
   ObjectChangeset,
@@ -6,6 +5,12 @@ import {
   ObjectDataRequest, ObjectDataset,
   ObjectQuery,
 } from './data';
+
+
+interface FileFilter {
+  extensions: string[];
+  name: string;
+}
 
 
 export interface DatasetContext {
