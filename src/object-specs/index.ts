@@ -16,8 +16,8 @@ export function matchesPath(p: string, rule: SerializableObjectSpec["matches"]):
   let matched: boolean = true;
 
   // Narrow by path prefix
-  if (matched && rule.pathPrefix) {
-    matched = matched && p.startsWith(rule.pathPrefix);
+  if (rule.pathPrefix) {
+    matched = p.startsWith(rule.pathPrefix);
   }
 
   // Narrow by extension
