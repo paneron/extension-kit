@@ -4,7 +4,7 @@ import log from 'electron-log';
 import { Extension } from './types/extension';
 import { ExtensionMaker } from './types/extension-maker';
 import { withDatasetContext } from './context';
-import { DEFAULT_SPECS, matchesPath } from './object-specs';
+import { matchesPath } from './object-specs';
 
 
 /* The default export of Paneron extension’s extension.ts entry file
@@ -12,7 +12,7 @@ import { DEFAULT_SPECS, matchesPath } from './object-specs';
 export const makeExtension: ExtensionMaker = async (options) => {
   let plugin: Extension;
 
-  const objectSpecs = options.objects || DEFAULT_SPECS;
+  const objectSpecs = options.objects ?? [];
 
   if (process.type === 'browser') {
     plugin = {

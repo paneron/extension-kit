@@ -1,42 +1,25 @@
-/* Object specs describe how logical structured objects
-   map to physical buffers.
+export interface PathMatcher {
+  /* Will apply any object path under given prefix,
+      slash-prepended, relative to dataset root. */
+  pathPrefix?: string
+
+  /* Will apply if this function,
+     called with object path relative to dataset root, returns true. */
+  path?: (objectPath: string) => boolean
+}
+
+
+/* TBD: object spec describes how Paneron should treat an object
+   that matches this spec.
 */
+export interface ObjectSpec {
 
-
-export interface SerializableObjectSpec {
-
-  /* Determines whether serialize/deserialize functions provided by this rule
-     should be used for given buffer path.
-
-     getContainingObjectPath() can be used to get containing object’s path
-     from a given buffer path.
-
-     All given conditions will be AND’ed together in order.
-     If none are given, buffer is considered matching by default.
-
-     Buffers that are descendants of matching path
-     are considered path of the same object.
+  /* All given conditions will be AND’ed together in order.
+     If none are given, object is considered matching by default,
+     so object spec with empty `matches` rule that comes last in a list
+     can act as a catch-all.
   */
-  matches: {
-    /* Will match to buffer paths with given extensions. */
-    extensions?: string[]
-
-    /* Will apply to buffer paths under given prefix,
-       slash-prepended, relative to dataset root. */
-    pathPrefix?: string
-
-    /* Will apply if this function,
-       called with buffer path relative to dataset root, returns true.
-       Slowest. */
-    path?: string // function body matching (bufferPath: string) => boolean
-  }
-
-  /* References the name of serialization/deserialization rule implementation. */
-  serDesRule: SerDesRuleName
-
-  getContainingObjectPath?: string // function body matching (bufferPath: string) => string | null
-
-  //pathContaining(bufferPath: string): string
+  matches: PathMatcher
 
   /* Views for objects of this type.
      Paneron can use these views when showing objects
@@ -48,27 +31,30 @@ export interface SerializableObjectSpec {
 }
 
 
-export enum SerDesRuleName {
+export enum AtomicSerDesRuleName {
   textFile = 'textfile',
   jsonFile = 'jsonfile',
   yamlFile = 'yamlfile',
-  tree = 'tree',
   binaryFile = 'binaryfile',
 }
 
+export enum CompositeSerDesRuleName {
+  paneronObject = 'paneronObject',
+}
 
-export interface BinaryObjectSpec
-extends SerializableObjectSpec {}
+export type SerDesRuleName = AtomicSerDesRuleName | CompositeSerDesRuleName
 
 
 /* Specifies how to transform an object as runtime in-memory structure
    to a storeable byte array and vice-versa
-   (i.e., serializer/deserializer). */
+   (i.e., serializer/deserializer).
+*/
 export interface SerDesRule<
   ObjectType extends Record<string, any> = any,
   Opts extends Record<string, any> = any,
 > {
-  id: SerDesRuleName
+  //id: SerDesRuleName
+  //extensions: string[]
   serialize: (object: ObjectType, opts: Opts) => Record<string, Uint8Array>
   deserialize: (data: Record<string, Uint8Array>, opts: Opts) => ObjectType
 }

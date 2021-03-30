@@ -1,5 +1,5 @@
 import type React from 'react';
-import { SerializableObjectSpec } from './object-spec';
+import { ObjectSpec } from './object-spec';
 import { MigrationModule } from './migrations';
 import { DatasetContext } from './renderer';
 
@@ -17,7 +17,7 @@ export interface MainPlugin {
 
   getInitialMigration: () => MigrationModule
 
-  getObjectSpecs: () => SerializableObjectSpec[]
+  getObjectSpecs: () => ObjectSpec[]
 }
 
 

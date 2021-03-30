@@ -1,5 +1,5 @@
 import path from 'path';
-import { SerDesRule, SerDesRuleName } from '../types/object-spec';
+import { SerDesRule } from '../types/object-spec';
 import { OnlyJSON } from '../util';
 
 
@@ -38,7 +38,9 @@ interface SerDesOptions {
   }
 }
 
-type DataType = 'text' | 'number'
+type DataType = 'text' | 'number';
+
+//const EXT = '.pan';
 
 
 /* Creates a spec for objects where a serialized object
@@ -58,7 +60,7 @@ type DataType = 'text' | 'number'
    (On disk, title and foo/bar would be paths to files
    relative to object root path.)
 */
-export function makeTreeSerDesRule
+export function makePaneronObjectCompositeSerDesRule
 <T extends Record<string, any> & OnlyJSON<Record<string, any>> = any>
 ():
 SerDesRule<T> {
@@ -66,17 +68,16 @@ SerDesRule<T> {
   const disassemble: (obj: T) => Record<string, any> = flattenObject;
 
   return {
-    id: SerDesRuleName.tree,
     deserialize: (rawData, opts: SerDesOptions) => {
       function deserializePart(buf: Uint8Array, partPath: string): any {
-        return partSerDes[opts.parts[partPath]?.dataType || 'text'].deserialize(buf);
+        return partSerDes[opts.parts[partPath]?.dataType ?? 'text'].deserialize(buf);
       }
       const parts = deserializeParts(rawData, deserializePart);
       return assemble(parts);
     },
     serialize: (obj, opts: SerDesOptions) => {
       function serializePart(data: any, partPath: string): Uint8Array {
-        return partSerDes[opts.parts[partPath]?.dataType || 'text'].serialize(data);
+        return partSerDes[opts.parts[partPath]?.dataType ?? 'text'].serialize(data);
       }
       const parts = disassemble(obj);
       return serializeParts(parts, serializePart);

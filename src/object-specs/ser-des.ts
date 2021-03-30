@@ -1,16 +1,37 @@
+/* Serialization/deserialization rules describe how physical buffers
+   are represented as JS structures at runtime.
+*/
+
 import path from 'path';
 import yaml from 'js-yaml';
-import { SerDesRule, SerDesRuleName } from '../types/object-spec';
+import {
+  SerDesRule,
+  AtomicSerDesRuleName,
+  CompositeSerDesRuleName,
+  SerDesRuleName,
+} from '../types/object-spec';
 import { OnlyJSON } from '../util';
-import { makeTreeSerDesRule } from './tree';
+import { makePaneronObjectCompositeSerDesRule } from './paneron-object';
 
 
 const sep = path.posix.sep;
 const utf8Decoder = new TextDecoder('utf-8');
 
 
+// Rule query API
+
+export function findSerDesRuleForExt(extension: string): SerDesRule {
+  return getSerDesRuleByName(rulesByExtension[extension] ?? DEFAULT_RULE);
+}
+
+export function getSerDesRuleByName(ruleName: SerDesRuleName): SerDesRule {
+  return SER_DES_RULE_REGISTRY[ruleName];
+}
+
+
+// Rule definitions
+
 export const textFile: SerDesRule<{ asText: string }> = {
-  id: SerDesRuleName.textFile,
   deserialize: (buffers) =>
     ({ asText: utf8Decoder.decode(buffers[sep]) }),
   serialize: (objectData) =>
@@ -19,14 +40,12 @@ export const textFile: SerDesRule<{ asText: string }> = {
 
 
 export const jsonFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
-  id: SerDesRuleName.jsonFile,
   deserialize: (buffers) => JSON.parse(utf8Decoder.decode(buffers[sep])),
   serialize: (data) => ({ sep: Buffer.from(JSON.stringify(data), 'utf8') }),
 };
 
 
 export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
-  id: SerDesRuleName.yamlFile,
   deserialize: (buffers) =>
     yaml.load(utf8Decoder.decode(buffers[sep])),
   serialize: (data) =>
@@ -35,7 +54,6 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 
 
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
-  id: SerDesRuleName.binaryFile,
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
     asBase64: Buffer.from(buffers[sep]).toString('base64'),
@@ -45,15 +63,51 @@ export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; 
 };
 
 
-export default function getSerDesRule(ruleName: SerDesRuleName): SerDesRule {
-  return SER_DES_RULES[ruleName];
-}
+// Rule registers
 
+export const rulesByExtension: { [ext: string]: SerDesRuleName } = {
+  '.json': AtomicSerDesRuleName.jsonFile,
+  '.yaml': AtomicSerDesRuleName.yamlFile,
+  '.yml': AtomicSerDesRuleName.yamlFile,
+  '.jpg': AtomicSerDesRuleName.binaryFile,
+  '.png': AtomicSerDesRuleName.binaryFile,
+  '.wav': AtomicSerDesRuleName.binaryFile,
+  '.ogg': AtomicSerDesRuleName.binaryFile,
+  '.gif': AtomicSerDesRuleName.binaryFile,
+  '.txt': AtomicSerDesRuleName.textFile,
 
-export const SER_DES_RULES: { [key in SerDesRuleName]: SerDesRule } = {
-  [SerDesRuleName.textFile]: textFile,
-  [SerDesRuleName.jsonFile]: jsonFile,
-  [SerDesRuleName.yamlFile]: yamlFile,
-  [SerDesRuleName.binaryFile]: binaryFile,
-  [SerDesRuleName.tree]: makeTreeSerDesRule(),
+  '.pan': CompositeSerDesRuleName.paneronObject,
+  '': AtomicSerDesRuleName.textFile,
+} as const;
+
+const DEFAULT_RULE: SerDesRuleName = AtomicSerDesRuleName.textFile;
+
+const ATOMIC_SER_DES_RULES: { [key in AtomicSerDesRuleName]: SerDesRule } = {
+  [AtomicSerDesRuleName.jsonFile]: jsonFile,
+  [AtomicSerDesRuleName.yamlFile]: yamlFile,
+  [AtomicSerDesRuleName.binaryFile]: binaryFile,
+  [AtomicSerDesRuleName.textFile]: textFile,
 };
+
+const SER_DES_RULE_REGISTRY: { [key in SerDesRuleName]: SerDesRule } = {
+  ...ATOMIC_SER_DES_RULES,
+  [CompositeSerDesRuleName.paneronObject]: makePaneronObjectCompositeSerDesRule(),
+};
+
+//export function getAtomicSerDesRuleForExtension(ext: string): SerDesRule | undefined {
+//  return Object.values(ATOMIC_SER_DES_RULES).find(rule =>
+//    rule.extensions.indexOf(ext) >= 0 ||
+//    Object.keys(rule.extensions).length === 0);
+//}
+
+//const EFFECTIVE_SER_DES_RULES: SerDesRuleName[] = [
+//  AtomicSerDesRuleName.jsonFile,
+//  AtomicSerDesRuleName.yamlFile,
+//  AtomicSerDesRuleName.binaryFile,
+//  AtomicSerDesRuleName.textFile,
+//];
+
+//export const SER_DES_RULES: { [key in SerDesRuleName]: SerDesRule } = {
+//  ...ATOMIC_SER_DES_RULES,
+//  //[NestedSerDesRuleName.tree]: makeTreeSerDesRule(ATOMIC_SER_DES_RULES),
+//};
