@@ -20,8 +20,10 @@ const utf8Decoder = new TextDecoder('utf-8');
 
 // Rule query API
 
-export function findSerDesRuleForExt(extension: string): SerDesRule {
-  return getSerDesRuleByName(rulesByExtension[extension] ?? DEFAULT_RULE);
+export function findSerDesRuleForPath(objPath: string): SerDesRule {
+  const extension = path.extname(objPath);
+  const ruleName = rulesByExtension[extension] ?? DEFAULT_RULE;
+  return getSerDesRuleByName(ruleName);
 }
 
 export function getSerDesRuleByName(ruleName: SerDesRuleName): SerDesRule {
