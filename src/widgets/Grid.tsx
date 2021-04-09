@@ -164,17 +164,18 @@ function ({ isSelected, onSelect, onOpen, height, padding, contentClassName, ent
           background: ${isSelected ? `linear-gradient(345deg, ${Colors.LIGHT_GRAY3}, white)` : Colors.LIGHT_GRAY5};`}>
       {entityType
         ? <div css={css`
-              z-index: 3; font-size: 80%; margin: 1px;
+              z-index: 3; font-size: 80%; margin: 1px 1px 0 1px;
               padding: ${qPad - 1}px ${padding}px ${qPad}px ${padding}px;
               background: ${isSelected ? Colors.BLUE2 : Colors.LIGHT_GRAY3};
               letter-spacing: -0.03em;
-              color: ${isSelected ? Colors.LIGHT_GRAY4 : Colors.GRAY2};`}>
+              ${isSelected ? 'font-variation-settings: \'GRAD\' 600;' : ''};
+              color: ${isSelected ? Colors.LIGHT_GRAY4 : Colors.GRAY1};`}>
             {entityType.iconProps
               ? <Icon
                   iconSize={10}
                   icon="blank"
                   css={css`margin-right: ${hPad}px;`}
-                  color={isSelected ? 'white' : Colors.GRAY3}
+                  color={isSelected ? 'white' : Colors.GRAY2}
                   intent={isSelected ? 'primary' : undefined}
                   {...entityType.iconProps}
                 />
