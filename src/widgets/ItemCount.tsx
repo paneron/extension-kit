@@ -52,7 +52,7 @@ function ({ progress, onRefresh, descriptiveName, totalCount, className }) {
   }
 
   return (
-    <div css={css`display: flex; flex-flow: row nowrap; align-items: center;`} className={className}>
+    <div css={css`display: flex; flex-flow: row nowrap; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`} className={className}>
       <div css={css`margin-right: .5rem;`}>
         {statusIcon}
       </div>
