@@ -15,6 +15,7 @@ export interface DatasetContext {
   useObjectData: Hooks.Data.GetObjectDataset
   useIndexDescription: Hooks.Indexes.Describe
   useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
+  useFilteredIndexPosition: Hooks.Indexes.GetFilteredObjectIndexPosition
   useObjectPathFromFilteredIndex: Hooks.Indexes.GetFilteredObject
 
   useDecodedBlob: Hooks.UseDecodedBlob
@@ -100,6 +101,10 @@ export namespace Hooks {
     export type GetFilteredObject =
       (opts: { indexID: string, position: number }) =>
         ValueHook<{ objectPath: string }>
+
+    export type GetFilteredObjectIndexPosition =
+      (opts: { indexID: string, objectPath: string }) =>
+        ValueHook<{ position: number | null }>
 
     export type ListenToFilteredIndexUpdates = (
       eventCallback:

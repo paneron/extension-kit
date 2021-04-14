@@ -44,6 +44,10 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
     objectPath: '',
   }),
 
+  useFilteredIndexPosition: getValueHookPlaceholder({
+    position: null,
+  }),
+
   getObjectView: (opts: { objectPath: string }) =>
     () => <>{opts.objectPath}</>,
 
