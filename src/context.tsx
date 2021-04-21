@@ -48,6 +48,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
     position: null,
   }),
 
+  //usePersistentDatasetStateReducer: () => [{}, () => {}, false] as [any, () => any, boolean],
+
   getObjectView: (opts: { objectPath: string }) =>
     () => <>{opts.objectPath}</>,
 

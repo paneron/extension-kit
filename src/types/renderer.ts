@@ -4,6 +4,7 @@ import { ObjectDataset, ObjectChangeset } from './objects';
 import { BufferDataset } from './buffers';
 import { CommitOutcome, ChangeStatus } from './changes';
 import { IndexStatus } from './indexes';
+import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
 
 
 export interface DatasetContext {
@@ -17,6 +18,8 @@ export interface DatasetContext {
   useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
   useFilteredIndexPosition: Hooks.Indexes.GetFilteredObjectIndexPosition
   useObjectPathFromFilteredIndex: Hooks.Indexes.GetFilteredObject
+
+  usePersistentDatasetStateReducer?: Hooks.UsePersistentDatasetStateReducer<any, any>
 
   useDecodedBlob: Hooks.UseDecodedBlob
 
@@ -87,6 +90,8 @@ export namespace Hooks {
   export type UseDecodedBlob =
     (opts: { blob: Uint8Array }) =>
       { asString: string }
+
+  export type UsePersistentDatasetStateReducer<S, A extends BaseAction> = PersistentStateReducerHook<S, A>
 
   export namespace Indexes {
 
