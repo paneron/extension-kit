@@ -20,17 +20,19 @@ const Workspace: React.FC<{
     <div css={css`display: flex; flex-flow: column nowrap; overflow: hidden;`} className={className} style={style}>
       <div css={css`flex: 1; display: flex; flex-flow: row nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
-          <div
-              css={css`
-                display: flex; flex-flow: row nowrap; align-items: center;
-                background: linear-gradient(to bottom, ${Colors.LIGHT_GRAY5}, ${Colors.LIGHT_GRAY4});
-                height: 24px;
-                overflow: hidden;
-                z-index: 1;
-              `}
-              className={Classes.ELEVATION_1}>
-            {toolbar}
-          </div>
+          {toolbar
+            ? <div
+                  css={css`
+                    display: flex; flex-flow: row nowrap; align-items: center;
+                    background: linear-gradient(to bottom, ${Colors.LIGHT_GRAY5}, ${Colors.LIGHT_GRAY4});
+                    height: 24px;
+                    overflow: hidden;
+                    z-index: 1;
+                  `}
+                  className={Classes.ELEVATION_1}>
+                {toolbar}
+              </div>
+            : null}
 
           <div css={css`flex: 1;`}>
             {children}
