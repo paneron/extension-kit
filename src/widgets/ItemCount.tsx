@@ -15,7 +15,7 @@ const SPINNER_PROPS = {
 };
 
 
-interface ItemCountProps {
+export interface ItemCountProps {
   totalCount: number
   descriptiveName?: { singular: string, plural: string }
   progress?: { phase: string, loaded?: number, total?: number } 
