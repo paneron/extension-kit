@@ -27,8 +27,6 @@ export interface CellProps<P extends Record<string, any> = Record<never, never>>
   isSelected: boolean
   onSelect?: (extraData?: unknown) => void
   onOpen?: () => void
-  height: number
-  width: number
   padding: number 
   extraData: P
 }
@@ -60,8 +58,6 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
             isSelected={_data.selectedItem === ref}
             onSelect={(extraData) => _data.selectItem(ref, extraData)}
             onOpen={_data.openItem ? () => _data.openItem!(ref) : undefined}
-            height={_data.cellHeight}
-            width={_data.cellWidth}
             padding={_data.padding}
             extraData={_data.extraData as P}
             itemRef={ref} />
@@ -141,19 +137,19 @@ interface LabelledGridIconProps {
     iconProps?: IconProps
     name: string
   }
-  height: number
-  width: number
   padding: number 
+  className?: string
 }
 
 export const LabelledGridIcon: React.FC<LabelledGridIconProps> =
-function ({ isSelected, onSelect, onOpen, height, padding, contentClassName, entityType, children }) {
+function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType, className, children }) {
   const hPad = Math.floor(padding / 2);
   const qPad = Math.floor(padding / 4);
   return (
     <div
         onClick={onSelect}
         onDoubleClick={onOpen}
+        className={className}
         css={css`
           position: absolute; top: 0; left: 0; right: 0; bottom: 0;
           box-shadow: 1px 1px 0 ${Colors.LIGHT_GRAY5} inset, -1px -1px 0 ${Colors.LIGHT_GRAY1} inset;
