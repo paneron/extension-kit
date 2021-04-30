@@ -12,6 +12,7 @@ export interface SidebarBlockConfig {
   content: JSX.Element
   nonCollapsible?: boolean
   collapsedByDefault?: boolean
+  height?: number // Height in pixels.
 }
 
 
@@ -55,6 +56,7 @@ function ({ expanded, onExpand, onCollapse, block }) {
                 overflow-x: hidden; overflow-y: auto;
                 padding: 5px;
                 position: relative;
+                ${block.height ? `height: ${block.height}px;` : '' }
                 box-shadow:
                   inset 1px 1px 0 white,
                   -1px -1px 0 ${Colors.GRAY4},
