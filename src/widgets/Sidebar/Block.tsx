@@ -54,6 +54,7 @@ function ({ expanded, onExpand, onCollapse, block }) {
         ? <div css={css`
                 overflow-x: hidden; overflow-y: auto;
                 padding: 5px;
+                position: relative;
                 box-shadow:
                   inset 1px 1px 0 white,
                   -1px -1px 0 ${Colors.GRAY4},
@@ -65,7 +66,7 @@ function ({ expanded, onExpand, onCollapse, block }) {
                   1px 1px 0 ${Colors.LIGHT_GRAY5};
                 background: ${Colors.LIGHT_GRAY4};
                 margin: ${block.nonCollapsible ? '0' : '0 5px 5px 5px'};
-                flex: 1;
+                flex: 1 1 auto;
                 line-height: 1.4;
                 font-size: 90%;
               `}>
