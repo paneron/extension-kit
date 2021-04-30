@@ -6,7 +6,7 @@ import { jsx, css } from '@emotion/core';
 import React, { ComponentType, useEffect, useRef } from 'react';
 import { FixedSizeGrid as Grid, GridChildComponentProps, areEqual } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Colors, Icon, IIconProps } from '@blueprintjs/core';
+import { Colors, Icon, IconProps } from '@blueprintjs/core';
 
 
 export interface GridData<P extends Record<string, any> = Record<never, never>> {
@@ -138,7 +138,7 @@ interface LabelledGridIconProps {
   onOpen?: () => void
   contentClassName?: string
   entityType?: {
-    iconProps?: IIconProps
+    iconProps?: IconProps
     name: string
   }
   height: number
