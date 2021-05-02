@@ -164,6 +164,7 @@ function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType,
               padding: ${qPad - 1}px ${padding}px ${qPad}px ${padding}px;
               background: ${isSelected ? Colors.BLUE2 : Colors.LIGHT_GRAY3};
               letter-spacing: -0.03em;
+              white-space: nowrap;
               ${isSelected ? 'font-variation-settings: \'GRAD\' 600;' : ''};
               color: ${isSelected ? Colors.LIGHT_GRAY4 : Colors.GRAY1};`}>
             {entityType.iconProps
