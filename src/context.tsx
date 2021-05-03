@@ -44,9 +44,13 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
     objectPath: '',
   }),
 
+  getObjectPathFromFilteredIndex: async () => ({ objectPath: '' }),
+
   useFilteredIndexPosition: getValueHookPlaceholder({
     position: null,
   }),
+
+  getFilteredIndexPosition: async () => ({ position: null }),
 
   //usePersistentDatasetStateReducer: () => [{}, () => {}, false] as [any, () => any, boolean],
 

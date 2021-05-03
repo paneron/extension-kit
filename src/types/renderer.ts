@@ -16,8 +16,14 @@ export interface DatasetContext {
   useObjectData: Hooks.Data.GetObjectDataset
   useIndexDescription: Hooks.Indexes.Describe
   useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
-  useFilteredIndexPosition: Hooks.Indexes.GetFilteredObjectIndexPosition
+
   useObjectPathFromFilteredIndex: Hooks.Indexes.GetFilteredObject
+  getObjectPathFromFilteredIndex: (opts: Hooks.FilteredObjectPathRequest) =>
+    Promise<Hooks.FilteredObjectPathResponse>
+
+  useFilteredIndexPosition: Hooks.Indexes.GetFilteredObjectIndexPosition
+  getFilteredIndexPosition: (opts: Hooks.FilteredObjectIndexPositionRequest) =>
+    Promise<Hooks.FilteredObjectIndexPositionResponse>
 
   usePersistentDatasetStateReducer?: Hooks.UsePersistentDatasetStateReducer<any, any>
 
@@ -93,6 +99,12 @@ export namespace Hooks {
 
   export type UsePersistentDatasetStateReducer<S, A extends BaseAction> = PersistentStateReducerHook<S, A>
 
+  export type FilteredObjectPathRequest = { indexID: string, position: number };
+  export type FilteredObjectPathResponse = { objectPath: string /* empty string is a special case. */};
+
+  export type FilteredObjectIndexPositionRequest = { indexID: string, objectPath: string };
+  export type FilteredObjectIndexPositionResponse = { position: number | null };
+
   export namespace Indexes {
 
     export type Describe =
@@ -104,12 +116,12 @@ export namespace Hooks {
         ValueHook<{ indexID: string | undefined }>;
 
     export type GetFilteredObject =
-      (opts: { indexID: string, position: number }) =>
-        ValueHook<{ objectPath: string }>
+      (opts: FilteredObjectPathRequest) =>
+        ValueHook<FilteredObjectPathResponse>
 
     export type GetFilteredObjectIndexPosition =
-      (opts: { indexID: string, objectPath: string }) =>
-        ValueHook<{ position: number | null }>
+      (opts: FilteredObjectIndexPositionRequest) =>
+        ValueHook<FilteredObjectIndexPositionResponse>
 
     export type ListenToFilteredIndexUpdates = (
       eventCallback:
