@@ -34,7 +34,7 @@ const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tool
             width: 60%;
             word-break: break-all;
             line-height: 1.2;
-            padding-top: 2px;
+            padding-top: 3px;
             padding-bottom: 2px;
 
             .bp3-input-group .bp3-input {
