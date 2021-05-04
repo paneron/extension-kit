@@ -34,7 +34,7 @@ const Workspace: React.FC<{
               </div>
             : null}
 
-          <div css={css`flex: 1;`}>
+          <div css={css`flex: 1; display: flex; flex-flow: column nowrap;`}>
             {children}
           </div>
         </div>
