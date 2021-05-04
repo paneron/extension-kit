@@ -49,7 +49,7 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
 
   const Cell: ComponentType<GridChildComponentProps> =
   React.memo(function ({ columnIndex, rowIndex, data, style }) {
-    const _data: GridData = data;
+    const _data: GridData<P> = data;
     const ref = _data.items[rowIndex]?.[columnIndex];
     if (ref) {
       return (
