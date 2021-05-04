@@ -68,39 +68,44 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
     }
   }, areEqual);
 
+  let gridDataCache: GridData<P> | null = null;
+
+  function maybeScrollToItem(gridEl: Grid) {
+    if (gridDataCache !== null) {
+      const { selectedItem, items } = gridDataCache;
+      if (selectedItem !== null) {
+        const idx = getGridIndex(items, selectedItem);
+        if (idx) {
+          gridEl.scrollToItem({ align: 'smart', ...idx });
+        }
+      }
+    }
+  }
+  const maybeScrollToItemDebounced = debounce(100, maybeScrollToItem);
+
   return ({ getGridData, className }) => {
     const gridRef = useRef<Grid>(null);
 
     useEffect(() => {
-      const updateListHeight = debounce(100, () => {
-        setImmediate(() => {
-          const { selectedItem, items } = getGridData(1000) ?? { selectedItem: null, items: [] };
-          if (items && selectedItem !== null && gridRef?.current) {
-            const idx = getGridIndex(items, selectedItem);
-            if (idx) {
-              gridRef.current.scrollToItem({ align: 'smart', ...idx })
-            }
-          }
-        });
-      });
-
+      const updateListHeight = () => gridRef.current ? maybeScrollToItemDebounced(gridRef.current) : void 0;
       window.addEventListener('resize', updateListHeight);
       updateListHeight();
-
       return function cleanup() {
         window.removeEventListener('resize', updateListHeight);
       }
-    }, [gridRef.current]);
+    }, [getGridData, gridRef.current]);
 
     return (
       <AutoSizer className={className}>
         {({ width, height }) => {
           const gridData = getGridData(width);
+          gridDataCache = gridData;
           if (gridData) {
             const columnCount = (gridData.items[0] ?? []).length;
             const rowCount = gridData.items.length;
             return (
               <Grid
+                  ref={gridRef}
                   width={width}
                   height={height}
                   columnCount={columnCount}
