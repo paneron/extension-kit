@@ -37,13 +37,13 @@ export const textFile: SerDesRule<{ asText: string }> = {
   deserialize: (buffers) =>
     ({ asText: utf8Decoder.decode(buffers[sep]) }),
   serialize: (objectData) =>
-    ({ sep: Buffer.from(objectData.asText, 'utf-8') }),
+    ({ [sep]: Buffer.from(objectData.asText, 'utf-8') }),
 };
 
 
 export const jsonFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
   deserialize: (buffers) => JSON.parse(utf8Decoder.decode(buffers[sep])),
-  serialize: (data) => ({ sep: Buffer.from(JSON.stringify(data), 'utf8') }),
+  serialize: (data) => ({ [sep]: Buffer.from(JSON.stringify(data), 'utf8') }),
 };
 
 
@@ -51,7 +51,7 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
   deserialize: (buffers) =>
     yaml.load(utf8Decoder.decode(buffers[sep])),
   serialize: (data) =>
-    ({ sep: Buffer.from(yaml.dump(data, { noRefs: true }), 'utf8') }),
+    ({ [sep]: Buffer.from(yaml.dump(data, { noRefs: true }), 'utf8') }),
 }
 
 
@@ -61,7 +61,7 @@ export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; 
     asBase64: Buffer.from(buffers[sep]).toString('base64'),
   }),
   serialize: (data) =>
-    ({ sep: data.binaryData }),
+    ({ [sep]: data.binaryData }),
 };
 
 
