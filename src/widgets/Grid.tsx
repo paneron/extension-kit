@@ -114,10 +114,7 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
                   rowHeight={gridData.cellHeight}
                   itemKey={({ columnIndex, rowIndex }) => {
                     const itemRef = gridData.items[rowIndex]?.[columnIndex];
-                    if (!itemRef) {
-                      return columnIndex * rowIndex;
-                    }
-                    return itemRef;
+                    return itemRef ?? columnIndex * rowIndex;
                   }}
                   itemData={gridData}>
                 {Cell}
