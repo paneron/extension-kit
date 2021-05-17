@@ -77,20 +77,20 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
           </ButtonGroup>
         </div>
         <div css={css`flex: 1; overflow-x: hidden; overflow-y: auto; background: ${Colors.LIGHT_GRAY1};`}>
-        {stateLoaded
-          ? <>
-              {blocks.map((b, idx) =>
-                <SidebarBlock
-                  key={idx}
-                  expanded={state.blockState[b.key]}
-                  block={b}
-                  onCollapse={() => dispatch({ type: 'collapse-one', payload: { blockKey: b.key } })}
-                  onExpand={() => dispatch({ type: 'expand-one', payload: { blockKey: b.key } })}
-                />
-              )}
-              <div css={css`font-size: 40px; text-align: center; color: ${Colors.LIGHT_GRAY4}`}>— ❧ —</div>
-            </>
-          : null}
+          {stateLoaded
+            ? <>
+                {blocks.map((b, idx) =>
+                  <SidebarBlock
+                    key={idx}
+                    expanded={state.blockState[b.key]}
+                    block={b}
+                    onCollapse={() => dispatch({ type: 'collapse-one', payload: { blockKey: b.key } })}
+                    onExpand={() => dispatch({ type: 'expand-one', payload: { blockKey: b.key } })}
+                  />
+                )}
+                <div css={css`font-size: 40px; text-align: center; color: ${Colors.LIGHT_GRAY4}`}>— ❧ —</div>
+              </>
+            : null}
         </div>
       </div>
     );
