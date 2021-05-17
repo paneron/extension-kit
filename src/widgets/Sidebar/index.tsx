@@ -76,7 +76,9 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
             <Button minimal title="Collapse all" icon="collapse-all" onClick={() => dispatch({ type: 'collapse-all' })} />
           </ButtonGroup>
         </div>
-        <div css={css`flex: 1; overflow-x: hidden; overflow-y: auto; background: ${Colors.LIGHT_GRAY1};`}>
+        <div
+            css={css`flex: 1; overflow-x: hidden; overflow-y: auto; background: ${Colors.LIGHT_GRAY1};`}
+            className={Classes.ELEVATION_2}>
           {stateLoaded
             ? <>
                 {blocks.map((b, idx) =>
