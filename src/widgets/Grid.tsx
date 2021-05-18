@@ -51,11 +51,12 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
   React.memo(function ({ columnIndex, rowIndex, data, style }) {
     const _data: GridData<P> = data;
     const ref = _data.items[rowIndex]?.[columnIndex];
+    const isSelected = _data.selectedItem === ref;
     if (ref) {
       return (
-        <div css={css`position: relative;`} style={style}>
+        <div css={css`position: relative; transition: box-shadow .25s linear; ${isSelected ? 'box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.4); z-index: 3;' : ''}`} style={style}>
           <CellContents
-            isSelected={_data.selectedItem === ref}
+            isSelected={isSelected}
             onSelect={(extraData) => _data.selectItem(ref, extraData)}
             onOpen={_data.openItem ? () => _data.openItem!(ref) : undefined}
             padding={_data.padding}
