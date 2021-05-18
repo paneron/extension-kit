@@ -112,7 +112,7 @@ export namespace Hooks {
         ValueHook<{ status: IndexStatus }>
 
     export type GetOrCreateFiltered =
-      (opts: { queryExpression: string }) =>
+      (opts: { queryExpression: string, keyExpression?: string }) =>
         ValueHook<{ indexID: string | undefined }>;
 
     export type GetFilteredObject =
