@@ -54,7 +54,15 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
     const isSelected = _data.selectedItem === ref;
     if (ref) {
       return (
-        <div css={css`position: relative; transition: box-shadow .25s linear; ${isSelected ? 'box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.4); z-index: 3;' : ''}`} style={style}>
+        <div
+            css={css`
+              position: relative;
+              transition: box-shadow .25s linear;
+              ${isSelected
+                ? 'box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.4); z-index: 3;'
+                : ''}
+            `}
+            style={style}>
           <CellContents
             isSelected={isSelected}
             onSelect={(extraData) => _data.selectItem(ref, extraData)}
