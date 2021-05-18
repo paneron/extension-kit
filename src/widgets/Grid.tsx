@@ -163,7 +163,9 @@ function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType,
         className={className}
         css={css`
           position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-          box-shadow: 1px 1px 0 ${Colors.LIGHT_GRAY5} inset, -1px -1px 0 ${Colors.LIGHT_GRAY1} inset;
+          ${!isSelected
+            ? `box-shadow: 1px 1px 0 ${Colors.LIGHT_GRAY5} inset, -1px -1px 0 ${Colors.LIGHT_GRAY1} inset;`
+            : ''}
           overflow: hidden;
           cursor: default;
           z-index: ${isSelected ? 2 : 1};
