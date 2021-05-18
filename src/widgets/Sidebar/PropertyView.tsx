@@ -22,7 +22,7 @@ const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tool
           display: flex;
           flex-flow: row nowrap;
           align-items: flex-start;
-          font-size: 11px;
+          font-size: 12px;
           margin-bottom: 5px;
         `}>
       <div css={css`
@@ -31,7 +31,6 @@ const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tool
             text-align: right;
             padding-top: 2px;
             padding-bottom: 2px;
-            white-space: nowrap;
             color: ${Colors.GRAY1};
           `}>
         {tooltip ? <Tooltip2 content={tooltip}>{label}</Tooltip2> : label}
