@@ -29,6 +29,7 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
   }),
 
   getObjectData: async () => ({ data: {} }),
+
   useDecodedBlob: () => ({
     asString: '',
   }),
