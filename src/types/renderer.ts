@@ -74,6 +74,11 @@ export interface DatasetContext {
   // This does not mutate dataset / Git repo contents, changeObjects still
   // must be invoked later in order to commit newly added or replaced file.
   requestFileFromFilesystem?: (opts: OpenDialogProps) => Promise<BufferDataset>
+
+  // Invokes file save dialog, writes provided buffer data to chosen file path and returns that path.
+  writeFileToFilesystem?:
+    (opts: { dialogOpts: SaveDialogProps, bufferData: Uint8Array }) =>
+      Promise<{ success: true, savedToFileAtPath: string }>
 }
 
 
@@ -85,6 +90,11 @@ export interface OpenDialogProps {
   prompt: string
   filters?: FileFilter[]
   allowMultiple?: boolean
+}
+
+export interface SaveDialogProps {
+  prompt: string
+  filters?: FileFilter[]
 }
 
 export interface ValueHook<T> {
