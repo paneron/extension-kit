@@ -14,6 +14,8 @@ export interface DatasetContext {
   // and convert them to and from repo-relative paths under the hood as needed.
 
   useObjectData: Hooks.Data.GetObjectDataset
+  getObjectData: (opts: ObjectDatasetRequest) => Promise<ObjectDatasetResponse>
+
   useIndexDescription: Hooks.Indexes.Describe
   useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
 
