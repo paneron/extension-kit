@@ -3,7 +3,6 @@
 */
 
 import path from 'path';
-import yaml from 'js-yaml';
 import {
   SerDesRule,
   AtomicSerDesRuleName,
@@ -11,6 +10,7 @@ import {
   SerDesRuleName,
 } from '../types/object-spec';
 import { OnlyJSON } from '../util';
+import yaml from './yaml';
 import { makePaneronObjectCompositeSerDesRule } from './paneron-object';
 
 
@@ -48,10 +48,16 @@ export const jsonFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 
 
 export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
-  deserialize: (buffers) =>
-    yaml.load(utf8Decoder.decode(buffers[sep])),
+  deserialize: (buffers) => {
+    const result = yaml.load(utf8Decoder.decode(buffers[sep]));
+    if (result && typeof result !== 'string' && typeof result !== 'number') {
+      return result;
+    } else {
+      throw new Error("Failed to deserialize buffers: got a non-object from yaml.load()");
+    }
+  },
   serialize: (data) =>
-    ({ [sep]: Buffer.from(yaml.dump(data, { noRefs: true }), 'utf8') }),
+    ({ [sep]: Buffer.from(yaml.dump(data), 'utf8') }),
 }
 
 
