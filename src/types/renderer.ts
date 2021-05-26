@@ -57,6 +57,8 @@ export interface DatasetContext {
 
   // Tools for working with buffer array conversion
   useDecodedBlob: Hooks.UseDecodedBlob
+  getBlob?: (fromStringValue: string) => Promise<Uint8Array>
+
 
   // Below are generally useful for write-enabled repositories only
 
