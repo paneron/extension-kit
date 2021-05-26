@@ -18,16 +18,14 @@ export interface DatasetContext {
   useFilteredIndex: Hooks.Indexes.GetOrCreateFiltered
 
   useObjectPathFromFilteredIndex: Hooks.Indexes.GetFilteredObject
-  getObjectPathFromFilteredIndex: (opts: Hooks.FilteredObjectPathRequest) =>
-    Promise<Hooks.FilteredObjectPathResponse>
+  getObjectPathFromFilteredIndex: (opts: FilteredObjectPathRequest) =>
+    Promise<FilteredObjectPathResponse>
 
   useFilteredIndexPosition: Hooks.Indexes.GetFilteredObjectIndexPosition
-  getFilteredIndexPosition: (opts: Hooks.FilteredObjectIndexPositionRequest) =>
-    Promise<Hooks.FilteredObjectIndexPositionResponse>
+  getFilteredIndexPosition: (opts: FilteredObjectIndexPositionRequest) =>
+    Promise<FilteredObjectIndexPositionResponse>
 
   usePersistentDatasetStateReducer?: Hooks.UsePersistentDatasetStateReducer<any, any>
-
-  useDecodedBlob: Hooks.UseDecodedBlob
 
   // Paneron internal clipboard
   copyObjects: (objects: ObjectDataset) => Promise<void>
@@ -55,6 +53,8 @@ export interface DatasetContext {
   // Provisional, probably won’t happen
   // onAddFile?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
 
+  // Tools for working with buffer array conversion
+  useDecodedBlob: Hooks.UseDecodedBlob
 
   // Below are generally useful for write-enabled repositories only
 
@@ -64,6 +64,9 @@ export interface DatasetContext {
   // Prompts the user to commit changes to the repository.
   // User can review and change the commit message.
   updateObjects?: Hooks.Data.UpdateObjects
+
+
+  // Tools for working with local filesystem
 
   // Invokes file selection dialog and returns file data as buffer when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
@@ -91,6 +94,16 @@ export interface ValueHook<T> {
 }
 
 
+export type FilteredObjectPathRequest = { indexID: string, position: number };
+export type FilteredObjectPathResponse = { objectPath: string /* empty string is a special case. */};
+
+export type FilteredObjectIndexPositionRequest = { indexID: string, objectPath: string };
+export type FilteredObjectIndexPositionResponse = { position: number | null };
+
+export type ObjectDatasetRequest = { objectPaths: string[] };
+export type ObjectDatasetResponse = { data: ObjectDataset };
+
+
 export namespace Hooks {
 
   export type UseDecodedBlob =
@@ -98,12 +111,6 @@ export namespace Hooks {
       { asString: string }
 
   export type UsePersistentDatasetStateReducer<S, A extends BaseAction> = PersistentStateReducerHook<S, A>
-
-  export type FilteredObjectPathRequest = { indexID: string, position: number };
-  export type FilteredObjectPathResponse = { objectPath: string /* empty string is a special case. */};
-
-  export type FilteredObjectIndexPositionRequest = { indexID: string, objectPath: string };
-  export type FilteredObjectIndexPositionResponse = { position: number | null };
 
   export namespace Indexes {
 
@@ -142,8 +149,8 @@ export namespace Hooks {
   export namespace Data {
 
     export type GetObjectDataset =
-      (opts: { objectPaths: string[] }) =>
-        ValueHook<{ data: ObjectDataset }>
+      (opts: ObjectDatasetRequest) =>
+        ValueHook<ObjectDatasetResponse>
 
     export type UpdateObjects = (opts: {
       objectChangeset: ObjectChangeset
