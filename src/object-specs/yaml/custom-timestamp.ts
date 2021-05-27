@@ -21,7 +21,7 @@ var YAML_TIMESTAMP_REGEXP = new RegExp(
   '(?::([0-9][0-9]))?))?$');           // [11] tz_minute
 
 
-function resolveYamlTimestamp(data) {
+function resolveYamlTimestamp(data: string | null) {
   if (data === null) return false;
   if (YAML_DATE_REGEXP.exec(data) !== null) return true;
   if (YAML_TIMESTAMP_REGEXP.exec(data) !== null) return true;
@@ -29,8 +29,8 @@ function resolveYamlTimestamp(data) {
 }
 
 
-function constructYamlTimestamp(data) {
-  var match, year, month, day, hour, minute, second, fraction = 0,
+function constructYamlTimestamp(data: string) {
+  let match, year, month, day, hour, minute, second, fraction = 0,
       delta = null, tz_hour, tz_minute, date;
 
   match = YAML_DATE_REGEXP.exec(data);
@@ -55,11 +55,15 @@ function constructYamlTimestamp(data) {
   second = +(match[6]);
 
   if (match[7]) {
-    fraction = match[7].slice(0, 3);
-    while (fraction.length < 3) { // milli-seconds
-      fraction += '0';
+    let fractionStr = match[7].slice(0, 3);
+    while (fractionStr.length < 3) { // milliseconds
+      fractionStr += '0';
     }
-    fraction = +fraction;
+    try {
+      fraction = parseInt(fractionStr, 10);
+    } catch (e) {
+      fraction = 0;
+    }
   }
 
   // match: [8] tz [9] tz_sign [10] tz_hour [11] tz_minute
@@ -79,9 +83,9 @@ function constructYamlTimestamp(data) {
 }
 
 
-function representYamlTimestamp(object /*, style*/) {
-  return object.toISOString();
-}
+// function representYamlTimestamp(object /*, style*/) {
+//   return object.toISOString();
+// }
 
 
 const customTimestampType = new Type('tag:yaml.org,2002:timestamp', {
@@ -95,4 +99,4 @@ const customTimestampType = new Type('tag:yaml.org,2002:timestamp', {
 });
 
 
-export { customTimestampType };
+export default customTimestampType;

@@ -1,5 +1,5 @@
 import * as yaml from 'js-yaml';
-import { customTimestampType } from './custom-timestamp';
+import customTimestampType from './custom-timestamp';
 import { customBoolType } from './custom-bool';
 
 
