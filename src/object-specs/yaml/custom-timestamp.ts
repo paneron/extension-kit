@@ -1,5 +1,4 @@
 import { Type } from 'js-yaml';
-import * as moment from 'moment';
 
 
 var YAML_DATE_REGEXP = new RegExp(
@@ -94,7 +93,11 @@ const customTimestampType = new Type('tag:yaml.org,2002:timestamp', {
   construct: constructYamlTimestamp,
   instanceOf: Date,
   represent: (obj) => {
-    return moment(obj).toISOString();
+    if ((obj as any).toISOString) {
+      return (obj as Date).toISOString();
+    } else {
+      throw new Error("Unable to represent a date");
+    }
   },
 });
 
