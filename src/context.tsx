@@ -20,8 +20,6 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
-  copyObjects: async () => void 0,
-
   requestCopiedObjects: async () => ({}),
 
   useObjectData: getValueHookPlaceholder({
@@ -53,6 +51,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
   }),
 
   getFilteredIndexPosition: async () => ({ position: null }),
+
+  copyObjects: async () => void 0,
 
   //usePersistentDatasetStateReducer: () => [{}, () => {}, false] as [any, () => any, boolean],
 
