@@ -4,6 +4,8 @@ import {
   ValueHook,
 } from './types';
 import { INITIAL_INDEX_STATUS } from './types/indexes';
+import { initialHook as initialPersistentStateReducerHook } from './usePersistentStateReducer';
+import { initialHook as initialTimeTravelingPersistentStateReducerHook } from './useTimeTravelingPersistentStateReducer';
 
 
 function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
@@ -51,6 +53,9 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
   }),
 
   getFilteredIndexPosition: async () => ({ position: null }),
+
+  usePersistentDatasetStateReducer: initialPersistentStateReducerHook,
+  useTimeTravelingPersistentDatasetStateReducer: initialTimeTravelingPersistentStateReducerHook,
 
   copyObjects: async () => void 0,
 
