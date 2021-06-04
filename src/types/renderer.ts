@@ -5,6 +5,7 @@ import { BufferDataset } from './buffers';
 import { CommitOutcome, ChangeStatus } from './changes';
 import { IndexStatus } from './indexes';
 import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
+import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
 
 
 export interface DatasetContext {
@@ -27,7 +28,8 @@ export interface DatasetContext {
   getFilteredIndexPosition: (opts: FilteredObjectIndexPositionRequest) =>
     Promise<FilteredObjectIndexPositionResponse>
 
-  usePersistentDatasetStateReducer?: Hooks.UsePersistentDatasetStateReducer<any, any>
+  usePersistentDatasetStateReducer: Hooks.UsePersistentDatasetStateReducer<any, any>
+  useTimeTravelingPersistentDatasetStateReducer: Hooks.UseTimeTravelingPersistentDatasetStateReducer<any, any>
 
   // Paneron internal clipboard
   copyObjects: (objects: ObjectDataset) => Promise<void>
@@ -125,6 +127,7 @@ export namespace Hooks {
       { asString: string }
 
   export type UsePersistentDatasetStateReducer<S, A extends BaseAction> = PersistentStateReducerHook<S, A>
+  export type UseTimeTravelingPersistentDatasetStateReducer<S, A extends BaseAction> = TimeTravelingPersistentStateReducerHook<S, A>
 
   export namespace Indexes {
 
