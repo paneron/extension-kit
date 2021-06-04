@@ -1,3 +1,8 @@
+/**
+ * An (abstract) hook that wraps React’s useReducer hook and handles storing and loading reducer state
+ * using provided functions.
+ */
+
 import { useReducer, useEffect, useState } from 'react';
 import type { Reducer, Dispatch } from 'react';
 
@@ -20,18 +25,25 @@ export interface LoadStateAction<S> extends BaseAction {
 }
 
 
-export type PersistentStateReducerHook<S, A extends BaseAction> =
+export type StateReducerHook<S, A extends BaseAction> =
   (
     reducer: Reducer<S, A>,
     initialState: S,
     initializer: ((initialState: S) => S) | null,
+  ) => [state: S, dispatch: Dispatch<A>];
 
+export type PersistentStateReducerHook<S, A extends BaseAction> =
+  (
     /* Each component should specify a unique storage key. */
     storageKey: string,
 
     /* Calls to store state will be debounced according to this delay
        in case state change too often. */
     storageDebounceMS?: number,
+
+    validateLoadedState?: (loadedValue: any) => loadedValue is S,
+
+    ...args: Parameters<StateReducerHook<S, A>>
   ) => [state: S, dispatch: Dispatch<A>, stateRecalled: boolean];
 
 
@@ -60,7 +72,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
   loadState: (key: string) => Promise<S | undefined>,
   ...args: Parameters<PersistentStateReducerHook<S, A>>
 ): [state: S, dispatch: Dispatch<A>, initialized: boolean] {
-  const [reducer, initialState, initializer, storageKey, storageDebounceMS] = args;
+  const [storageKey, storageDebounceMS, , reducer, initialState, initializer] = args;
 
   const debounceDelay = storageDebounceMS ?? DEFAULT_DEBOUNCE_DELAY;
 
@@ -98,3 +110,6 @@ function usePersistentStateReducer<S, A extends BaseAction>(
 
 
 export default usePersistentStateReducer;
+
+
+export const initialHook: PersistentStateReducerHook<any, any> = () => [{}, () => ({}), false];
