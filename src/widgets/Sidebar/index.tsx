@@ -31,6 +31,9 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
   const Sidebar: React.FC<SidebarProps> =
   function ({ title, stateKey, blocks, representsSelection, className }) {
     const [state, dispatch, stateLoaded] = persistentStateReducerHook(
+      stateKey,
+      undefined,
+      undefined,
       (prevState, action) => {
         switch (action.type) {
           case 'expand-all':
@@ -48,12 +51,14 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
           default:
             throw new Error("Unexpected sidebar state");
         }
-      }, {
+      },
+      {
         blockState:
           blocks.
             map(b => ({ [b.key]: b.collapsedByDefault === true ? false : true })).
             reduce((prev, curr) => ({ ...prev, ...curr })),
-      }, null, stateKey);
+      },
+      null);
 
     return (
       <div css={css`display: flex; flex-flow: column nowrap;`} className={className}>
