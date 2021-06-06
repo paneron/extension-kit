@@ -10,7 +10,7 @@ import ItemCount, { ItemCountProps } from './ItemCount';
 
 
 const Workspace: React.FC<{
-  navbarProps: NavbarProps
+  navbarProps?: NavbarProps
   toolbar?: JSX.Element
   sidebar?: JSX.Element
   statusBarProps?: ItemCountProps
@@ -21,24 +21,26 @@ const Workspace: React.FC<{
     <div css={css`display: flex; flex-flow: column nowrap; overflow: hidden;`} className={className} style={style}>
       <div css={css`flex: 1; display: flex; flex-flow: row nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
-          <div
-              css={css`
-                display: flex; flex-flow: row nowrap; align-items: center;
-                background: linear-gradient(to bottom, ${Colors.LIGHT_GRAY5}, ${Colors.LIGHT_GRAY4});
-                height: 24px;
-                overflow: hidden;
-                z-index: 1;
-              `}
-              className={Classes.ELEVATION_2}>
-            <Navbar {...navbarProps} />
-          </div>
+          {navbarProps
+            ? <div
+                  css={css`
+                    display: flex; flex-flow: row nowrap; align-items: center;
+                    background: linear-gradient(to bottom, ${Colors.LIGHT_GRAY5}, ${Colors.LIGHT_GRAY4});
+                    height: 24px;
+                    overflow: hidden;
+                    z-index: 5;
+                  `}
+                  className={Classes.ELEVATION_2}>
+                <Navbar {...navbarProps} />
+              </div>
+            : null}
 
           {toolbar
             ? <div
                   css={css`
                     display: flex; flex-flow: row nowrap; align-items: center;
                     background: ${Colors.LIGHT_GRAY3};
-                    height: 18px;
+                    height: 24px;
                     overflow: hidden;
                     z-index: 1;
                   `}
