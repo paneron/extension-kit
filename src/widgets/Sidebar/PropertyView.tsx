@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import { Colors, Icon, IInputGroupProps2, InputGroup, UL } from '@blueprintjs/core';
+import { Colors, Icon, InputGroupProps2, InputGroup, UL } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
 import { jsx, css } from '@emotion/core';
 import React from 'react';
@@ -62,7 +62,7 @@ interface TextInputProps {
   value: string
   onChange?: (newValue: string) => void
   onConfirm?: () => void
-  inputGroupProps?: IInputGroupProps2 
+  inputGroupProps?: InputGroupProps2 
   validationErrors?: string[]
 }
 export const TextInput: React.FC<TextInputProps> =
