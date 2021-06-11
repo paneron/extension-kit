@@ -102,7 +102,7 @@ Here are the modules you can import:
 * "react-window"
 * "@emotion/react"
 * "@emotion/styled"
-* "emotion"
+* "date-fns"
 * "@riboseinc/paneron-extension-kit"
 * "@riboseinc/paneron-registry-kit"
 * "@blueprintjs/core"
