@@ -3,7 +3,7 @@
 
 /* Workspace has a main area, a sidebar, and a status bar with item count & possibly refresh & other actions. */
 
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import React from 'react';
 import { Button, ButtonGroup, Classes, Colors, Icon, IconName } from '@blueprintjs/core';
 import ItemCount, { ItemCountProps } from './ItemCount';

@@ -3,7 +3,7 @@
 
 import { Colors, Icon, InputGroupProps2, InputGroup, UL } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import React from 'react';
 
 

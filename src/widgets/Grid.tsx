@@ -3,7 +3,7 @@
 
 import log from 'electron-log';
 import { debounce } from 'throttle-debounce';
-import { jsx, css } from '@emotion/core';
+import { jsx, css } from '@emotion/react';
 import React, { ComponentType, useEffect, useRef } from 'react';
 import { FixedSizeGrid as Grid, GridChildComponentProps, areEqual } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
