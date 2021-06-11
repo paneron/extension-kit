@@ -39,7 +39,7 @@ export interface DatasetContext {
 
   getObjectView:
     (opts: { objectPath: string, viewID?: string }) =>
-      React.FC<DatasetContext & { objectPath: string }>
+      React.FC<DatasetContext & { objectPath: string, className?: string }>
 
   // Provides a full system-absolute path to given path relative to dataset,
   // which is useful in rare cases.
