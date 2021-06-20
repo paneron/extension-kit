@@ -86,6 +86,8 @@ SerDesRule<T> {
 }
 
 
+// Object flattening and unflattening is based
+// on original implementation from Tofandel’s answer: https://stackoverflow.com/a/59787588/247441
 
 /* Aggregates parts (mapped to slash-separated paths) into a nested object.
 
