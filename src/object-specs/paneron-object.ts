@@ -129,40 +129,6 @@ export function unflattenObject<T extends Record<string, any>>
   return result as T;
 }
 
-//export function unflattenObject<T extends Record<string, any>>(
-//  parts: Record<string, any>,
-//): T {
-//  const obj: Record<string, any> = {};
-//  // Ideally should be typed as Partial<T>, but that causes problems down the line.
-//
-//  Object.keys(obj).sort().map((partPath) => {
-//    const pathParts = stripLeadingSlash(partPath).split('/');
-//
-//    // Initialize currentLevel to root
-//    let currentLevel = obj;
-//
-//    const data = parts[partPath];
-//
-//    // Assign data to appropriately nested key in the object
-//    pathParts.map((part) => {
-//      // Check to see if key already exists
-//      const existingPath = currentLevel[part];
-//
-//      if (existingPath) {
-//        // Set current level to nested key’s level
-//        currentLevel = existingPath;
-//      } else {
-//        // Add key and part data to current level
-//        currentLevel[part] = data;
-//        // Set current level to key’s level
-//        currentLevel = currentLevel[part];
-//      }
-//    });
-//  });
-//
-//  return obj as T;
-//}
-
 
 /* Recursively decomposes an arbitrarily nested object into a flat record
    of slash-separated part paths mapped to respective structures.
