@@ -1,6 +1,6 @@
 import { Extension } from './extension';
 import { MigrationModule } from './migrations';
-import { SerializableObjectSpec } from './object-spec';
+import { ObjectSpec } from './object-spec';
 
 
 export interface ExtensionMakerProps {
@@ -10,18 +10,16 @@ export interface ExtensionMakerProps {
   /* Principal dataset view. */
   mainView: () => Promise<{ default: React.FC<Record<never, never>> }>
 
-  /* When reading or writing given object,
-     the first object spec for which the `matches` rule matches it
-     is used to deserialize/serialize runtime object structure from/to buffers.
-
-     When reading dataset, raw byte data for matching path
-     (including descendants, if it’s a directory)
-     is passed to spec’s deserialize(). */
-  objects: SerializableObjectSpec[]
+  /* Object specs allow an extension to provide information about
+     logical objects extension manipulates,
+     such as object view/edit GUI components.
+     Eventually this could also make mainView optional.
+  */
+  objects?: ObjectSpec[]
 
   /* Instructs which migration to run if new dataset is being initialized.
      The migration is supposed to return version matching latest extension version. */
-  datasetInitializer: () => MigrationModule
+  datasetInitializer?: () => MigrationModule
 
   /* Instructs a migration to run if current dataset version matches
      one of these specs (in semver format).
@@ -63,10 +61,11 @@ export interface ExtensionMakerProps {
      to carefully specify migration version specs,
      as they could create infinite migration loops if they wanted to.
   */
-  datasetMigrations: {
+  datasetMigrations?: {
     [versionSpec: string]: () => MigrationModule
   }
 }
 
 
-export type ExtensionMaker = (extensionOptions: ExtensionMakerProps) => Promise<Extension>;
+export type ExtensionMaker =
+  (extensionOptions: ExtensionMakerProps) => Promise<Extension>;

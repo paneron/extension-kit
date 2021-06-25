@@ -1,46 +1,47 @@
 {
   "name": "@riboseinc/paneron-extension-kit",
-  "version": "1.0.2",
+  "version": "2.0.0-alpha1",
   "main": "index.js",
   "repository": "https://github.com/paneron/extension-kit",
   "author": "Ribose Inc. <open.source@ribose.com>",
   "scripts": {
-    "build": "rm -r compiled dist; mkdir compiled dist; tsc --outDir compiled; babel compiled --out-dir dist; cp package.json dist/; rsync -a --include '*/' --include '*.d.ts' --include '*.js.map' --exclude '*' compiled/ dist/"
+    "build": "mkdir -p compiled dist; rm -r compiled/* dist/*; tsc --outDir compiled --allowJs; babel compiled --out-dir dist; cp package.json dist/; rsync -a --include '*/' --include '*.d.ts' --include '*.js.map' --exclude '*' compiled/ dist/"
   },
   "files": [
     "*.js",
     "*.js.map",
     "*.d.ts",
-    "types/**/*.js",
-    "types/**/*.js.map",
-    "types/**/*.d.ts",
-    "widgets/**/*.js",
-    "widgets/**/*.js.map",
-    "widgets/**/*.d.ts",
-    "i18n/**/*.js",
-    "i18n/**/*.js.map",
-    "i18n/**/*.d.ts"
+    "**/*.js",
+    "**/*.js.map",
+    "**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
     "electron": "^10.1.3",
     "electron-log": "^4.2.2"
   },
+  "resolutions": {
+    "@types/react": "16.9.49"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
-    "@blueprintjs/core": "^3.35.0",
-    "@emotion/core": "^10.0.35",
+    "@blueprintjs/core": "^3.42.0",
+    "@blueprintjs/popover2": "^0.7.1",
+    "@emotion/react": "^11.4.0",
     "@types/electron": "^1.6.10",
-    "@types/js-yaml": "^3.12.5",
+    "@types/js-yaml": "^4.0.1",
     "@types/react": "^16.9.49",
+    "@types/react-virtualized-auto-sizer": "^1.0.0",
+    "@types/react-window": "^1.8.2",
+    "@types/semver": "^7.3.4",
+    "@types/throttle-debounce": "^2.1.0",
+    "date-fns": "^2.22.1",
     "electron": "^10.1.3",
     "electron-log": "^4.3.0",
+    "immer": "^9.0.2",
+    "semver": "^7.3.2",
     "typescript": "^4.0.2"
-  },
-  "dependencies": {
-    "@types/semver": "^7.3.4",
-    "semver": "^7.3.2"
   }
 }

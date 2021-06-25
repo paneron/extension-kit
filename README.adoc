@@ -100,9 +100,9 @@ Here are the modules you can import:
 
 * "react"
 * "react-window"
-* "@emotion/core"
+* "@emotion/react"
 * "@emotion/styled"
-* "emotion"
+* "date-fns"
 * "@riboseinc/paneron-extension-kit"
 * "@riboseinc/paneron-registry-kit"
 * "@blueprintjs/core"
@@ -126,7 +126,7 @@ Here’s how a simple component can be written using Emotion:
 /** @jsx jsx */
 
 import React, { useContext, useState } from 'react';
-import { css, jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/react';
 import { ExtensionViewContext } from '@riboseinc/paneron-extension-kit/context';
 
 const MyRepositoryView: React.FC<Record<never, never>> = function () {
@@ -147,7 +147,7 @@ use `@jsxFrag` pragma:
 /** @jsxFrag React.Fragment */
 
 import React, { useContext, useState } from 'react';
-import { css, jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/react';
 import { ExtensionViewContext } from '@riboseinc/paneron-extension-kit/context';
 
 const MyRepositoryView: React.FC<Record<never, never>> = function () {

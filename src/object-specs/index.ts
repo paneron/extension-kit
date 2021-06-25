@@ -1,9 +1,22 @@
-import { SerializableObjectSpec } from '../types/object-spec';
-import { JSONFileSpec, KnownBinaryFileSpec, YAMLFileSpec } from './basic';
+import type { PathMatcher } from '../types/object-spec';
 
 
-export const DEFAULT_SPECS: SerializableObjectSpec[] = [
-  KnownBinaryFileSpec,
-  YAMLFileSpec,
-  JSONFileSpec,
-];
+export function matchesPath(p: string, rule: PathMatcher): boolean {
+  // Match by default
+  let matched: boolean = true;
+
+  // Narrow by path prefix
+  if (rule.pathPrefix) {
+    matched = p.startsWith(rule.pathPrefix);
+  }
+
+  // Narrow by path-matching function
+  if (matched && rule.path) {
+    matched = matched && rule.path(p);
+  }
+
+  return matched;
+}
+
+
+export { findSerDesRuleForPath } from './ser-des';
