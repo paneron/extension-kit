@@ -1,7 +1,7 @@
 import type React from 'react';
-import { ObjectSpec } from './object-spec';
-import { MigrationModule } from './migrations';
-import { DatasetContext } from './renderer';
+import type { ObjectSpec } from './object-spec';
+import type { MigrationModule } from './migrations';
+import type { DatasetContext } from './renderer';
 
 
 /* The interface that extension instance exposes to Paneron in main thread. */
