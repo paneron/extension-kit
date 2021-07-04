@@ -21,8 +21,6 @@ export interface MainPlugin {
 }
 
 
-
-
 /* The interface that extension instance exposes to Paneron in renderer thread. */
 export interface RendererPlugin {
   mainView?: React.FC<DatasetContext>
