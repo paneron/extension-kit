@@ -1,8 +1,8 @@
 import semver from 'semver';
 import 'electron';
 import log from 'electron-log';
-import { Extension } from './types/extension';
-import { ExtensionMaker } from './types/extension-maker';
+import type { Extension } from './types/extension';
+import type { ExtensionMaker } from './types/extension-maker';
 import { withDatasetContext } from './context';
 import { matchesPath } from './object-specs';
 
