@@ -58,7 +58,7 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
   },
   serialize: (data) =>
     ({ [sep]: Buffer.from(yaml.dump(data), 'utf8') }),
-}
+};
 
 
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
