@@ -36,6 +36,7 @@ export enum AtomicSerDesRuleName {
   jsonFile = 'jsonfile',
   yamlFile = 'yamlfile',
   binaryFile = 'binaryfile',
+  mmelFile = 'mmelfile',
 }
 
 export enum CompositeSerDesRuleName {

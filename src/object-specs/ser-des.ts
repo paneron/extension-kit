@@ -3,6 +3,7 @@
 */
 
 import path from 'path';
+import * as mmel from '@riboseinc/mmel-ts/ser-des';
 import {
   SerDesRule,
   AtomicSerDesRuleName,
@@ -61,6 +62,12 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 };
 
 
+export const mmelFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
+  deserialize: (buffers) => mmel.load(utf8Decoder.decode(buffers[sep])),
+  serialize: (data) => ({ [sep]: Buffer.from(mmel.dump(data), 'utf8') }),
+};
+
+
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
@@ -75,6 +82,7 @@ export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; 
 
 export const rulesByExtension: { [ext: string]: SerDesRuleName } = {
   '.json': AtomicSerDesRuleName.jsonFile,
+  '.mmel': AtomicSerDesRuleName.mmelFile,
   '.yaml': AtomicSerDesRuleName.yamlFile,
   '.yml': AtomicSerDesRuleName.yamlFile,
   '.jpg': AtomicSerDesRuleName.binaryFile,
@@ -94,6 +102,7 @@ const ATOMIC_SER_DES_RULES: { [key in AtomicSerDesRuleName]: SerDesRule } = {
   [AtomicSerDesRuleName.jsonFile]: jsonFile,
   [AtomicSerDesRuleName.yamlFile]: yamlFile,
   [AtomicSerDesRuleName.binaryFile]: binaryFile,
+  [AtomicSerDesRuleName.mmelFile]: mmelFile,
   [AtomicSerDesRuleName.textFile]: textFile,
 };
 
