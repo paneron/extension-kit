@@ -15,6 +15,8 @@ import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPers
 export interface DatasetContext {
   title: string
 
+  logger?: { log: (...args: any[]) => void }
+
   // Below functions, when take or return object paths, use dataset-relative paths
   // and convert them to and from repo-relative paths under the hood as needed.
 

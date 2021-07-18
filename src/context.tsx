@@ -28,6 +28,10 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
     data: {},
   }),
 
+  logger: {
+    log: (...args: any[]) => console.log(...args)
+  },
+
   getObjectData: async () => ({ data: {} }),
 
   useDecodedBlob: () => ({
