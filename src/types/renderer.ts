@@ -81,7 +81,7 @@ export interface DatasetContext {
   // Invokes file selection dialog and returns file data as buffer when user confirms.
   // This does not mutate dataset / Git repo contents, changeObjects still
   // must be invoked later in order to commit newly added or replaced file.
-  requestFileFromFilesystem?: (opts: OpenDialogProps) => Promise<BufferDataset>
+  requestFileFromFilesystem?: (opts: OpenDialogProps, cb?: (data: BufferDataset) => void) => Promise<BufferDataset>
 
   // Invokes file save dialog, writes provided buffer data to chosen file path and returns that path.
   writeFileToFilesystem?:
