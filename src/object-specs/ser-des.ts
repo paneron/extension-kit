@@ -3,7 +3,7 @@
 */
 
 import path from 'path';
-import * as mmel from '@riboseinc/mmel-ts/ser-des';
+//import * as mmel from '@riboseinc/mmel-ts/ser-des';
 import {
   SerDesRule,
   AtomicSerDesRuleName,
@@ -62,9 +62,10 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 };
 
 
+// TODO: MMEL support is not implemented in core.
 export const mmelFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
-  deserialize: (buffers) => mmel.load(utf8Decoder.decode(buffers[sep])),
-  serialize: (data) => ({ [sep]: Buffer.from(mmel.dump(data), 'utf8') }),
+  deserialize: (buffers) => ({})/*mmel.load(utf8Decoder.decode(buffers[sep]))*/,
+  serialize: (data) => ({ [sep]: Buffer.from('hi'/*mmel.dump(data), 'utf8'*/) }),
 };
 
 
