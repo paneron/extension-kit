@@ -5,8 +5,9 @@
 
 import { jsx, css } from '@emotion/react';
 import React from 'react';
-import { Button, ButtonGroup, Classes, Colors, Icon, IconName } from '@blueprintjs/core';
+import { Classes, Colors } from '@blueprintjs/core';
 import ItemCount, { ItemCountProps } from './ItemCount';
+import Navbar, { NavbarProps }from './Navbar';
 
 
 const Workspace: React.FC<{
@@ -31,7 +32,7 @@ const Workspace: React.FC<{
                     z-index: 5;
                   `}
                   className={Classes.ELEVATION_2}>
-                <Navbar {...navbarProps} />
+                <Navbar css={css`flex: 1;`} {...navbarProps} />
               </div>
             : null}
 
@@ -69,71 +70,3 @@ const Workspace: React.FC<{
 
 
 export default Workspace;
-
-
-interface BreadcrumbProps {
-  label: JSX.Element
-  onNavigate?: () => void
-  icon?: IconName
-  className?: string
-}
-
-interface NavbarProps {
-  breadcrumbs: BreadcrumbProps[]
-  hideBackForwardNav?: true
-  onGoBack?: () => void
-  onGoForward?: () => void
-}
-
-const Navbar: React.FC<NavbarProps> = function ({ breadcrumbs, onGoBack, onGoForward, hideBackForwardNav }) {
-  return (
-    <>
-      <div
-          css={css`
-            flex: 1;
-            box-sizing: border-box;
-            display: flex; flex-flow: row nowrap; align-items: center;
-            font-size: 80%; line-height: 0;
-          `}>
-        {breadcrumbs.map((crumb, idx) =>
-          <React.Fragment key={idx}>
-            <Breadcrumb {...crumb} />
-            {idx !== breadcrumbs.length - 1
-              ? <Icon icon="chevron-right" iconSize={10} key={idx} />
-              : null}
-          </React.Fragment>
-        )}
-      </div>
-      {!hideBackForwardNav
-        ? <ButtonGroup>
-            <Button disabled={!onGoBack} icon="arrow-left" title="Back" />
-            <Button disabled={!onGoForward} icon="arrow-right" title="Forward" />
-          </ButtonGroup>
-        : null}
-    </>
-  );
-}
-
-const Breadcrumb: React.FC<BreadcrumbProps> = function ({ className, label, icon, onNavigate }) {
-  return (
-    <div
-      css={css`
-          padding: 0 10px;
-          display: flex;
-          flex-flow: row nowrap;
-          align-items: center;
-          ${onNavigate ? 'cursor: pointer;' : ''}
-        `}
-      onClick={onNavigate}
-      className={className}>
-
-      {icon
-        ? <div css={css`margin-right: .5rem;`}>
-            {icon}
-          </div>
-        : null}
-
-      {label}
-    </div>
-  );
-}
