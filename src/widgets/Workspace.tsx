@@ -80,11 +80,12 @@ interface BreadcrumbProps {
 
 interface NavbarProps {
   breadcrumbs: BreadcrumbProps[]
+  hideBackForwardNav?: true
   onGoBack?: () => void
   onGoForward?: () => void
 }
 
-const Navbar: React.FC<NavbarProps> = function ({ breadcrumbs, onGoBack, onGoForward }) {
+const Navbar: React.FC<NavbarProps> = function ({ breadcrumbs, onGoBack, onGoForward, hideBackForwardNav }) {
   return (
     <>
       <div
@@ -103,10 +104,12 @@ const Navbar: React.FC<NavbarProps> = function ({ breadcrumbs, onGoBack, onGoFor
           </React.Fragment>
         )}
       </div>
-      <ButtonGroup>
-        <Button disabled={!onGoBack} icon="arrow-left" title="Back" />
-        <Button disabled={!onGoForward} icon="arrow-right" title="Forward" />
-      </ButtonGroup>
+      {!hideBackForwardNav
+        ? <ButtonGroup>
+            <Button disabled={!onGoBack} icon="arrow-left" title="Back" />
+            <Button disabled={!onGoForward} icon="arrow-right" title="Forward" />
+          </ButtonGroup>
+        : null}
     </>
   );
 }
