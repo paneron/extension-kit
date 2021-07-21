@@ -73,6 +73,7 @@ export default Workspace;
 
 interface BreadcrumbProps {
   label: JSX.Element
+  onNavigate?: () => void
   icon?: IconName
   className?: string
 }
@@ -110,7 +111,7 @@ const Navbar: React.FC<NavbarProps> = function ({ breadcrumbs, onGoBack, onGoFor
   );
 }
 
-const Breadcrumb: React.FC<BreadcrumbProps> = function ({ className, label, icon }) {
+const Breadcrumb: React.FC<BreadcrumbProps> = function ({ className, label, icon, onNavigate }) {
   return (
     <div
       css={css`
@@ -118,8 +119,9 @@ const Breadcrumb: React.FC<BreadcrumbProps> = function ({ className, label, icon
           display: flex;
           flex-flow: row nowrap;
           align-items: center;
-          transform: skew(45deg);
+          ${onNavigate ? 'cursor: pointer;' : ''}
         `}
+      onClick={onNavigate}
       className={className}>
 
       {icon
