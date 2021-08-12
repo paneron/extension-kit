@@ -3,6 +3,7 @@ import 'electron';
 import log from 'electron-log';
 import type { Extension } from './types/extension';
 import type { ExtensionMaker } from './types/extension-maker';
+import type { DatasetMigrationFunction } from './types/migrations';
 import { withDatasetContext } from './context';
 import { matchesPath } from './object-specs';
 
@@ -15,6 +16,13 @@ export const makeExtension: ExtensionMaker = async (options) => {
   const objectSpecs = options.objects ?? [];
 
   if (process.type === 'browser') {
+    const migration: DatasetMigrationFunction = options.datasetInitializer
+      ? (await options.datasetInitializer()).default
+      : async () => ({
+          bufferChangeset: {},
+          versionAfter: '1.0',
+        });
+
     plugin = {
 
       isCompatible: (hostAppVersion: string) => (
@@ -36,12 +44,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
         )[0]
       ),
 
-      getInitialMigration: options.datasetInitializer || (async () => ({
-        default: async () => ({
-          bufferChangeset: {},
-          versionAfter: '1.0',
-        }),
-      })),
+      initialMigration: migration,
     };
 
   } else if (process.type === 'renderer') {

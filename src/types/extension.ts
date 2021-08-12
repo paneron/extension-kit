@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { ObjectSpec } from './object-spec';
-import type { MigrationModule } from './migrations';
+import type { DatasetMigrationFunction, MigrationModule } from './migrations';
 import type { DatasetContext } from './renderer';
 
 
@@ -15,7 +15,7 @@ export interface MainPlugin {
     migration: () => MigrationModule 
   } | undefined
 
-  getInitialMigration: () => MigrationModule
+  initialMigration: DatasetMigrationFunction
 
   getObjectSpecs: () => ObjectSpec[]
 }
