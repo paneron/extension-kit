@@ -1,4 +1,5 @@
 import React from 'react';
+import { INITIAL_GLOBAL_SETTINGS } from './settings';
 import {
   DatasetContext as DatasetContextSpec,
   ValueHook,
@@ -6,6 +7,7 @@ import {
 import { INITIAL_INDEX_STATUS } from './types/indexes';
 import { initialHook as initialPersistentStateReducerHook } from './usePersistentStateReducer';
 import { initialHook as initialTimeTravelingPersistentStateReducerHook } from './useTimeTravelingPersistentStateReducer';
+import { GlobalSettingsContext } from './SettingsContext';
 
 
 function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
@@ -72,6 +74,12 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   makeAbsolutePath: () => '',
 
+  useSettings: getValueHookPlaceholder({ settings: {} }),
+
+  useGlobalSettings: getValueHookPlaceholder({ settings: INITIAL_GLOBAL_SETTINGS }),
+
+  updateSetting: async () => ({ success: true as true }),
+
 } as const;
 
 
@@ -82,11 +90,16 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
      and renders dataset view wrapped inside dataset context provider. */
 export function withDatasetContext(Component: React.FC<any>):
 React.FC<DatasetContextSpec> {
-  return (props: DatasetContextSpec) => (
-    <DatasetContext.Provider value={props}>
-      <Component />
-    </DatasetContext.Provider>
-  );
+  return (props: DatasetContextSpec) => {
+    const settings = props.useGlobalSettings();
+    return (
+      <DatasetContext.Provider value={props}>
+        <GlobalSettingsContext.Provider value={{ settings: settings.value.settings, refresh: settings.refresh }}>
+          <Component />
+        </GlobalSettingsContext.Provider>
+      </DatasetContext.Provider>
+    );
+  };
 }
 
 

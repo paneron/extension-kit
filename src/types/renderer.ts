@@ -10,6 +10,7 @@ import { CommitOutcome, ChangeStatus } from './changes';
 import { IndexStatus } from './indexes';
 import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
 import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
+import { Settings, GlobalSettings } from '../settings';
 
 
 export interface DatasetContext {
@@ -40,6 +41,10 @@ export interface DatasetContext {
   // Paneron internal clipboard
   copyObjects: (objects: ObjectDataset) => Promise<void>
   requestCopiedObjects: () => Promise<ObjectDataset>
+
+  useGlobalSettings: Hooks.Settings.UseGlobalSettings
+  useSettings: Hooks.Settings.UseSettings
+  updateSetting: Hooks.Settings.UpdateSetting
 
   //useObjectChangeStatus: ObjectChangeStatusHook
 
@@ -134,6 +139,17 @@ export namespace Hooks {
 
   export type UsePersistentDatasetStateReducer<S, A extends BaseAction> = PersistentStateReducerHook<S, A>
   export type UseTimeTravelingPersistentDatasetStateReducer<S, A extends BaseAction> = TimeTravelingPersistentStateReducerHook<S, A>
+
+  export namespace Settings {
+    export type UseGlobalSettings =
+      () => ValueHook<{ settings: GlobalSettings }>
+
+    export type UseSettings =
+      () => ValueHook<{ settings: Settings }>
+
+    export type UpdateSetting =
+      (opts: { key: string, value: any }) => Promise<{ success: true }>
+  }
 
   export namespace Indexes {
 
