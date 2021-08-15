@@ -10,6 +10,8 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { Colors, Icon, IconProps } from '@blueprintjs/core';
 
 
+const COMPACT = false;
+
 export interface GridData<P extends Record<string, any> = Record<never, never>> {
   items: string[][] // items chunked into rows
   selectedItem: string | null
@@ -59,9 +61,12 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
             css={css`
               position: relative;
               transition: box-shadow .25s linear;
+              ${!COMPACT ? 'border: 1px solid transparent' : ''};
               ${isSelected
-                ? 'box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.4); z-index: 3;'
-                : ''}
+                ? COMPACT
+                  ? 'box-shadow: 2px 2px 14px rgba(0, 0, 0, 0.4); z-index: 3;'
+                  : 'border-color: silver; border-style: dotted;'
+                : ''};
             `}
             style={style}>
           <CellContents
@@ -165,8 +170,10 @@ function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType,
         onDoubleClick={onOpen}
         className={className}
         css={css`
-          position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-          ${!isSelected
+          position: absolute;
+          ${COMPACT ? 'inset: 0' : 'inset: 5px'};
+          ${!COMPACT ? 'border-radius: 5px' : ''};
+          ${!isSelected || !COMPACT
             ? `box-shadow: 1px 1px 0 ${Colors.LIGHT_GRAY5} inset, -1px -1px 0 ${Colors.LIGHT_GRAY1} inset;`
             : ''}
           overflow: hidden;
@@ -179,6 +186,7 @@ function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType,
               z-index: 3; font-size: 85%; line-height: 1.4; margin: 1px 1px 0 1px;
               padding: ${qPad - 1}px ${padding}px ${qPad}px ${padding}px;
               background: ${isSelected ? Colors.BLUE2 : Colors.LIGHT_GRAY3};
+              ${!COMPACT ? 'border-radius: 5px 5px 0 0' : ''}
               letter-spacing: -0.03em;
               white-space: nowrap;
               ${isSelected ? 'font-variation-settings: \'GRAD\' 600;' : ''};
