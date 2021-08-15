@@ -4,10 +4,11 @@
 /* Workspace has a main area, a sidebar, and a status bar with item count & possibly refresh & other actions. */
 
 import { jsx, css } from '@emotion/react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Classes, Colors } from '@blueprintjs/core';
 import ItemCount, { ItemCountProps } from './ItemCount';
 import Navbar, { NavbarProps }from './Navbar';
+import { GlobalSettingsContext } from '../SettingsContext';
 
 
 const Workspace: React.FC<{
@@ -18,9 +19,11 @@ const Workspace: React.FC<{
   className?: string
   style?: React.CSSProperties
 }> = function ({ navbarProps, toolbar, sidebar, statusBarProps, className, style, children }) {
+  const { settings } = useContext(GlobalSettingsContext);
+
   return (
     <div css={css`display: flex; flex-flow: column nowrap; overflow: hidden;`} className={className} style={style}>
-      <div css={css`flex: 1; display: flex; flex-flow: row nowrap; overflow: hidden;`}>
+      <div css={css`flex: 1; display: flex; flex-flow: ${settings.sidebarPosition === 'right' ? 'row' : 'row-reverse'} nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
           {navbarProps
             ? <div

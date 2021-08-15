@@ -1,10 +1,11 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Colors, Icon, InputGroupProps2, InputGroup, UL } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
+import { GlobalSettingsContext } from '../../SettingsContext';
 
 
 interface PropertyViewProps {
@@ -14,6 +15,7 @@ interface PropertyViewProps {
   className?: string 
 }
 const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tooltip, className, children }) {
+  const { settings } = useContext(GlobalSettingsContext);
   return (
     <div
         className={className}
@@ -33,7 +35,13 @@ const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tool
             padding-bottom: 2px;
             color: ${Colors.GRAY1};
           `}>
-        {tooltip ? <Tooltip2 content={tooltip}>{label}</Tooltip2> : label}
+        {tooltip
+          ? <Tooltip2
+                placement={settings?.sidebarPosition === 'left' ? 'right' : 'left'}
+                content={tooltip}>
+              {label}
+            </Tooltip2>
+          : label}
       </div>
       <div css={css`
             width: 60%;
