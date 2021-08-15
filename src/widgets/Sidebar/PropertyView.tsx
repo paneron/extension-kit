@@ -3,7 +3,7 @@
 
 import React, { useContext } from 'react';
 import { jsx, css } from '@emotion/react';
-import { Colors, Icon, InputGroupProps2, InputGroup, UL } from '@blueprintjs/core';
+import { Colors, Icon, InputGroupProps2, InputGroup, UL, HTMLSelect, IHTMLSelectProps } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
 import { GlobalSettingsContext } from '../../SettingsContext';
 
@@ -98,6 +98,29 @@ function ({ value, onChange, validationErrors, inputGroupProps }) {
         : undefined}
       {...inputGroupProps}
       onChange={onChange ? (evt: React.FormEvent<HTMLInputElement>) => onChange!(evt.currentTarget.value) : undefined}
+    />
+  )
+}
+
+interface SelectProps extends IHTMLSelectProps {
+}
+export const Select: React.FC<SelectProps> =
+function ({ value, options, onChange }) {
+  return (
+    <HTMLSelect
+      options={options}
+      onChange={onChange}
+      value={value}
+      css={css`
+        margin-top: -2px;
+        & select {
+          height: 18px;
+          font-size: unset;
+        }
+        & .bp3-icon-double-caret-vertical {
+          top: 2px;
+        }
+      `}
     />
   )
 }
