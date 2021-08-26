@@ -16,7 +16,7 @@ type Action =
   | { type: 'expand-all' | 'collapse-all' | 'reset-state' }
   | { type: 'collapse-one' | 'expand-one', payload: { blockKey: string } };
 
-interface SidebarProps {
+export interface SidebarProps {
   stateKey: string
   title: string | JSX.Element
   blocks: SidebarBlockConfig[]
