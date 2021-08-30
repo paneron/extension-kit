@@ -104,7 +104,9 @@ React.FC<{ getGridData: ItemDataGetter<P>, className?: string }> {
     const gridRef = useRef<Grid>(null);
 
     useEffect(() => {
-      const updateListHeight = () => gridRef.current ? maybeScrollToItemDebounced(gridRef.current) : void 0;
+      const updateListHeight = () => gridRef.current
+        ? maybeScrollToItemDebounced(gridRef.current)
+        : void 0;
       window.addEventListener('resize', updateListHeight);
       updateListHeight();
       return function cleanup() {
