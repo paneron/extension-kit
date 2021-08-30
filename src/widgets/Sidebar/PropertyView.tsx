@@ -82,7 +82,8 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
   const invalid = errs.length > 0;
   return (
     <InputGroup
-      fill small
+      fill
+      small
       disabled={!onChange}
       value={value}
       css={css`${invalid && onChange ? `.bp3-input { background: mistyrose }` : ''}`}
