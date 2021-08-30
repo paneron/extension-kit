@@ -41,7 +41,7 @@ export type PersistentStateReducerHook<S, A extends BaseAction> =
        in case state change too often. */
     storageDebounceMS?: number,
 
-    validateLoadedState?: (loadedValue: any) => loadedValue is S,
+    validateLoadedState?: (loadedValue: Partial<S> & any) => loadedValue is S,
 
     ...args: Parameters<StateReducerHook<S, A>>
   ) => [state: S, dispatch: Dispatch<A>, stateRecalled: boolean];
@@ -72,7 +72,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
   loadState: (key: string) => Promise<S | undefined>,
   ...args: Parameters<PersistentStateReducerHook<S, A>>
 ): [state: S, dispatch: Dispatch<A>, initialized: boolean] {
-  const [storageKey, storageDebounceMS, , reducer, initialState, initializer] = args;
+  const [storageKey, storageDebounceMS, validator, reducer, initialState, initializer] = args;
 
   const debounceDelay = storageDebounceMS ?? DEFAULT_DEBOUNCE_DELAY;
 
@@ -87,9 +87,20 @@ function usePersistentStateReducer<S, A extends BaseAction>(
     setInitialized(false);
     (async () => {
       const loadedState = await loadState(storageKey);
+      let effectiveState: S | undefined;
+      if (loadedState && validator) {
+        if (validator(loadedState)) {
+          effectiveState = loadedState;
+        } else {
+          effectiveState = initialState;
+        }
+      } else {
+        effectiveState = loadedState ?? initialState;
+      }
+      console.debug("Effective state", effectiveState);
       dispatch({
         type: LOAD_STATE_ACTION_TYPE,
-        payload: loadedState ?? initialState,
+        payload: effectiveState,
       });
       setInitialized(true);
     })();
