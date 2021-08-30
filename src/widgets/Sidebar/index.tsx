@@ -37,9 +37,13 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
       (prevState, action) => {
         switch (action.type) {
           case 'expand-all':
-            return { blockState: blocks.map(b => ({ [b.key]: true })).reduce((prev, curr) => ({ ...prev, ...curr })) };
+            return { blockState: blocks.
+              map(b => ({ [b.key]: true })).
+              reduce((prev, curr) => ({ ...prev, ...curr })) };
           case 'collapse-all':
-            return { blockState: blocks.map(b => ({ [b.key]: b.nonCollapsible !== true ? false : true })).reduce((prev, curr) => ({ ...prev, ...curr })) };
+            return { blockState: blocks.
+              map(b => ({ [b.key]: b.nonCollapsible !== true ? false : true })).
+              reduce((prev, curr) => ({ ...prev, ...curr })) };
           case 'reset-state':
             return { blockState: blocks.
               map(b => ({ [b.key]: b.collapsedByDefault === true ? false : true })).
