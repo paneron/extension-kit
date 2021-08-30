@@ -194,7 +194,6 @@ function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType,
             {entityType.iconProps
               ? <Icon
                   iconSize={10}
-                  icon="blank"
                   css={css`margin-right: ${hPad}px; position: relative; top: -2px;`}
                   color={isSelected ? 'white' : Colors.GRAY2}
                   intent={isSelected ? 'primary' : undefined}
