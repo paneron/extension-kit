@@ -70,11 +70,14 @@ interface TextInputProps {
   value: string
   onChange?: (newValue: string) => void
   onConfirm?: () => void
+  placeholder?: string
   inputGroupProps?: InputGroupProps2 
   validationErrors?: string[]
+  className?: string
+  style?: React.CSSProperties
 }
 export const TextInput: React.FC<TextInputProps> =
-function ({ value, onChange, validationErrors, inputGroupProps }) {
+function ({ value, placeholder, onChange, validationErrors, inputGroupProps, className, style }) {
   const errs = validationErrors ?? [];
   const invalid = errs.length > 0;
   return (
@@ -83,6 +86,7 @@ function ({ value, onChange, validationErrors, inputGroupProps }) {
       disabled={!onChange}
       value={value}
       css={css`${invalid && onChange ? `.bp3-input { background: mistyrose }` : ''}`}
+      placeholder={placeholder}
       rightElement={invalid
         ? <Tooltip2
               position="right"
@@ -98,6 +102,8 @@ function ({ value, onChange, validationErrors, inputGroupProps }) {
         : undefined}
       {...inputGroupProps}
       onChange={onChange ? (evt: React.FormEvent<HTMLInputElement>) => onChange!(evt.currentTarget.value) : undefined}
+      className={className}
+      style={style}
     />
   )
 }
