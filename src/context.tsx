@@ -15,6 +15,7 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
     value,
     errors: [],
     isUpdating: false,
+    findError: () => undefined,
     _reqCounter: -1,
     refresh: () => {},
   });
@@ -23,6 +24,8 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
+
+  performOperation: (_, f) => f,
 
   requestCopiedObjects: async () => ({}),
 
