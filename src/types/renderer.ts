@@ -46,6 +46,8 @@ export interface DatasetContext {
   useSettings: Hooks.Settings.UseSettings
   updateSetting: Hooks.Settings.UpdateSetting
 
+  performOperation: <R>(gerund: string, func: () => Promise<R>) => () => Promise<R>
+
   //useObjectChangeStatus: ObjectChangeStatusHook
 
   getObjectView:
