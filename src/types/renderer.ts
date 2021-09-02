@@ -115,6 +115,7 @@ export interface SaveDialogProps {
 export interface ValueHook<T> {
   value: T
   errors: string[]
+  findError: (q: string) => string | undefined
   isUpdating: boolean
   refresh: () => void
   _reqCounter: number
