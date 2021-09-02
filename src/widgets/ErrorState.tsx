@@ -5,7 +5,7 @@ import { Callout, NonIdealState } from '@blueprintjs/core';
 // TODO: Give suggestions to resolve (move from dataset view)
 export interface ErrorStateProps {
   technicalDetails?: string | JSX.Element;
-  error?: Error;
+  error?: string;
   viewName?: string;
 }
 
@@ -23,7 +23,7 @@ export const ErrorState: React.FC<ErrorStateProps> = function ({ technicalDetail
             {technicalDetails}
             {error
               ? <pre style={{ overflow: 'auto', paddingBottom: '1em' }}>
-                {error?.name || 'Unknown error'}: {error?.message || 'no details provided'}
+                {error || 'error information is unavailable'}
               </pre>
               : null}
           </Callout>
