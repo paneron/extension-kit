@@ -15,7 +15,6 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
     value,
     errors: [],
     isUpdating: false,
-    findError: () => undefined,
     _reqCounter: -1,
     refresh: () => {},
   });
