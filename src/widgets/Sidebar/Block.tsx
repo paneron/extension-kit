@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import { Button, ButtonGroup, Classes, Colors } from '@blueprintjs/core';
+import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
 import React from 'react';
 
@@ -36,6 +36,7 @@ function ({ expanded, onExpand, onCollapse, block, className }) {
         className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
       {block.nonCollapsible !== true
         ? <div
+              onClick={expanded ? onCollapse : onExpand}
               css={css`
                 height: 24px; overflow: hidden; background: linear-gradient(to top, ${Colors.LIGHT_GRAY2}, ${Colors.LIGHT_GRAY3});
                 display: flex; flex-flow: row nowrap; align-items: center;
@@ -46,10 +47,7 @@ function ({ expanded, onExpand, onCollapse, block, className }) {
             <div css={css`flex: 1; font-size: 90%; padding: 5px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`}>
               {block.title}
             </div>
-            <ButtonGroup>
-              <Button minimal disabled={!onExpand} active={expanded} icon="expand-all" onClick={onExpand} />
-              <Button minimal disabled={!onExpand} active={!expanded} icon="collapse-all" onClick={onCollapse} />
-            </ButtonGroup>
+            <Button minimal disabled icon={expanded ? 'expand-all' : 'collapse-all'} />
           </div>
         : null}
       {expanded
