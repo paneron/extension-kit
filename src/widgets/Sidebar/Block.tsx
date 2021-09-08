@@ -28,10 +28,8 @@ interface SidebarBlockProps {
 const SidebarBlock: React.FC<SidebarBlockProps> =
 function ({ expanded, onExpand, onCollapse, block, className }) {
   return (
-    <div
-        css={css`
+    <div css={css`
           display: flex; flex-flow: column nowrap; background: ${Colors.LIGHT_GRAY2};
-          ${block.nonCollapsible ? 'margin: 5px;' : ''}
         `}
         className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
       {block.nonCollapsible !== true
@@ -56,17 +54,7 @@ function ({ expanded, onExpand, onCollapse, block, className }) {
                 padding: 5px;
                 position: relative;
                 ${block.height ? `height: ${block.height}px;` : '' }
-                box-shadow:
-                  inset 1px 1px 0 white,
-                  -1px -1px 0 ${Colors.GRAY4},
-                  -1px 0 0 ${Colors.GRAY4},
-                  0 -1px 0 ${Colors.GRAY4},
-                  inset -1px -1px 0 ${Colors.GRAY4},
-                  1px -1px 0 ${Colors.LIGHT_GRAY5},
-                  -1px 1px 0 ${Colors.LIGHT_GRAY5},
-                  1px 1px 0 ${Colors.LIGHT_GRAY5};
                 background: ${Colors.LIGHT_GRAY4};
-                margin: ${block.nonCollapsible ? '0' : '0 5px 5px 5px'};
                 flex: 1 1 auto;
                 line-height: 1.4;
                 font-size: 90%;

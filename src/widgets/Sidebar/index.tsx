@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import { Button, ButtonGroup, Classes, Colors } from '@blueprintjs/core';
+import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
 import React from 'react';
 import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
@@ -64,35 +64,55 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
       },
       null);
 
+    const hasCollapsibleBlocks = blocks.filter(block => block.nonCollapsible !== true).length > 0;
+
+    // Single blocks are styled so that they occupy the entire sidebar.
+    const isSingleBlock = blocks.length === 1;
+
     return (
-      <div css={css`display: flex; flex-flow: column nowrap;`} className={className}>
-        <div
-            css={css`
+      <div
+          css={css`display: flex; flex-flow: column nowrap;`}
+          className={`${Classes.ELEVATION_1} ${className ?? ''}`}>
+        <div css={css`
               height: 24px; background: ${representsSelection ? Colors.BLUE2 : Colors.GRAY1};
               color: white; display: flex; flex-flow: row nowrap; align-items: center;
-              overflow: hidden; z-index: 1;
+              overflow: hidden;
               font-variation-settings: 'GRAD' 500;
-            `}
-            className={Classes.ELEVATION_1}>
+            `}>
 
-          <div css={css`flex: 1; padding: 5px 10px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`}>
+          <div css={css`
+                flex: 1;
+                padding: 5px 10px;
+                font-weight: bold; white-space: nowrap;
+                overflow: hidden; text-overflow: ellipsis;
+              `}>
             {title}
           </div>
 
-          <ButtonGroup css={css`background: rgba(255, 255, 255, 0.6)`}>
-            <Button minimal title="Restore default collapsed state" icon="reset" onClick={() => dispatch({ type: 'reset-state' })} />
-            <Button minimal title="Expand all" icon="expand-all" onClick={() => dispatch({ type: 'expand-all' }) } />
-            <Button minimal title="Collapse all" icon="collapse-all" onClick={() => dispatch({ type: 'collapse-all' })} />
-          </ButtonGroup>
+          {hasCollapsibleBlocks
+            ? <Button
+                minimal
+                title="Restore default collapsed state"
+                icon="reset"
+                onClick={() => dispatch({ type: 'reset-state' })}
+              />
+            : null}
         </div>
-        <div
-            css={css`flex: 1; overflow-x: hidden; overflow-y: auto; background: ${Colors.LIGHT_GRAY1};`}
-            className={Classes.ELEVATION_2}>
+        <div css={css`
+              flex: 1;
+              overflow-x: hidden;
+              overflow-y: auto;
+              background: ${Colors.LIGHT_GRAY1};
+              position: relative;
+            `}>
           {stateLoaded
             ? <>
                 {blocks.map((b, idx) =>
                   <SidebarBlock
                     key={idx}
+                    css={css`${isSingleBlock
+                      ? 'position: absolute; inset: 5px; /* NOTE: inset matches padding used in Block component */'
+                      : ''}`}
                     expanded={state.blockState[b.key]}
                     block={b}
                     onCollapse={() => dispatch({ type: 'collapse-one', payload: { blockKey: b.key } })}
