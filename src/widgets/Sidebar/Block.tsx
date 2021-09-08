@@ -21,18 +21,19 @@ interface SidebarBlockProps {
   onExpand?: () => void
   onCollapse?: () => void
   expanded?: boolean
+  className?: string
 }
 
 
 const SidebarBlock: React.FC<SidebarBlockProps> =
-function ({ expanded, onExpand, onCollapse, block }) {
+function ({ expanded, onExpand, onCollapse, block, className }) {
   return (
     <div
         css={css`
           display: flex; flex-flow: column nowrap; background: ${Colors.LIGHT_GRAY2};
           ${block.nonCollapsible ? 'margin: 5px;' : ''}
         `}
-        className={block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined}>
+        className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
       {block.nonCollapsible !== true
         ? <div
               css={css`
