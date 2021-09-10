@@ -1,3 +1,9 @@
+import type React from 'react';
+import { SidebarBlockConfig } from '../Sidebar/Block';
+
+
+// Detail view protocols
+
 type URIDetailView = React.FC<{ uri: string }>;
 
 export type ProtocolRegistry<Protocol extends string> = Record<
@@ -8,6 +14,21 @@ export type ProtocolRegistry<Protocol extends string> = Record<
   }
 >;
 
+
+// Sidebars
+
+interface SidebarConfig {
+  icon: React.FC<Record<never, never>>
+  title: string
+  blocks: SidebarBlockConfig[]
+  description?: string
+}
+
+export type SuperSidebarConfig<SidebarID extends string> = Record<SidebarID, SidebarConfig>;
+
+
+// Workspace
+
 export type TabbedWorkspaceContext<Proto extends string, SidebarID extends string> = {
   focusedTabURI?: string
   spawnTab: (uri: string) => void
@@ -17,6 +38,9 @@ export type TabbedWorkspaceContext<Proto extends string, SidebarID extends strin
   state: State<SidebarID>
   dispatch: React.Dispatch<Action<SidebarID>>
 };
+
+
+// Reducer-related types
 
 export interface State<SidebarID extends string> {
   detailTabURIs: string[]

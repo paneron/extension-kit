@@ -25,7 +25,7 @@ export const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<a
 export function makeContextProvider
 <Proto extends string, SidebarID extends string>(
   initialSidebarID: SidebarID,
-  sidebarIDs: SidebarID[],
+  sidebarIDs: readonly SidebarID[],
   protocolConfiguration: ProtocolRegistry<Proto>,
 ):
 React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
@@ -165,8 +165,8 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
 
 export interface TabbedWorkspaceContextProviderProps<Proto extends string, SidebarID extends string> {
   stateKey: string
-  protocolComponentMap: ProtocolRegistry<Proto>
-  sidebarIDs: SidebarID[]
+  protocolRegistry: ProtocolRegistry<Proto>
+  sidebarIDs: readonly SidebarID[]
 }
 
 

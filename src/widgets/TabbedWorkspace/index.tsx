@@ -5,37 +5,44 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Button, ButtonGroup, Colors, NonIdealState, Tab, Tabs } from '@blueprintjs/core';
-import { SPECIAL_TAB_IDX } from './context';
-import { TabbedWorkspaceContext } from './context';
 import Workspace from '../Workspace';
-import { ProtocolRegistry } from './types';
+import { SuperSidebarConfig } from './types';
+import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
 import { DetailTab, DetailTabTitle } from './detail';
+import SuperSidebar from './SuperSidebar';
 
 
-export interface TabbedWorkspaceProps<Protocol extends string> {
-  stateKey: string
-  protoConfig: ProtocolRegistry<Protocol>
+interface TabbedWorkspaceProps<SidebarID extends string> {
+  sidebarConfig: SuperSidebarConfig<SidebarID>
+  sidebarIDs: readonly SidebarID[]
+  className?: string
 }
-
-const TabbedWorkspace: React.FC<{ className?: string, sidebar?: JSX.Element}> = function ({
+const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
+function ({
+  sidebarConfig,
+  sidebarIDs,
   className,
-  sidebar,
 }) {
   const { state, dispatch } = useContext(TabbedWorkspaceContext);
   const focusedTabRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (state.focusedTabIdx >= 0) {
       focusedTabRef.current?.scrollIntoView();
     }
   }, [state.focusedTabIdx]);
 
+  const sidebar = (
+    <SuperSidebar
+      config={sidebarConfig}
+      sidebarIDs={sidebarIDs}
+      selectedSidebarID={state.selectedSidebarID}
+      onSelectSidebar={id => dispatch({ type: 'focus-sidebar', payload: { id } })}
+    />
+  );
+
   return (
-    <Workspace
-        css={css`
-          flex: 1 1 auto;
-        `}
-        className={className}
-        sidebar={sidebar}>
+    <Workspace className={className} sidebar={sidebar}>
       <Tabs
           id="detailTabs"
           selectedTabId={state.focusedTabIdx}
