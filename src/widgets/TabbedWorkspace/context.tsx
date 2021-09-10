@@ -7,6 +7,21 @@ import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
 import type { TabbedWorkspaceContext as TabbedWorkspaceContextSpec, Action, ProtocolRegistry, State } from './types';
 
 
+const initialState: State<''> = {
+  detailTabURIs: [],
+  focusedTabIdx: 0,
+  selectedSidebarID: '',
+}
+
+
+export const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<any, any>>({
+  spawnTab: () => void 0,
+  protocolConfiguration: {},
+  state: initialState,
+  dispatch: () => void 0,
+});
+
+
 export function makeContextProvider
 <Proto extends string, SidebarID extends string>(
   initialSidebarID: SidebarID,
@@ -20,13 +35,6 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
     focusedTabIdx: 0,
     selectedSidebarID: initialSidebarID,
   }
-
-  const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<Proto, SidebarID>>({
-    spawnTab: () => void 0,
-    protocolConfiguration,
-    state: initialState,
-    dispatch: () => void 0,
-  });
 
   function reducer(prevState: State<SidebarID>, action: Action<SidebarID>): State<SidebarID> {
     switch (action.type) {
@@ -141,7 +149,7 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
       focusedTabURI,
       state,
       dispatch,
-    }
+    };
 
     return (
       <TabbedWorkspaceContext.Provider value={ctx}>
@@ -160,6 +168,7 @@ export interface TabbedWorkspaceContextProviderProps<Proto extends string, Sideb
   protocolComponentMap: ProtocolRegistry<Proto>
   sidebarIDs: SidebarID[]
 }
+
 
 export const SPECIAL_TAB_IDX: Record<'new', number> = {
   new: -2,
