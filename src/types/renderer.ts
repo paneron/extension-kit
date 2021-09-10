@@ -38,7 +38,9 @@ export interface DatasetContext {
   usePersistentDatasetStateReducer: Hooks.UsePersistentDatasetStateReducer<any, any>
   useTimeTravelingPersistentDatasetStateReducer: Hooks.UseTimeTravelingPersistentDatasetStateReducer<any, any>
 
-  // Paneron internal clipboard
+  // Provides an isBusy flag and informs user of operation outcome using a “toaster” widget
+  performOperation: <R>(gerund: string, func: () => Promise<R>) => () => Promise<R>
+
   // Provides access to remote username, as configured in Paneron settings.
   // NOTE: Dataset extension *could* use it to infer author’s role by comparing with some list.
   // However, this is not a security measure and must be used for sensitive access control
@@ -48,17 +50,19 @@ export interface DatasetContext {
   // despite technically being able to sidestep the comparison.
   useRemoteUsername: RemoteUsernameHook
 
+  // Paneron internal clipboard (provisional)
   copyObjects: (objects: ObjectDataset) => Promise<void>
   requestCopiedObjects: () => Promise<ObjectDataset>
+
+  // Settings
 
   useGlobalSettings: Hooks.Settings.UseGlobalSettings
   useSettings: Hooks.Settings.UseSettings
   updateSetting: Hooks.Settings.UpdateSetting
 
-  performOperation: <R>(gerund: string, func: () => Promise<R>) => () => Promise<R>
-
   //useObjectChangeStatus: ObjectChangeStatusHook
 
+  // TODO: Provisional; for the new extension architecture
   getObjectView:
     (opts: { objectPath: string, viewID?: string }) =>
       React.FC<DatasetContext & { objectPath: string, className?: string }>
@@ -72,19 +76,11 @@ export interface DatasetContext {
   // in Paneron’s electron-builder config.
   getRuntimeNodeModulePath?: (moduleName: string) => string
 
-  // Invokes file selection dialog,
-  // adds selected file(s) to the repository at given location,
-  // prompts the user to commit changes to the repository,
-  // returns commit outcome.
-  // Provisional, probably won’t happen
-  // onAddFile?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
-
-  // Tools for working with buffer array conversion
+  // Tools for working with blob/buffer array conversion
   useDecodedBlob: Hooks.UseDecodedBlob
   getBlob?: (fromStringValue: string) => Promise<Uint8Array>
 
-
-  // Below are generally useful for write-enabled repositories only
+  // Below are generally useful for write-enabled repositories only:
 
   // Generates a UUID (not really useful in read-only mode so may be made optional)
   makeRandomID?: () => Promise<string>
@@ -92,7 +88,6 @@ export interface DatasetContext {
   // Prompts the user to commit changes to the repository.
   // User can review and change the commit message.
   updateObjects?: Hooks.Data.UpdateObjects
-
 
   // Tools for working with local filesystem
 
@@ -105,6 +100,13 @@ export interface DatasetContext {
   writeFileToFilesystem?:
     (opts: { dialogOpts: SaveDialogProps, bufferData: Uint8Array }) =>
       Promise<{ success: true, savedToFileAtPath: string }>
+
+  // Provisional, probably won’t happen:
+  // Invokes file selection dialog,
+  // adds selected file(s) to the repository at given location,
+  // prompts the user to commit changes to the repository,
+  // returns commit outcome.
+  // addFileFromFilesystem?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
 }
 
 
