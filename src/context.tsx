@@ -38,6 +38,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   getObjectData: async () => ({ data: {} }),
 
+  useRemoteUsername: getValueHookPlaceholder({}),
+
   useDecodedBlob: () => ({
     asString: '',
   }),

@@ -39,6 +39,15 @@ export interface DatasetContext {
   useTimeTravelingPersistentDatasetStateReducer: Hooks.UseTimeTravelingPersistentDatasetStateReducer<any, any>
 
   // Paneron internal clipboard
+  // Provides access to remote username, as configured in Paneron settings.
+  // NOTE: Dataset extension *could* use it to infer author’s role by comparing with some list.
+  // However, this is not a security measure and must be used for sensitive access control
+  // in place of Git server-level authentication.
+  // It can be used for informative purposes to show role-appropriate GUIs
+  // to already trusted users who will abide
+  // despite technically being able to sidestep the comparison.
+  useRemoteUsername: RemoteUsernameHook
+
   copyObjects: (objects: ObjectDataset) => Promise<void>
   requestCopiedObjects: () => Promise<ObjectDataset>
 
@@ -212,8 +221,8 @@ export namespace Hooks {
 
 
 
-//export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 //export type AuthorEmailHook = () => ValueHook<{ email: string }>
+export type RemoteUsernameHook = () => ValueHook<{ username?: string }>
 
 
 
