@@ -38,16 +38,18 @@ export interface DatasetContext {
   usePersistentDatasetStateReducer: Hooks.UsePersistentDatasetStateReducer<any, any>
   useTimeTravelingPersistentDatasetStateReducer: Hooks.UseTimeTravelingPersistentDatasetStateReducer<any, any>
 
-  // Provides an isBusy flag and informs user of operation outcome using a “toaster” widget
+  /** Provides an isBusy flag and informs user of operation outcome using a “toaster” widget */
   performOperation: <R>(gerund: string, func: () => Promise<R>) => () => Promise<R>
 
-  // Provides access to remote username, as configured in Paneron settings.
-  // NOTE: Dataset extension *could* use it to infer author’s role by comparing with some list.
-  // However, this is not a security measure and must be used for sensitive access control
-  // in place of Git server-level authentication.
-  // It can be used for informative purposes to show role-appropriate GUIs
-  // to already trusted users who will abide
-  // despite technically being able to sidestep the comparison.
+  /**
+   * Provides access to remote username, as configured in Paneron settings.
+   * NOTE: Dataset extension *could* use it to infer author’s role by comparing with some list.
+   * However, this is not a security measure and must be used for sensitive access control
+   * in place of Git server-level authentication.
+   * It can be used for informative purposes to show role-appropriate GUIs
+   * to already trusted users who will abide
+   * despite technically being able to sidestep the comparison.
+   */
   useRemoteUsername: RemoteUsernameHook
 
   // Paneron internal clipboard (provisional)
@@ -62,41 +64,51 @@ export interface DatasetContext {
 
   //useObjectChangeStatus: ObjectChangeStatusHook
 
-  // TODO: Provisional; for the new extension architecture
+  /** TODO: Provisional; for the new extension architecture */
   getObjectView:
     (opts: { objectPath: string, viewID?: string }) =>
       React.FC<DatasetContext & { objectPath: string, className?: string }>
 
-  // Provides a full system-absolute path to given path relative to dataset,
-  // which is useful in rare cases.
+  /**
+   * Provides a full system-absolute path to given path relative to dataset,
+   * which is useful in rare cases.
+   */
   makeAbsolutePath: (path: string) => string
 
-  // This may be useful in rare cases with poorly-integrated third-party libraries.
-  // Only works for dependencies with corresponding unpackAsar entries
-  // in Paneron’s electron-builder config.
+  /**
+   * This may be useful in rare cases with poorly-integrated third-party libraries.
+   * Only works for dependencies with corresponding unpackAsar entries
+   * in Paneron’s electron-builder config.
+   */
   getRuntimeNodeModulePath?: (moduleName: string) => string
 
-  // Tools for working with blob/buffer array conversion
+  /** Tools for working with blob/buffer array conversion */
   useDecodedBlob: Hooks.UseDecodedBlob
   getBlob?: (fromStringValue: string) => Promise<Uint8Array>
 
+
   // Below are generally useful for write-enabled repositories only:
 
-  // Generates a UUID (not really useful in read-only mode so may be made optional)
+  /** Generates a UUID (not really useful in read-only mode so may be made optional) */
   makeRandomID?: () => Promise<string>
 
-  // Prompts the user to commit changes to the repository.
-  // User can review and change the commit message.
+  /** 
+   * Prompts the user to commit changes to the repository.
+   * User can review and change the commit message.
+   */
   updateObjects?: Hooks.Data.UpdateObjects
+
 
   // Tools for working with local filesystem
 
-  // Invokes file selection dialog and returns file data as buffer when user confirms.
-  // This does not mutate dataset / Git repo contents, changeObjects still
-  // must be invoked later in order to commit newly added or replaced file.
+  /**
+   * Invokes file selection dialog and returns file data as buffer when user confirms.
+   * This does not mutate dataset / Git repo contents, changeObjects still
+   * must be invoked later in order to commit newly added or replaced file.
+   */ 
   requestFileFromFilesystem?: (opts: OpenDialogProps, cb?: (data: BufferDataset) => void) => Promise<BufferDataset>
 
-  // Invokes file save dialog, writes provided buffer data to chosen file path and returns that path.
+  /** Invokes file save dialog, writes provided buffer data to chosen file path and returns that path. */
   writeFileToFilesystem?:
     (opts: { dialogOpts: SaveDialogProps, bufferData: Uint8Array }) =>
       Promise<{ success: true, savedToFileAtPath: string }>
@@ -207,7 +219,8 @@ export namespace Hooks {
     export type UpdateObjects = (opts: {
       objectChangeset: ObjectChangeset
       commitMessage: string // If not provided, Paneron would prompt the user
-      _dangerouslySkipValidation?: true // Disables the checks against oldValue keys in the changeset
+      /** Disables the checks against oldValue keys in the changeset */
+      _dangerouslySkipValidation?: true 
     }) => Promise<CommitOutcome>
 
     export type ListenToObjectChanges = (
