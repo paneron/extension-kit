@@ -151,12 +151,11 @@ interface LabelledListIconProps {
     iconProps?: IconProps
     name: string
   }
-  padding: number 
   className?: string
 }
 
 export const LabelledListIcon: React.FC<LabelledListIconProps> =
-function ({ isSelected, onSelect, onOpen, padding, contentClassName, entityType, className, children }) {
+function ({ isSelected, onSelect, onOpen, contentClassName, entityType, className, children }) {
   return (
     <div
         onClick={onSelect}
