@@ -93,9 +93,14 @@ export interface DatasetContext {
   makeRandomID?: () => Promise<string>
 
   /** 
-   * Commits changes to the dataset.
+   * Commits changes to the dataset on per-object level.
    */
   updateObjects?: Hooks.Data.UpdateObjects
+
+  /** 
+   * Manipulates repository data (within the dataset) on subtree level (delete or move subtree).
+   */
+  updateTree?: Hooks.Data.UpdateObjectTree
 
 
   // Tools for working with local filesystem
