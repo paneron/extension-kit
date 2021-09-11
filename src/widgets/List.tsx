@@ -33,9 +33,14 @@ export interface ItemProps<P extends Record<string, any> = Record<never, never>>
   extraData: P
 }
 
+export interface ListProps<P extends Record<string, any> = Record<never, never>> {
+  getListData: ItemDataGetter<P>
+  className?: string
+}
+
 function makeList<P extends Record<string, any> = Record<never, never>>
 (ItemContents: React.FC<ItemProps<P>>):
-React.FC<{ getListData: ItemDataGetter<P>, className?: string }> {
+React.FC<ListProps<P>> {
 
   function getListIndex(items: string[], ref: string): { index: number } | null {
     const index = items.indexOf(ref);
