@@ -218,7 +218,7 @@ export namespace Hooks {
 
     export type UpdateObjects = (opts: {
       objectChangeset: ObjectChangeset
-      commitMessage: string // If not provided, Paneron would prompt the user
+      commitMessage: string
       /** Disables the checks against oldValue keys in the changeset */
       _dangerouslySkipValidation?: true 
     }) => Promise<CommitOutcome>
