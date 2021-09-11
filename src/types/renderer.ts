@@ -227,6 +227,13 @@ export namespace Hooks {
       _dangerouslySkipValidation?: true 
     }) => Promise<CommitOutcome>
 
+    /** Operates ona a tree of objects within a dataset. Does not do integrity checks. Dangerous. */
+    export type UpdateObjectTree = (opts: {
+      subtreeRoot: string
+      newSubtreeRoot: string | null
+      commitMessage: string
+    }) => Promise<CommitOutcome>
+
     export type ListenToObjectChanges = (
       eventCallback:
         (evt: { objects?: { [objectPath: string]: ChangeStatus | true } }) =>
