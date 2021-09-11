@@ -92,6 +92,7 @@ export const rulesByExtension: { [ext: string]: SerDesRuleName } = {
   '.ogg': AtomicSerDesRuleName.binaryFile,
   '.gif': AtomicSerDesRuleName.binaryFile,
   '.txt': AtomicSerDesRuleName.textFile,
+  '.svg': AtomicSerDesRuleName.textFile,
 
   '.pan': CompositeSerDesRuleName.paneronObject,
   '': AtomicSerDesRuleName.textFile,
