@@ -93,8 +93,7 @@ export interface DatasetContext {
   makeRandomID?: () => Promise<string>
 
   /** 
-   * Prompts the user to commit changes to the repository.
-   * User can review and change the commit message.
+   * Commits changes to the dataset.
    */
   updateObjects?: Hooks.Data.UpdateObjects
 
