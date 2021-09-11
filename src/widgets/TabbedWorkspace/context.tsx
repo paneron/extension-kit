@@ -1,6 +1,6 @@
 /** @jsx jsx */
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { jsx } from '@emotion/react';
 import { DatasetContext } from '../../context';
 import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
@@ -125,7 +125,7 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
 
   const TabbedWorkspaceContextProvider:
   React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> =
-  function ({ stateKey, children }) {
+  function ({ stateKey, onFocusedTabChange, children }) {
 
     const { usePersistentDatasetStateReducer } = useContext(DatasetContext);
 
@@ -142,6 +142,12 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
       state.focusedTabIdx >= 0
         ? state.detailTabURIs[state.focusedTabIdx]
         : undefined;
+
+    useEffect(() => {
+      if (onFocusedTabChange) {
+        onFocusedTabChange(focusedTabURI);
+      }
+    }, [focusedTabURI]);
 
     const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = {
       spawnTab: uri => dispatch({ type: 'spawn-tab', payload: { uri } }),
@@ -165,8 +171,7 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
 
 export interface TabbedWorkspaceContextProviderProps<Proto extends string, SidebarID extends string> {
   stateKey: string
-  protocolRegistry: ProtocolRegistry<Proto>
-  sidebarIDs: readonly SidebarID[]
+  onFocusedTabChange?: (newFocusedTabURI: string | undefined) => void
 }
 
 
