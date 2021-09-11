@@ -17,7 +17,7 @@ interface SearchResultListProps {
   queryExpression: string;
   selectedItemPath: string | null;
   onSelectItem: (itemPath: string | null) => void;
-  onOpenItem: (itemPath: string) => void;
+  onOpenItem?: (itemPath: string) => void;
   keyExpression?: string;
   className?: string;
 }
@@ -149,17 +149,19 @@ React.FC<SearchResultListProps> {
               onSelectItem(null);
             }
           },
-          openItem: async (pos) => {
-            try {
-              const position = parseInt(pos, 10);
-              const itemPath = (await getObjectPathFromFilteredIndex({ indexID, position })).objectPath;
-              if (itemPath) {
-                onOpenItem(itemPath);
+          openItem: onOpenItem
+            ? async (pos) => {
+                try {
+                  const position = parseInt(pos, 10);
+                  const itemPath = (await getObjectPathFromFilteredIndex({ indexID, position })).objectPath;
+                  if (itemPath) {
+                    onOpenItem(itemPath);
+                  }
+                } catch (e) {
+                  console.error("Unable to open item");
+                }
               }
-            } catch (e) {
-              console.error("Unable to open item");
-            }
-          },
+            : undefined,
           itemHeight: 24,
           padding: 0,
           extraData,
