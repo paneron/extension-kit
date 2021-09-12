@@ -4,15 +4,15 @@ import { SidebarBlockConfig } from '../Sidebar/Block';
 
 // Detail view protocols
 
-type URIDetailView = React.FC<{ uri: string }>;
+export type URIDetailView = React.FC<{ uri: string }>;
 
-export type ProtocolRegistry<Protocol extends string> = Record<
-  Protocol, {
-    main: URIDetailView
-    title: URIDetailView
-    plainTitle: (uri: string) => Promise<string>
-  }
->;
+export interface ProtocolConfig {
+  main: URIDetailView
+  title: URIDetailView
+  plainTitle: (uri: string) => Promise<string>
+}
+
+export type ProtocolRegistry<Protocol extends string> = Record<Protocol, ProtocolConfig>;
 
 
 // Sidebars
