@@ -16,7 +16,7 @@ import { Settings, GlobalSettings } from '../settings';
 export interface DatasetContext {
   title: string
 
-  logger?: { log: (...args: any[]) => void }
+  logger: { log: Console["log"], error: Console["error"], debug: Console["debug"] }
 
   // Below functions, when take or return object paths, use dataset-relative paths
   // and convert them to and from repo-relative paths under the hood as needed.

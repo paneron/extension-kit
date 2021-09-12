@@ -1,3 +1,4 @@
+import log from 'electron-log';
 import React from 'react';
 import { INITIAL_GLOBAL_SETTINGS } from './settings';
 import {
@@ -32,9 +33,7 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
     data: {},
   }),
 
-  logger: {
-    log: (...args: any[]) => console.log(...args)
-  },
+  logger: log,
 
   getObjectData: async () => ({ data: {} }),
 
