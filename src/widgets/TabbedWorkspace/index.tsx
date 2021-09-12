@@ -15,12 +15,14 @@ import SuperSidebar from './SuperSidebar';
 interface TabbedWorkspaceProps<SidebarID extends string> {
   sidebarConfig: SuperSidebarConfig<SidebarID>
   sidebarIDs: readonly SidebarID[]
+  newTabPrompt: JSX.Element
   className?: string
 }
 const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
 function ({
   sidebarConfig,
   sidebarIDs,
+  newTabPrompt,
   className,
 }) {
   const { state, dispatch } = useContext(TabbedWorkspaceContext);
@@ -91,7 +93,13 @@ function ({
               css={css`position: absolute; top: 0; right: 0; z-index: 10;`}
             />
           }
-          panel={<NonIdealState icon="menu-open" title="New tab" />}
+          panel={
+            <NonIdealState
+              icon="application"
+              title="Open in a new tab"
+              description={newTabPrompt}
+            />
+          }
         />
         {(state.detailTabURIs ?? []).map((uri, idx) =>
           <Tab
