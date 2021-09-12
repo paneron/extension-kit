@@ -32,7 +32,7 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
 
   const initialState: State<SidebarID> = {
     detailTabURIs: [],
-    focusedTabIdx: 0,
+    focusedTabIdx: SPECIAL_TAB_IDX.new,
     selectedSidebarID: initialSidebarID,
   }
 
