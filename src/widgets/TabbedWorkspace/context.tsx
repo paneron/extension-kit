@@ -28,7 +28,7 @@ export function makeContextProvider
   sidebarIDs: SidebarID[],
   protocolConfiguration: ProtocolRegistry<Proto>,
 ):
-React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
+React.FC<TabbedWorkspaceContextProviderProps> {
 
   const initialState: State<SidebarID> = {
     detailTabURIs: [],
@@ -124,7 +124,7 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
   }
 
   const TabbedWorkspaceContextProvider:
-  React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> =
+  React.FC<TabbedWorkspaceContextProviderProps> =
   function ({ stateKey, onFocusedTabChange, children }) {
 
     const { usePersistentDatasetStateReducer } = useContext(DatasetContext);
@@ -169,7 +169,7 @@ React.FC<TabbedWorkspaceContextProviderProps<Proto, SidebarID>> {
 }
 
 
-export interface TabbedWorkspaceContextProviderProps<Proto extends string, SidebarID extends string> {
+export interface TabbedWorkspaceContextProviderProps {
   stateKey: string
   onFocusedTabChange?: (newFocusedTabURI: string | undefined) => void
 }
