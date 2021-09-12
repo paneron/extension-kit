@@ -1,6 +1,7 @@
-/* Serialization/deserialization rules describe how physical buffers
-   are represented as JS structures at runtime.
-*/
+/**
+ * Serialization/deserialization rules describe how physical buffers
+ * are represented as JS structures at runtime.
+ */
 
 import path from 'path';
 //import * as mmel from '@riboseinc/mmel-ts/ser-des';
