@@ -70,7 +70,7 @@ export interface DatasetContext {
       React.FC<DatasetContext & { objectPath: string, className?: string }>
 
   /**
-   * Provides a full system-absolute path to given path relative to dataset,
+   * Provides a full system-absolute path to a path given relative to dataset root,
    * which is useful in rare cases.
    */
   makeAbsolutePath: (path: string) => string
