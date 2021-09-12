@@ -95,8 +95,7 @@ function ({
           }
           panel={
             <NonIdealState
-              icon="application"
-              title="Open in a new tab"
+              icon="rocket-slant"
               description={newTabPrompt}
             />
           }
