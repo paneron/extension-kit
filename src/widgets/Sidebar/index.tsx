@@ -111,7 +111,7 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
                   <SidebarBlock
                     key={idx}
                     css={css`${isSingleBlock
-                      ? 'position: absolute; inset: 5px; /* NOTE: inset matches padding used in Block component */'
+                      ? 'position: absolute; inset: 0;'
                       : ''}`}
                     expanded={state.blockState[b.key]}
                     block={b}
