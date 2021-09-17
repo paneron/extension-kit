@@ -39,7 +39,8 @@ export interface DatasetContext {
   useTimeTravelingPersistentDatasetStateReducer: Hooks.UseTimeTravelingPersistentDatasetStateReducer<any, any>
 
   /** Provides an isBusy flag and informs user of operation outcome using a “toaster” widget */
-  performOperation: <R>(gerund: string, func: () => Promise<R>) => () => Promise<R>
+  performOperation: <P extends any[], R>(gerund: string, func: (...opts: P) => Promise<R>) => (...opts: P ) => Promise<R>
+  operationKey?: string
 
   /**
    * Provides access to remote username, as configured in Paneron settings.
