@@ -1,5 +1,5 @@
 //import type { FileFilter } from 'electron';
-interface FileFilter {
+export interface FileFilter {
   extensions: string[];
   name: string;
 }
@@ -11,6 +11,7 @@ import { IndexStatus } from './indexes';
 import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
 import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
 import { Settings, GlobalSettings } from '../settings';
+import { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
 
 
 export interface DatasetContext {
@@ -111,11 +112,11 @@ export interface DatasetContext {
    * This does not mutate dataset / Git repo contents, changeObjects still
    * must be invoked later in order to commit newly added or replaced file.
    */ 
-  requestFileFromFilesystem?: (opts: OpenDialogProps, cb?: (data: BufferDataset) => void) => Promise<BufferDataset>
+  requestFileFromFilesystem?: (opts: OpenFileDialogProps, cb?: (data: BufferDataset) => void) => Promise<BufferDataset>
 
   /** Invokes file save dialog, writes provided buffer data to chosen file path and returns that path. */
   writeFileToFilesystem?:
-    (opts: { dialogOpts: SaveDialogProps, bufferData: Uint8Array }) =>
+    (opts: { dialogOpts: SaveFileDialogProps, bufferData: Uint8Array }) =>
       Promise<{ success: true, savedToFileAtPath: string }>
 
   // Provisional, probably won’t happen:
@@ -126,21 +127,6 @@ export interface DatasetContext {
   // addFileFromFilesystem?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
 }
 
-
-// export type ReadOnlyDatasetContext =
-//   Omit<DatasetContext, 'updateObjects' | 'makeRandomID'>;
-
-
-export interface OpenDialogProps {
-  prompt: string
-  filters?: FileFilter[]
-  allowMultiple?: boolean
-}
-
-export interface SaveDialogProps {
-  prompt: string
-  filters?: FileFilter[]
-}
 
 export interface ValueHook<T> {
   value: T
