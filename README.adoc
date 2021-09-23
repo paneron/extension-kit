@@ -44,14 +44,9 @@ After you make changes:
 $ yarn build
 --
 
-. Copy the _contents_ of `dist/` into Paneron’s built extension directory you created during preliminary setup.
+. Make sure to add the `dist/` directory to local extension list in Paneron settings.
 
-. Launch your local build of Paneron using a command like this, from within Paneron repository root:
-+
-[source,sh]
---
-$ env PANERON_DEV_PLUGIN=my-extension yarn dev
---
+. Launch (relaunch) Paneron.
 
 ==== Release
 
@@ -74,11 +69,6 @@ NOTE: `--access public` is only necessary first time you publish the extension. 
 
 NOTE: Currently, only extensions released under `@riboseinc` NPM scope are supported.
 Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-my-extension`).
-
-NOTE: Paneron fetches extension index from extensions.paneron.org; the site must be rebuild after your extension is published. The site rebuilds periodically, but if you want to expedite the process you can trigger the workflow by hand in Actions.
-
-To test your extension after it’s released, run Paneron as a regular user would,
-without PANERON_DEV_PLUGIN variable.
 
 === Rules of Paneron extensions
 
