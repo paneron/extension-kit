@@ -1,8 +1,10 @@
 import yaml from 'js-yaml';
 import schema from './schema';
 
-/* A wrapper around js-yaml that supplies noRefs & schema options,
-   and is supposed to handle specifically dictionaries/objects. */
+/**
+ * A wrapper around js-yaml that supplies noRefs & schema options,
+ * and is supposed to handle specifically dictionaries/objects.
+ */
 export default {
   dump: (data: Record<string, any>): string => yaml.dump(data, { schema, noRefs: true }),
   load: <T extends Record<string, any>>(rawData: string): T => {
