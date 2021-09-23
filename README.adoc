@@ -75,6 +75,8 @@ NOTE: `--access public` is only necessary first time you publish the extension. 
 NOTE: Currently, only extensions released under `@riboseinc` NPM scope are supported.
 Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-my-extension`).
 
+NOTE: Paneron fetches extension index from extensions.paneron.org; the site must be rebuild after your extension is published. The site rebuilds periodically, but if you want to expedite the process you can trigger the workflow by hand in Actions.
+
 To test your extension after it’s released, run Paneron as a regular user would,
 without PANERON_DEV_PLUGIN variable.
 
