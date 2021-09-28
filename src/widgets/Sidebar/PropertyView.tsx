@@ -2,9 +2,9 @@
 /** @jsxFrag React.Fragment */
 
 import React, { useContext } from 'react';
-import { jsx, css } from '@emotion/react';
-import { Colors, Icon, InputGroupProps2, InputGroup, UL, HTMLSelect, HTMLSelectProps } from '@blueprintjs/core';
-import { Tooltip2 } from '@blueprintjs/popover2';
+import { ClassNames, jsx, css } from '@emotion/react';
+import { Colors, Icon, InputGroupProps2, InputGroup, UL, HTMLSelect, HTMLSelectProps, Intent } from '@blueprintjs/core';
+import { Popover2InteractionKind, Tooltip2 } from '@blueprintjs/popover2';
 import { GlobalSettingsContext } from '../../SettingsContext';
 
 
@@ -12,9 +12,12 @@ interface PropertyViewProps {
   label: JSX.Element | string
   title?: string
   tooltip?: JSX.Element | string
+  tooltipIntent?: Intent
+  tooltipClassName?: string
   className?: string 
 }
-const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tooltip, className, children }) {
+const PropertyView: React.FC<PropertyViewProps> =
+function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, children }) {
   const { settings } = useContext(GlobalSettingsContext);
   return (
     <div
@@ -36,11 +39,31 @@ const PropertyView: React.FC<PropertyViewProps> = function ({ label, title, tool
             color: ${Colors.GRAY1};
           `}>
         {tooltip
-          ? <Tooltip2
-                placement={settings?.sidebarPosition === 'left' ? 'right' : 'left'}
-                content={tooltip}>
-              {label}
-            </Tooltip2>
+          ? <ClassNames>
+              {({ css, cx }) => (
+                <Tooltip2
+                    placement={settings?.sidebarPosition === 'left' ? 'right' : 'left'}
+                    popoverClassName={`${css`
+                      margin: 10px;
+
+                      .bp3-popover2-content {
+                        font-size: 90%;
+                      }
+                    `}`}
+                    hoverCloseDelay={600}
+                    hoverOpenDelay={600}
+                    interactionKind={Popover2InteractionKind.HOVER}
+                    intent={tooltipIntent}
+                    css={css`
+                      text-decoration: underline;
+                      text-decoration-style: dotted;
+                      cursor: help;
+                    `}
+                    content={tooltip}>
+                  {label}
+                </Tooltip2>
+              )}
+            </ClassNames>
           : label}
       </div>
       <div css={css`
