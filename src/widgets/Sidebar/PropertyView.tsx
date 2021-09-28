@@ -98,7 +98,12 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
                   {errs.map((err, idx) => <li key={idx}>{err}</li>)}
                 </UL>
               }>
-            <Icon icon="warning-sign" iconSize={10} intent="danger" css={css`margin-right: 5px;`} />
+            <Icon
+              icon="warning-sign"
+              iconSize={10}
+              intent="danger"
+              css={css`margin-right: 5px; margin-bottom: 2.5px`}
+            />
           </Tooltip2>
         : undefined}
       {...inputGroupProps}
