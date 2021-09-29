@@ -1,11 +1,11 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext } from 'react';
-import { ClassNames, jsx, css } from '@emotion/react';
+import React from 'react';
+import { jsx, css } from '@emotion/react';
 import { Colors, Icon, InputGroupProps2, InputGroup, UL, HTMLSelect, HTMLSelectProps, Intent } from '@blueprintjs/core';
-import { Popover2InteractionKind, Tooltip2 } from '@blueprintjs/popover2';
-import { GlobalSettingsContext } from '../../SettingsContext';
+import { Tooltip2 } from '@blueprintjs/popover2';
+import HelpTooltip from '../HelpTooltip';
 
 
 interface PropertyViewProps {
@@ -18,7 +18,6 @@ interface PropertyViewProps {
 }
 const PropertyView: React.FC<PropertyViewProps> =
 function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, children }) {
-  const { settings } = useContext(GlobalSettingsContext);
   return (
     <div
         className={className}
@@ -39,39 +38,14 @@ function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, c
             color: ${Colors.GRAY1};
           `}>
         {tooltip
-          ? <ClassNames>
-              {({ css, cx }) => (
-                <Tooltip2
-                    placement={settings?.sidebarPosition === 'left' ? 'right' : 'left'}
-                    popoverClassName={`${css`
-                      margin: 10px;
-
-                      .bp3-popover2-content {
-                        font-size: 90%;
-                      }
-                    `}`}
-                    hoverCloseDelay={600}
-                    hoverOpenDelay={600}
-                    interactionKind={Popover2InteractionKind.HOVER}
-                    intent={tooltipIntent}
-                    css={css`
-                      cursor: help;
-                    `}
-                    content={tooltip}>
-                  <>
-                    {tooltip
-                      ? <Icon
-                          icon="info-sign"
-                          css={css`opacity: .3; margin-right: 5px; margin-bottom: 1.5px;`}
-                          size={12}
-                        />
-                      : null}
-                    {label}
-                  </>
-                </Tooltip2>
-              )}
-            </ClassNames>
-          : label}
+          ? <HelpTooltip
+              content={tooltip}
+              intent={tooltipIntent}
+              tooltipProps={{ className: tooltipClassName }}
+            />
+          : null}
+        {" "}
+        {label}
       </div>
       <div css={css`
             width: 60%;
