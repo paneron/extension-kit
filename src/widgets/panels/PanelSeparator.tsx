@@ -10,10 +10,14 @@ import HelpTooltip from '../HelpTooltip';
 
 interface PanelSeparatorProps {
   title?: JSX.Element | string
+
+  /** Has no effect if the `title` prop is omitted. */
   tooltip?: JSX.Element | string
+
   className?: string
+  titleStyle?: React.CSSProperties
 }
-export const PanelSeparator: React.FC<PanelSeparatorProps> = function ({ title, tooltip, className }) {
+export const PanelSeparator: React.FC<PanelSeparatorProps> = function ({ title, tooltip, className, titleStyle }) {
   return (
     <>
       <hr
@@ -21,12 +25,12 @@ export const PanelSeparator: React.FC<PanelSeparatorProps> = function ({ title, 
           border-color: ${Colors.LIGHT_GRAY4};
           border-style: solid;
           width: 100%;
-          ${tooltip ? 'margin-bottom: 0;' : ''}
+          ${title ? 'margin-bottom: 0;' : ''}
         `}
         className={className}
       />
       {title
-        ? <StyledHeader>
+        ? <StyledHeader style={titleStyle}>
             {title}
             {tooltip
               ? <>
@@ -42,7 +46,6 @@ export const PanelSeparator: React.FC<PanelSeparatorProps> = function ({ title, 
 
 
 const StyledHeader = styled(H6)`
-  background: ${Colors.LIGHT_GRAY4};
   color: ${Colors.GRAY3};
   display: inline-block;
   padding: 2px 5px;
