@@ -55,12 +55,19 @@ function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, c
                     interactionKind={Popover2InteractionKind.HOVER}
                     intent={tooltipIntent}
                     css={css`
-                      text-decoration: underline;
-                      text-decoration-style: dotted;
                       cursor: help;
                     `}
                     content={tooltip}>
-                  {label}
+                  <>
+                    {tooltip
+                      ? <Icon
+                          icon="info-sign"
+                          css={css`opacity: .3; margin-right: 5px; margin-bottom: 1.5px;`}
+                          size={12}
+                        />
+                      : null}
+                    {label}
+                  </>
                 </Tooltip2>
               )}
             </ClassNames>
