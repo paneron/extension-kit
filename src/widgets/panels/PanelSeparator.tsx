@@ -17,31 +17,26 @@ interface PanelSeparatorProps {
   className?: string
   titleStyle?: React.CSSProperties
 }
-export const PanelSeparator: React.FC<PanelSeparatorProps> = function ({ title, tooltip, className, titleStyle }) {
-  return (
-    <>
-      <hr
+export const PanelSeparator: React.FC<PanelSeparatorProps> =
+function ({ title, tooltip, className, titleStyle }) {
+  return (title
+    ? <StyledHeader style={titleStyle}>
+        {title}
+        {tooltip
+          ? <>
+              &ensp;
+              <HelpTooltip content={tooltip} iconSize={10} />
+            </>
+          : null}
+      </StyledHeader>
+    : <hr
         css={css`
           border-color: ${Colors.LIGHT_GRAY4};
           border-style: solid;
           width: 100%;
-          ${title ? 'margin-bottom: 0;' : ''}
         `}
         className={className}
-      />
-      {title
-        ? <StyledHeader style={titleStyle}>
-            {title}
-            {tooltip
-              ? <>
-                  &ensp;
-                  <HelpTooltip content={tooltip} iconSize={10} />
-                </>
-              : null}
-          </StyledHeader>
-        : null}
-    </>
-  );
+      />);
 };
 
 
@@ -49,6 +44,7 @@ const StyledHeader = styled(H6)`
   color: ${Colors.GRAY3};
   display: inline-block;
   padding: 2px 5px;
+  margin-top: .5em;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 10px !important;
