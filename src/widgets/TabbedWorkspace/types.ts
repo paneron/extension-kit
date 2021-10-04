@@ -19,7 +19,7 @@ export type ProtocolRegistry<Protocol extends string> = Record<Protocol, Protoco
 
 interface SidebarConfig {
   icon: React.FC<Record<never, never>>
-  title: string
+  title: JSX.Element | string
   blocks: SidebarBlockConfig[]
   description?: string
 }
