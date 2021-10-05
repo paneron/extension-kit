@@ -32,22 +32,30 @@ function ({ expanded, onExpand, onCollapse, block, className }) {
           display: flex; flex-flow: column nowrap; background: ${Colors.LIGHT_GRAY2};
         `}
         className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
-      {block.nonCollapsible !== true
-        ? <div
-              onClick={expanded ? onCollapse : onExpand}
-              css={css`
-                height: 24px; overflow: hidden; background: linear-gradient(to top, ${Colors.LIGHT_GRAY2}, ${Colors.LIGHT_GRAY3});
-                display: flex; flex-flow: row nowrap; align-items: center;
-                font-variation-settings: 'GRAD' 600, 'opsz' 20;
-                color: ${Colors.GRAY2};
-                text-shadow: 1px 1px 1px ${Colors.LIGHT_GRAY5};
-              `}>
-            <div css={css`flex: 1; font-size: 90%; padding: 5px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`}>
-              {block.title}
-            </div>
-            <Button minimal disabled icon={expanded ? 'expand-all' : 'collapse-all'} />
-          </div>
-        : null}
+      <div
+          onClick={block.nonCollapsible !== true ? expanded ? onCollapse : onExpand : undefined}
+          css={css`
+            height: 24px; overflow: hidden; background: linear-gradient(to top, ${Colors.LIGHT_GRAY2}, ${Colors.LIGHT_GRAY3});
+            display: flex; flex-flow: row nowrap; align-items: center;
+            font-variation-settings: 'GRAD' 600, 'opsz' 20;
+            color: ${Colors.GRAY2};
+            text-shadow: 1px 1px 1px ${Colors.LIGHT_GRAY5};
+          `}>
+        <div
+            css={css`
+              flex: 1;
+              font-size: 90%;
+              padding: 5px 10px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            `}>
+          {block.title}
+        </div>
+        {block.nonCollapsible !== true
+          ? <Button minimal disabled icon={expanded ? 'expand-all' : 'collapse-all'} />
+          : null}
+      </div>
       {expanded
         ? <div css={css`
                 overflow-x: hidden; overflow-y: auto;
