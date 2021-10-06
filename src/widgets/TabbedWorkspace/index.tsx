@@ -1,7 +1,8 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Button, ButtonGroup, Colors, NonIdealState, Tab, Tabs } from '@blueprintjs/core';
@@ -25,8 +26,25 @@ function ({
   newTabPrompt,
   className,
 }) {
-  const { state, dispatch } = useContext(TabbedWorkspaceContext);
+  const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
   const focusedTabRef = useRef<HTMLDivElement>(null);
+  const [title, setTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      if (focusedTabURI) {
+        const [proto, path] = focusedTabURI.split(':');
+        const title = await protocolConfiguration[proto]?.plainTitle?.(path);
+        if (title) {
+          setTitle(title);
+        } else {
+          setTitle(null);
+        }
+      } else {
+        setTitle(null);
+      }
+    })();
+  }, [focusedTabURI]);
 
   useEffect(() => {
     if (state.focusedTabIdx >= 0) {
@@ -82,6 +100,11 @@ function ({
             .bp3-tab { line-height: unset; position: unset; display: inline-block; }
             .bp3-tab-panel { flex: 1; margin: 0; padding: 5px; background: white; position: relative; }
           `}>
+        {title
+          ? <Helmet>
+              <title>{title}</title>
+            </Helmet>
+          : null}
         <Tab
           id={SPECIAL_TAB_IDX.new}
           title={
