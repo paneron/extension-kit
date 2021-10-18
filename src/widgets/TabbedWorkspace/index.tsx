@@ -131,9 +131,12 @@ function ({
             title={
               <ButtonGroup
                   css={css`
+                    // styling “close tab” button:
                     & > :last-child {
                       opacity: 0;
                       transition: opacity .2s linear;
+                      transform: translateX(-1px) scale(0.8);
+                      transform-origin: left center;
                     }
                     &:hover {
                       & > :last-child {
@@ -152,7 +155,8 @@ function ({
 
                 <TabTitleButton
                   small
-                  minimal
+                  outlined
+                  intent="danger"
                   icon="cross"
                   onClick={(evt: React.MouseEvent) => {
                     dispatch({ type: 'close-tab', payload: { idx }});
