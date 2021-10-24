@@ -163,6 +163,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
 
     const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = {
       spawnTab: uri => dispatch({ type: 'spawn-tab', payload: { uri } }),
+      navigateFocusedTab: uri => dispatch({ type: 'navigate-focused-tab', payload: { uri }}),
       protocolConfiguration,
       focusedTabURI,
       state,
