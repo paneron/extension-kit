@@ -72,6 +72,18 @@ React.FC<TabbedWorkspaceContextProviderProps> {
           focusedTabIdx: action.payload.idx,
         };
 
+      case 'navigate-focused-tab':
+        if (prevState.detailTabURIs[prevState.focusedTabIdx]) {
+          const detailTabURIs = [ ...prevState.detailTabURIs ];
+          detailTabURIs[prevState.focusedTabIdx] = action.payload.uri;
+          return {
+            ...prevState,
+            detailTabURIs,
+          };
+        } else {
+          return prevState;
+        }
+
       case 'close-tab': {
         const detailTabURIs = [ ...prevState.detailTabURIs ];
         const closedFocused = action.payload.idx === prevState.focusedTabIdx;

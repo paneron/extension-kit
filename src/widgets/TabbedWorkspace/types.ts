@@ -31,6 +31,8 @@ export type SuperSidebarConfig<SidebarID extends string> = Record<SidebarID, Sid
 
 export type TabbedWorkspaceContext<Proto extends string, SidebarID extends string> = {
   focusedTabURI?: string
+  navigateFocusedTab?: (newURI: string) => void
+
   spawnTab: (uri: string) => void
 
   protocolConfiguration: ProtocolRegistry<Proto>,
@@ -51,6 +53,7 @@ export interface State<SidebarID extends string> {
 export type Action<SidebarID extends string> =
   | { type: 'spawn-tab'; payload: { uri: string } }
   | { type: 'focus-tab'; payload: { idx: number } }
+  | { type: 'navigate-focused-tab'; payload: { uri: string } }
   | { type: 'move-tab'; payload: { sourceIdx: number, destinationIdx: number } }
   | { type: 'close-tab'; payload: { idx: number } }
   | { type: 'focus-sidebar'; payload: { id: SidebarID } }
