@@ -73,7 +73,13 @@ React.FC<TabbedWorkspaceContextProviderProps> {
         };
 
       case 'navigate-focused-tab':
-        if (prevState.detailTabURIs[prevState.focusedTabIdx]) {
+        const existingTabIdx = prevState.detailTabURIs.indexOf(action.payload.uri);
+        if (existingTabIdx >= 0) {
+          return {
+            ...prevState,
+            focusedTabIdx: existingTabIdx,
+          };
+        } else if (prevState.detailTabURIs[prevState.focusedTabIdx]) {
           const detailTabURIs = [ ...prevState.detailTabURIs ];
           detailTabURIs[prevState.focusedTabIdx] = action.payload.uri;
           return {
