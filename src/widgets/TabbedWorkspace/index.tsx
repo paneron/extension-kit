@@ -157,6 +157,7 @@ function ({
                   small
                   outlined
                   intent="danger"
+                  title={`Tab URI: ${uri}`}
                   icon="cross"
                   onClick={(evt: React.MouseEvent) => {
                     dispatch({ type: 'close-tab', payload: { idx }});
