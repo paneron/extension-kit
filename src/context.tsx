@@ -35,6 +35,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   logger: log,
 
+  openExternalLink: async () => void 0,
+
   getObjectData: async () => ({ data: {} }),
 
   useRemoteUsername: getValueHookPlaceholder({}),

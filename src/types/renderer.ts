@@ -19,6 +19,8 @@ export interface DatasetContext {
 
   logger: { log: Console["log"], error: Console["error"], debug: Console["debug"] }
 
+  openExternalLink: (opts: { uri: string }) => Promise<void>
+
   // Below functions, when take or return object paths, use dataset-relative paths
   // and convert them to and from repo-relative paths under the hood as needed.
 
