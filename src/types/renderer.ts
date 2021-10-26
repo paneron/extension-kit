@@ -14,11 +14,13 @@ import { Settings, GlobalSettings } from '../settings';
 import { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
 
 
+/** Provides dataset UI extensions utilities for interacting with Paneron backend. */
 export interface DatasetContext {
   title: string
 
   logger: { log: Console["log"], error: Console["error"], debug: Console["debug"] }
 
+  /** Launch specified URI in OS’s default browser. */
   openExternalLink: (opts: { uri: string }) => Promise<void>
 
   // Below functions, when take or return object paths, use dataset-relative paths

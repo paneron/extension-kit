@@ -12,6 +12,7 @@ export interface ProtocolConfig {
   plainTitle: (uri: string) => Promise<string>
 }
 
+/** Defines which React components should be used for which protocol among tabs. */
 export type ProtocolRegistry<Protocol extends string> = Record<Protocol, ProtocolConfig>;
 
 
@@ -30,9 +31,13 @@ export type SuperSidebarConfig<SidebarID extends string> = Record<SidebarID, Sid
 // Workspace
 
 export type TabbedWorkspaceContext<Proto extends string, SidebarID extends string> = {
+  /** The URI of currently focused tab. */
   focusedTabURI?: string
+
+  /** Navigates currently focused tab to a new URI. */
   navigateFocusedTab?: (newURI: string) => void
 
+  /** Spawns a new tab with specified URI */
   spawnTab: (uri: string) => void
 
   protocolConfiguration: ProtocolRegistry<Proto>,
