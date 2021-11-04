@@ -67,8 +67,9 @@ $ npm publish --access public
 
 NOTE: `--access public` is only necessary first time you publish the extension. (See link:https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages[NPM CLI docs].)
 
-NOTE: Currently, only extensions released under `@riboseinc` NPM scope are supported.
-Plugin name must be prefixed with `paneron-extension-` (e.g., `@riboseinc/paneron-extension-my-extension`).
+NOTE: Currently, only extensions released under `@riboseinc` and `@paneron` NPM scopes are supported.
+Plugin name must either match `@riboseinc/paneron-extension-foo-registry`
+or `@paneron/extension-foo-registry`.
 
 === Rules of Paneron extensions
 
