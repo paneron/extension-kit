@@ -55,8 +55,6 @@ export interface SerDesRule<
   ObjectType extends Record<string, any> = any,
   Opts extends Record<string, any> = any,
 > {
-  //id: SerDesRuleName
-  //extensions: string[]
   /** Called with object data, returns buffer dataset (a record that maps file paths to buffer data). */
   serialize: (object: ObjectType, opts: Opts) => Record<string, Uint8Array>
 
