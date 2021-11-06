@@ -5,7 +5,6 @@ export interface FileFilter {
 }
 
 import { ObjectDataset, ObjectChangeset } from './objects';
-import { BufferDataset } from './buffers';
 import { CommitOutcome, ChangeStatus } from './changes';
 import { IndexStatus } from './indexes';
 import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
@@ -116,7 +115,7 @@ export interface DatasetContext {
    * This does not mutate dataset / Git repo contents, changeObjects still
    * must be invoked later in order to commit newly added or replaced file.
    */ 
-  requestFileFromFilesystem?: (opts: OpenFileDialogProps, cb?: (data: BufferDataset) => void) => Promise<BufferDataset>
+  requestFileFromFilesystem?: (opts: OpenFileDialogProps, cb?: (data: ObjectDataset) => void) => Promise<ObjectDataset>
 
   /** Invokes file save dialog, writes provided buffer data to chosen file path and returns that path. */
   writeFileToFilesystem?:
