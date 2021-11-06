@@ -46,16 +46,20 @@ export enum CompositeSerDesRuleName {
 export type SerDesRuleName = AtomicSerDesRuleName | CompositeSerDesRuleName
 
 
-/* Specifies how to transform an object as runtime in-memory structure
-   to a storeable byte array and vice-versa
-   (i.e., serializer/deserializer).
-*/
+/**
+ * Specifies how to transform an object as runtime in-memory structure
+ * to a storeable byte array and vice-versa
+ * (i.e., serializer/deserializer).
+ */
 export interface SerDesRule<
   ObjectType extends Record<string, any> = any,
   Opts extends Record<string, any> = any,
 > {
   //id: SerDesRuleName
   //extensions: string[]
+  /** Called with object data, returns buffer dataset (a record that maps file paths to buffer data). */
   serialize: (object: ObjectType, opts: Opts) => Record<string, Uint8Array>
+
+  /** Called with a buffer dataset, returns object representation, deserialized if possible. */
   deserialize: (data: Record<string, Uint8Array>, opts: Opts) => ObjectType
 }

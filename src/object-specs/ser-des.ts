@@ -22,6 +22,7 @@ const utf8Decoder = new TextDecoder('utf-8');
 
 // Rule query API
 
+/** Returns serialization/deserialization rule corresponding to given object path. */
 export function findSerDesRuleForPath(objPath: string): SerDesRule {
   const extension = path.extname(objPath);
   const ruleName = rulesByExtension[extension] ?? DEFAULT_RULE;
