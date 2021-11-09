@@ -11,7 +11,7 @@ import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateRed
 import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
 import { Settings, GlobalSettings } from '../settings';
 import { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
-import { BinaryInvocationRequest, ProcessHandle } from './binary-invocation';
+import { SubprocessDescription } from './binary-invocation';
 
 
 /** Provides dataset UI extensions utilities for interacting with Paneron backend. */
@@ -47,9 +47,12 @@ export interface DatasetContext {
    * Invokes the bundled Metanorma binary with given arguments.
    * Not available if Metanorma binary could not be found.
    */
-  invokeMetanorma?:
-    (opts: Pick<BinaryInvocationRequest, 'cliArgs' | 'onOut' | 'onErr'>) =>
-      Omit<ProcessHandle, 'sendMessage'>
+  invokeMetanorma?: (opts: { cliArgs: string[] }) => Promise<SubprocessDescription>
+
+  /**
+   * Query Metanorma subprocess execution status.
+   */
+  useMetanormaInvocationStatus?: () => ValueHook<SubprocessDescription | null>
 
   /** Provides an isBusy flag and informs user of operation outcome using a “toaster” widget */
   performOperation: <P extends any[], R>(gerund: string, func: (...opts: P) => Promise<R>) => (...opts: P ) => Promise<R>
