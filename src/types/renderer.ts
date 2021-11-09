@@ -45,12 +45,14 @@ export interface DatasetContext {
 
   /**
    * Invokes the bundled Metanorma binary with given arguments.
-   * Not available if Metanorma binary could not be found.
+   * NOTE: It may be available even if Metanorma binary does not exist, in which case invocation will throw an error.
    */
   invokeMetanorma?: (opts: { cliArgs: string[] }) => Promise<SubprocessDescription>
 
   /**
    * Query Metanorma subprocess execution status.
+   * Will return null if Metanorma subprocess cannot be found.
+   * Will auto-refresh.
    */
   useMetanormaInvocationStatus?: () => ValueHook<SubprocessDescription | null>
 
