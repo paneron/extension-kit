@@ -89,22 +89,58 @@ after opening a repository using your extension and “DevTools was disconnected
 
 ==== Modules you can import
 
-Here are the modules you can import:
+These are available for import in extensions.
+Don’t add them as `dependencies` to your extension’s package.json;
+add them as `devDependencies` instead.
 
-* "react"
-* "react-window"
-* "@emotion/react"
-* "@emotion/styled"
-* "date-fns"
+Paneron kits:
+
 * "@riboseinc/paneron-extension-kit"
 * "@riboseinc/paneron-registry-kit"
+
+Basic React and related:
+
+* "react"
+* "@emotion/react" (don’t forget to add JSX pragma to your files)
+* "@emotion/styled"
+
+GUI components:
+
+* "react-flow-renderer"
+* "react-window"
+* "react-mathjax2" (Paneron already provides MathJax context for you; just use the components where needed)
+* "react-visual-diff"
+* "react-helmet" (you can use it for setting window title)
+
+BP3:
+
 * "@blueprintjs/core"
 * "@blueprintjs/datetime"
 * "@blueprintjs/icons"
 * "@blueprintjs/select"
-* "electron-log"
+* "@blueprintjs/popover2"
+
+General purpose libs:
+
+* "liquidjs"
+* "date-fns"
 * "js-yaml"
+* "jsondiffpatch"
 * "throttle-debounce"
+* "immutability-helper"
+* "immer"
+* "ramda"
+
+3D output libs:
+
+* "three"
+* "three-stdlib"
+* "@react-three/fiber"
+* "@react-three/drei"
+
+Logging:
+
+* "electron-log"
 
 Again, you must not have anything in your dependencies,
 but you may want to add what you use from the above to your _devDependencies_
