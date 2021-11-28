@@ -64,7 +64,6 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 };
 
 
-// TODO: MMEL support is not implemented in core.
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
