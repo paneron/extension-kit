@@ -26,13 +26,45 @@ export interface ObjectSpec {
    */
   matches: PathMatcher
 
-  /* Views for objects of this type.
-     Paneron can use these views when showing objects
-     in its own views outside of extension’s main dataset view
-     (e.g., during conflict resolution).
-     Extension may or may not use same views in its main dataset view. */
-  views?: () => Promise<{ default: Record<string, React.FC<{ objectPath: string }>> }>
+  /**
+   * Available views for objects matching this type.
+   * 
+   * Paneron can use these views when showing objects
+   * in its own views outside of extension’s main dataset view
+   * (e.g., during conflict resolution).
+   * 
+   * Paneron uses views “full” and “item”.
+   */
+  views?: () => Promise<{ default: ObjectSpecViews }>
 
+}
+
+
+const objectSpecViewIDs = [
+  'full',
+  'item',
+] as const;
+
+
+export type ObjectSpecViewID = typeof objectSpecViewIDs[number];
+
+
+export interface ObjectViewProps {
+  objectPath: string
+
+  /** Deserialized object data to display. */
+  objectData: Record<string, any>
+
+  /**
+   * If object can be changed, view should call this handler with updated data.
+   * NOTE: Doesn’t make sense for some views (e.g., item views). */
+  onChange?: (newData: Record<string, any>, msg?: string) => void
+}
+
+
+interface ObjectSpecViews {
+  full: React.FC<ObjectViewProps>
+  item?: React.FC<ObjectViewProps>
 }
 
 

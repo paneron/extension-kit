@@ -68,8 +68,8 @@ export const makeExtension: ExtensionMaker = async (options) => {
         const spec = Object.values(objectSpecsWithCachedViews).
           find(c => matchesPath(objectPath, c.matches));
         if (spec) {
-          const view = spec._viewCache[viewID || 'default'];
-          return withDatasetContext(view);
+          const view = spec._viewCache[viewID];
+          return view;
         } else {
           log.error("Unable to find object view for object path", objectPath, viewID);
           throw new Error("Cannot find object view");

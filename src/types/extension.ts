@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { ObjectSpec } from './object-spec';
+import type { ObjectSpec, ObjectSpecViewID, ObjectViewProps } from './object-spec';
 import type { DatasetMigrationFunction, MigrationModule } from './migrations';
 import type { DatasetContext } from './renderer';
 
@@ -28,8 +28,9 @@ export interface MainPlugin {
 /** The interface that extension instance exposes to Paneron in renderer thread. */
 export interface RendererPlugin {
   mainView?: React.FC<DatasetContext>
-  getObjectView: (opts: { objectPath: string, viewID?: string }) =>
-    React.FC<DatasetContext & { objectPath: string }>
+  getObjectView:
+    (opts: { objectPath: string, viewID: ObjectSpecViewID }) =>
+      React.FC<ObjectViewProps> | undefined
 }
 
 export type Extension = MainPlugin | RendererPlugin;

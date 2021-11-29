@@ -12,6 +12,7 @@ import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPers
 import { Settings, GlobalSettings } from '../settings';
 import { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
 import { SubprocessDescription } from './binary-invocation';
+import { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
 
 /** Provides dataset UI extensions utilities for interacting with Paneron backend. */
@@ -146,8 +147,8 @@ export interface DatasetContext {
 
   /** TODO: Provisional; for the new extension architecture */
   getObjectView:
-    (opts: { objectPath: string, viewID?: string }) =>
-      React.FC<DatasetContext & { objectPath: string, className?: string }>
+    (opts: { objectPath: string, viewID: ObjectSpecViewID }) =>
+      React.FC<ObjectViewProps> | undefined
 
   /**
    * Provides a full system-absolute path to a path given relative to dataset root,
