@@ -163,7 +163,7 @@ export interface DatasetContext {
   //  * Provides a full system-absolute path to a path given relative to dataset root;
   //  * if referenced object is an LFS pointer, returns path to LFS blob in Git cache.
   //  */
-  // useAbsolutePath: (opts: { objectPath: string, resolveExternalStorage?: true }) => Promise<string>
+  // useAbsolutePath: (opts: { objectPath: string, resolveLFS?: true }) => Promise<string>
 
   /**
    * This may be useful in rare cases with poorly-integrated third-party libraries.
@@ -285,7 +285,7 @@ export type ObjectDatasetRequest = {
    *
    * A failed download will cause an error to be thrown.
    */
-  resolveExternalStorage?: true
+  resolveLFS?: true
 };
 export type ObjectDatasetResponse = {
   /**
@@ -294,7 +294,7 @@ export type ObjectDatasetResponse = {
    * - If no object data could be retrieved for given object path,
    *   object path will be mapped to `null`.
    *
-   * - If `resolveExternalStorage` was not set,
+   * - If `resolveLFS` was not set,
    *   objects that are pointers to LFS will be returned as is
    *   (they will not contain the actual deserialized object data).
   */
