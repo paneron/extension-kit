@@ -16,6 +16,7 @@ import { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
 
 export interface DatasetContext {
+  /** Dataset title, as specified by dataset manifest/metadata YAML file in the repository. */
   title: string
 
   logger: { log: Console["log"], error: Console["error"], debug: Console["debug"] }
