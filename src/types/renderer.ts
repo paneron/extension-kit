@@ -221,10 +221,29 @@ export interface DatasetContext {
 
 
 export interface ValueHook<T> {
+  /** The value returned from the hook. */
   value: T
+
+  /**
+   * A list of errors, usually one item, as strings.
+   * Non-empty if there were errors thrown by IPC handler.
+   */
   errors: string[]
+
+  /**
+   * Whether the value is currently being updated
+   * (handler response is being awaited).
+   */
   isUpdating: boolean
+
+  /**
+   * Can be used to imperatively refresh returned value
+   * by calling handler.
+   *
+   * Generally, it’s better to pass the appropriate memoize arguments instead.
+   */
   refresh: () => void
+
   _reqCounter: number
 }
 
