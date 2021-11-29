@@ -48,17 +48,21 @@ export const makeExtension: ExtensionMaker = async (options) => {
     };
 
   } else if (process.type === 'renderer') {
-    const mainViewImportResult = await (
-      options.mainView ||
-      /* Deprecated */(options as any).repoView
-    )();
+    const mainViewImportResult = (options.mainView || (options as any).repoView)
+      ? await (
+          options.mainView ||
+          /* Deprecated */(options as any).repoView
+        )()
+      : undefined;
 
     const objectSpecsWithCachedViews = (await Promise.all(objectSpecs.
       filter(spec => spec.views !== undefined).
       map(async (spec) => ({ ...spec, _viewCache: (await spec.views!()).default }))));
 
     plugin = {
-      mainView: withDatasetContext(mainViewImportResult.default),
+      mainView: mainViewImportResult
+        ? withDatasetContext(mainViewImportResult.default)
+        : undefined,
 
       getObjectView: ({ objectPath, viewID }) => {
         const spec = Object.values(objectSpecsWithCachedViews).
