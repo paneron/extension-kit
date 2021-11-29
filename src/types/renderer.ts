@@ -15,7 +15,6 @@ import { SubprocessDescription } from './binary-invocation';
 import { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
 
-/** Provides dataset UI extensions utilities for interacting with Paneron backend. */
 export interface DatasetContext {
   title: string
 

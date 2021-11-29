@@ -108,6 +108,13 @@ React.FC<DatasetContextSpec> {
 }
 
 
+/**
+ * Provides functions for interacting with dataset data,
+ * and by extension the underlying repositories.
+ * 
+ * NOTE: If your IDE does not expose TSDoc docstrings for DatasetContext
+ * members, consult DatasetContextSpec type definition.
+ */
 export const DatasetContext =
   React.createContext<DatasetContextSpec>(INITIAL_CONTEXT);
 
