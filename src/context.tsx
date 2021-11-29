@@ -25,6 +25,8 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
+  logger: log,
+
   performOperation: (_, f) => f,
 
   requestCopiedObjects: async () => ({}),
@@ -32,8 +34,6 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
   useObjectData: getValueHookPlaceholder({
     data: {},
   }),
-
-  logger: log,
 
   openExternalLink: async () => void 0,
 
