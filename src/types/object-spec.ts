@@ -1,24 +1,29 @@
 export interface PathMatcher {
-  /* Will apply any object path under given prefix,
-      slash-prepended, relative to dataset root. */
+  /**
+   * Will apply any object path under given prefix,
+   * slash-prepended, relative to dataset root. */
   pathPrefix?: string
 
-  /* Will apply if this function,
-     called with object path relative to dataset root, returns true. */
+  /**
+   * Will apply if this function,
+   * called with object path relative to dataset root, returns true. */
   path?: (objectPath: string) => boolean
 }
 
 
-/* TBD: object spec describes how Paneron should treat an object
-   that matches this spec.
-*/
+/** 
+ * Describes how Paneron built-in GUI should treat an object
+ * that matches this spec.
+ */
 export interface ObjectSpec {
 
-  /* All given conditions will be AND’ed together in order.
-     If none are given, object is considered matching by default,
-     so object spec with empty `matches` rule that comes last in a list
-     can act as a catch-all.
-  */
+  /**
+   * All given conditions will be AND’ed together in order.
+   * 
+   * If none are given, object is considered matching by default,
+   * so object spec with empty `matches` rule that comes last in a list
+   * can act as a catch-all.
+   */
   matches: PathMatcher
 
   /* Views for objects of this type.
