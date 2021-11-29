@@ -84,7 +84,7 @@ export interface DatasetContext {
   /**
    * Given object path, retrieve its position in given filtered object index.
    * NOTE: The primary use case of this hook is workaround-ish, so it may be deprecated in future.
-    */
+   */
   useFilteredIndexPosition: Hooks.Indexes.GetFilteredObjectIndexPosition
 
   /** Non-hook equivalent of `useFilteredIndexPosition()` as plain async function. */
