@@ -95,6 +95,9 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
      and renders dataset view wrapped inside dataset context provider. */
 export function withDatasetContext(Component: React.FC<any>):
 React.FC<DatasetContextSpec> {
+  // TODO: Check again whether `withDatasetContext()` helper is needed.
+  // Why can’t we wrap the entire view in DatasetContext.Provider
+  // in Paneron and gain access to it normally?
   return (props: DatasetContextSpec) => {
     const settings = props.useGlobalSettings();
     return (
