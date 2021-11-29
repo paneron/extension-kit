@@ -3,9 +3,10 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { jsx, css } from '@emotion/react';
+import { Classes, IconProps } from '@blueprintjs/core';
+
 import makeList, { ItemProps, LabelledListIcon, ListData } from './List';
 import { DatasetContext } from '../context';
-import { Classes, IconProps } from '@blueprintjs/core';
 
 
 export interface SearchResultListData {
