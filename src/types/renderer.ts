@@ -207,7 +207,15 @@ export interface DatasetContext {
    */ 
   requestFileFromFilesystem?: (opts: OpenFileDialogProps, cb?: (data: ObjectDataset) => void) => Promise<ObjectDataset>
 
-  /** Invokes file save dialog, writes provided buffer data to chosen file path and returns that path. */
+  /**
+   * Invokes file save dialog,
+   * writes provided buffer data to chosen file path,
+   * and returns that path.
+   *
+   * Note: currently this does not yet check selected path for sanity,
+   * so the user can write to repository’s own working directory
+   * and mess things up.
+   */
   writeFileToFilesystem?:
     (opts: { dialogOpts: SaveFileDialogProps, bufferData: Uint8Array }) =>
       Promise<{ success: true, savedToFileAtPath: string }>
