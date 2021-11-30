@@ -212,12 +212,66 @@ export interface DatasetContext {
     (opts: { dialogOpts: SaveFileDialogProps, bufferData: Uint8Array }) =>
       Promise<{ success: true, savedToFileAtPath: string }>
 
-  // Provisional, probably won’t happen:
-  // Invokes file selection dialog,
-  // adds selected file(s) to the repository at given location,
-  // prompts the user to commit changes to the repository,
-  // returns commit outcome.
-  // addFileFromFilesystem?: (opts: OpenDialogProps, commitMessage: string, targetPath: string) => Promise<CommitOutcome & { addedObjects: ObjectDataset }>
+  /**
+   * Invokes file selection dialog,
+   * if any files were selected adds them to dataset at specified path,
+   * and makes a commit with specified commit message.
+   * 
+   * `opts` can modify that behavior,
+   * see its member documentation for details.
+   * 
+   * Returns a CommitOutcome with an additional member `addedObjectPaths`.
+   */
+  addFromFilesystem?: (
+    /**
+     * Options to pass to OS file selection dialog.
+     *
+     * NOTE: `allowMultiple` has no effect
+     * if `opts.replaceTarget` is set.
+     */
+    dialogOpts: OpenFileDialogProps,
+
+    commitMessage: string,
+
+    /**
+     * Default behavior is to preserve original filenames
+     * and treat `targetPath` as a tree root under which
+     * new objects will be written as leaf objects with full contents.
+     * If target path exists and is a leaf object (file), the call will fail.
+     *
+     * Note: `opts.replaceTarget` changes this behavior.
+     */
+    targetPath: string,
+
+    opts: {
+      /**
+       * Treat `targetPath` as a file and replace it.
+       * The user will be able to select only one file in this case
+       * (`dialogOpts.allowMultiple` will have no effect).
+       * 
+       * Any existing object at `targetPath` will be replaced.
+       * Original filename will be ignored.
+       * If target path exists and is a tree (directory), the call will fail.
+       */
+      replaceTarget?: true
+
+      /**
+       * If specified as true, first selected file(s) will be uploaded to LFS,
+       * and only after successful upload LFS pointer files will be written
+       * in place of actual file content and committed.
+       *
+       * NOTE: If LFS upload succeds but subsequent commit fails
+       * (or is later reverted), LFS objects may remain and keep costing storage.
+       */
+      useLFS?: true
+    },
+  ) => Promise<CommitOutcome & {
+    /**
+     * A list of added object paths.
+     * (Obviously, less useful if `opts.replaceTarget` is set to true.)
+     */
+    addedObjectPaths: string[]
+  }>
 }
 
 
