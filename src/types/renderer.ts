@@ -359,12 +359,28 @@ export type ObjectDatasetRequest = {
   objectPaths: string[]
 
   /**
-   * Whether or not to resolve large file storage.
+   * Whether or not to attempt to resolve large file storage pointers.
    *
-   * If true, and an LFS pointer is encountered, will attempt to download the full blob
-   * if it was not cached yet. This may take some time.
+   * The behavior for an unresolved LFS pointer is to return
+   * an object with a single `lfsPointerInfo` property
+   * instead of actual object data for that path.
+   * (You can test for that property when displaying the object.)
    *
-   * A failed download will cause an error to be thrown.
+   * With this flag, when an LFS pointer is encountered,
+   * Paneron will attempt to download the full blob
+   * if it is not cached yet. This may take some time.
+   *
+   * NOTE: this flag does not guarantee all pointers will be resolved.
+   *
+   * - A failed download will cause an unresolved pointer to be returned.
+   *
+   * - If repository does not have remote configured,
+   *   this flag will not have effect (unresolved pointers will be returned).
+   *
+   * NOTE: Regarding authentication, LFS is expected to use the same
+   * credentials as Git. If Git authentication details
+   * (both username and password) cannot be retrieved
+   * from OS credential storage, the call will throw an error.
    */
   resolveLFS?: true
 };
