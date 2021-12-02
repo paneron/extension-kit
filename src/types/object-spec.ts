@@ -76,7 +76,7 @@ export enum AtomicSerDesRuleName {
 }
 
 export enum CompositeSerDesRuleName {
-  paneronObject = 'paneronObject',
+  //paneronObject = 'paneronObject',
 }
 
 export type SerDesRuleName = AtomicSerDesRuleName | CompositeSerDesRuleName

@@ -15,7 +15,6 @@ import {
 } from '../types/object-spec';
 import { OnlyJSON } from '../util';
 import yaml from './yaml';
-import { makePaneronObjectCompositeSerDesRule } from './paneron-object';
 
 
 const sep = path.posix.sep;
@@ -105,7 +104,7 @@ const ATOMIC_SER_DES_RULES: { [key in AtomicSerDesRuleName]: SerDesRule } = {
 
 const SER_DES_RULE_REGISTRY: { [key in SerDesRuleName]: SerDesRule } = {
   ...ATOMIC_SER_DES_RULES,
-  [CompositeSerDesRuleName.paneronObject]: makePaneronObjectCompositeSerDesRule(),
+  // [CompositeSerDesRuleName.paneronObject]: makePaneronObjectCompositeSerDesRule(),
 };
 
 //export function getAtomicSerDesRuleForExtension(ext: string): SerDesRule | undefined {
