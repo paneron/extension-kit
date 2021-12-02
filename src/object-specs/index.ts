@@ -17,6 +17,3 @@ export function matchesPath(p: string, rule: PathMatcher): boolean {
 
   return matched;
 }
-
-
-export { findSerDesRuleForPath } from './ser-des';

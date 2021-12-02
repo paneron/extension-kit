@@ -1,3 +1,5 @@
+import type { BufferDataset } from './buffers';
+
 export interface PathMatcher {
   /**
    * Will apply any object path under given prefix,
@@ -69,6 +71,7 @@ interface ObjectSpecViews {
 
 
 export enum AtomicSerDesRuleName {
+  lfsPointer = 'lfspointer',
   textFile = 'textfile',
   jsonFile = 'jsonfile',
   yamlFile = 'yamlfile',
@@ -79,21 +82,59 @@ export enum CompositeSerDesRuleName {
   //paneronObject = 'paneronObject',
 }
 
+/** A union of available ser/des rule names. */
 export type SerDesRuleName = AtomicSerDesRuleName | CompositeSerDesRuleName
+
+
+export type SerDesRuleNameExtensionMap = { [ext: string]: SerDesRuleName }
+
 
 
 /**
  * Specifies how to transform an object as runtime in-memory structure
  * to a storeable byte array and vice-versa
  * (i.e., serializer/deserializer).
+ *
+ * Also specifies which objects this rule can be applied to.
  */
 export interface SerDesRule<
   ObjectType extends Record<string, any> = any,
   Opts extends Record<string, any> = any,
 > {
-  /** Called with object data, returns buffer dataset (a record that maps file paths to buffer data). */
+  /**
+   * Called with object data,
+   * returns buffer dataset (a record that maps file paths to buffer data).
+   */
   serialize: (object: ObjectType, opts: Opts) => Record<string, Uint8Array>
 
-  /** Called with a buffer dataset, returns object representation, deserialized if possible. */
+  /**
+   * Called with a buffer dataset,
+   * returns object representation,
+   * deserialized if possible.
+   */
   deserialize: (data: Record<string, Uint8Array>, opts: Opts) => ObjectType
+
+  /**
+   * Inspects a buffer/object path (tyipcally looks at extension)
+   * and returns whether this rule applies to it.
+   *
+   * If not defined, the rule is assumed to work for any path.
+   */
+  worksForPath?: (objPath: string) => boolean
+
+  /**
+   * Inspects object and returns whether this rule can serialize it.
+   * (A lot like a type guard for ObjectType would do.)
+   *
+   * If not defined, assumed to always work.
+   */
+  worksForObject?: (obj: ObjectType) => boolean
+
+  /**
+   * Inspects buffer data and returns whether this rule can deserialize it.
+   *
+   * If not defined, assumed to always work.
+   */
+  worksForBufferDataset?: (data: BufferDataset) => boolean
+
 }

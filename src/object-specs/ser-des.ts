@@ -6,28 +6,99 @@
  */
 
 import path from 'path';
-//import * as mmel from '@riboseinc/mmel-ts/ser-des';
+
+import {
+  formatPointerInfo,
+  PointerInfo as LFSPointerInfo,
+  readPointerInfo,
+} from '@riboseinc/isogit-lfs/pointers';
+import { pointsToLFS } from '@riboseinc/isogit-lfs/util';
+
 import {
   SerDesRule,
   AtomicSerDesRuleName,
-  CompositeSerDesRuleName,
   SerDesRuleName,
+  SerDesRuleNameExtensionMap,
 } from '../types/object-spec';
-import { OnlyJSON } from '../util';
+import type { OnlyJSON } from '../util';
+import type { BufferDataset } from '../types/buffers';
+
 import yaml from './yaml';
 
 
-const sep = path.posix.sep;
+// Tools for working with buffers
+
 const utf8Decoder = new TextDecoder('utf-8');
+
+/**
+ * Cross-platform separator for buffer path components.
+ * Since buffer paths use POSIX format, this is a POSIX path separator.
+ */
+const sep = path.posix.sep;
+
+/** Returns whether buffer dataset has only one root buffer at `sep`. */
+function isLeaf(buffers: BufferDataset) {
+  return Object.keys(buffers).length === 1 && buffers[sep] !== undefined;
+}
+
+// /**
+//  * Returns whether buffer dataset looks like a tree.
+//  * A tree won’t have root buffer path mapped to any contents.
+//  */
+// function isTree(buffers: BufferDataset) {
+//   return Object.keys(buffers).length > 1 && buffers[sep] === undefined;
+// }
 
 
 // Rule query API
 
-/** Returns serialization/deserialization rule corresponding to given object path. */
-export function findSerDesRuleForPath(objPath: string): SerDesRule {
-  const extension = path.extname(objPath);
-  const ruleName = rulesByExtension[extension] ?? DEFAULT_RULE;
-  return getSerDesRuleByName(ruleName);
+/**
+ * Returns serialization/deserialization rule corresponding to given object path,
+ * using provided extension map.
+ */
+function findSerDesRuleForExtension(objPath: string, map: SerDesRuleNameExtensionMap): SerDesRule | null {
+  const extension = path.extname(objPath).toLowerCase();
+  const ruleName = map[extension];
+  return ruleName ? getSerDesRuleByName(ruleName) : null;
+}
+
+
+/** Returns serialization/deserialization rule that works for given object. */
+export function findSerDesRuleForObject(
+  objPath: string,
+  obj: Record<string, any>,
+  overrides?: { extensions?: SerDesRuleNameExtensionMap },
+): SerDesRule {
+  const override = overrides?.extensions
+    ? findSerDesRuleForExtension(objPath, overrides.extensions)
+    : null;
+  if (override) return override;
+
+  for (const rule of SER_DES_RULES) {
+    if ((rule.worksForPath?.(objPath) ?? true) && (rule.worksForObject?.(obj) ?? true)) {
+      return rule;
+    }
+  }
+  return getSerDesRuleByName(DEFAULT_RULE);
+}
+
+/** Returns serialization/deserialization rule that works for given buffer dataset. */
+export function findSerDesRuleForBuffers(
+  objPath: string,
+  buffers: BufferDataset,
+  overrides?: { extensions?: SerDesRuleNameExtensionMap },
+): SerDesRule {
+  const override = overrides?.extensions
+    ? findSerDesRuleForExtension(objPath, overrides.extensions)
+    : null;
+  if (override) return override;
+
+  for (const rule of SER_DES_RULES) {
+    if ((rule.worksForPath?.(objPath) ?? true) && (rule.worksForBufferDataset?.(buffers) ?? true)) {
+      return rule;
+    }
+  }
+  return getSerDesRuleByName(DEFAULT_RULE);
 }
 
 export function getSerDesRuleByName(ruleName: SerDesRuleName): SerDesRule {
@@ -37,7 +108,19 @@ export function getSerDesRuleByName(ruleName: SerDesRuleName): SerDesRule {
 
 // Rule definitions
 
+export const lfsPointer: SerDesRule<{ lfsPointerInfo: LFSPointerInfo }> = {
+  worksForObject: (obj) => obj.lfsPointerInfo !== undefined,
+  worksForBufferDataset: (buffers) =>
+    isLeaf(buffers) && pointsToLFS(Buffer.from(buffers[sep]!)),
+
+  deserialize: (buffers) =>
+    ({ lfsPointerInfo: readPointerInfo(Buffer.from(buffers[sep])) }),
+  serialize: (objectData) =>
+    ({ [sep]: formatPointerInfo(objectData.lfsPointerInfo) }),
+}
+
 export const textFile: SerDesRule<{ asText: string }> = {
+  worksForBufferDataset: isLeaf,
   deserialize: (buffers) =>
     ({ asText: utf8Decoder.decode(buffers[sep]) }),
   serialize: (objectData) =>
@@ -46,12 +129,16 @@ export const textFile: SerDesRule<{ asText: string }> = {
 
 
 export const jsonFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
+  worksForPath: (path) => path.endsWith('.json'),
+  worksForBufferDataset: isLeaf,
   deserialize: (buffers) => JSON.parse(utf8Decoder.decode(buffers[sep])),
   serialize: (data) => ({ [sep]: Buffer.from(JSON.stringify(data), 'utf8') }),
 };
 
 
 export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
+  worksForPath: (path) => path.endsWith('.yaml') || path.endsWith('.yml'),
+  worksForBufferDataset: isLeaf,
   deserialize: (buffers) => {
     const result = yaml.load(utf8Decoder.decode(buffers[sep]));
     if (result && typeof result !== 'string' && typeof result !== 'number') {
@@ -65,7 +152,19 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 };
 
 
+const KNOWN_BINARY_EXTENSIONS: Set<string> = new Set([
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.wav',
+  '.ogg',
+  '.mov',
+  '.mp4',
+  '.webm',
+]);
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
+  worksForPath: (objPath) =>
+    KNOWN_BINARY_EXTENSIONS.has(path.extname(objPath).toLowerCase()),
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
     asBase64: Buffer.from(buffers[sep]).toString('base64'),
@@ -77,25 +176,21 @@ export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; 
 
 // Rule registers
 
-export const rulesByExtension: { [ext: string]: SerDesRuleName } = {
-  '.json': AtomicSerDesRuleName.jsonFile,
-  '.yaml': AtomicSerDesRuleName.yamlFile,
-  '.yml': AtomicSerDesRuleName.yamlFile,
-  '.jpg': AtomicSerDesRuleName.binaryFile,
-  '.png': AtomicSerDesRuleName.binaryFile,
-  '.wav': AtomicSerDesRuleName.binaryFile,
-  '.ogg': AtomicSerDesRuleName.binaryFile,
-  '.gif': AtomicSerDesRuleName.binaryFile,
-  '.txt': AtomicSerDesRuleName.textFile,
-  '.svg': AtomicSerDesRuleName.textFile,
-
-  '.pan': CompositeSerDesRuleName.paneronObject,
-  '': AtomicSerDesRuleName.textFile,
-} as const;
-
 const DEFAULT_RULE: SerDesRuleName = AtomicSerDesRuleName.textFile;
 
+const SER_DES_RULES: SerDesRule[] = [
+  lfsPointer,
+  // LFS pointer rule comes first. Any object/buffer can be a pointer
+  // regardless of path.
+
+  jsonFile,
+  yamlFile,
+  binaryFile,
+  textFile,
+];
+
 const ATOMIC_SER_DES_RULES: { [key in AtomicSerDesRuleName]: SerDesRule } = {
+  [AtomicSerDesRuleName.lfsPointer]: lfsPointer,
   [AtomicSerDesRuleName.jsonFile]: jsonFile,
   [AtomicSerDesRuleName.yamlFile]: yamlFile,
   [AtomicSerDesRuleName.binaryFile]: binaryFile,
@@ -106,6 +201,7 @@ const SER_DES_RULE_REGISTRY: { [key in SerDesRuleName]: SerDesRule } = {
   ...ATOMIC_SER_DES_RULES,
   // [CompositeSerDesRuleName.paneronObject]: makePaneronObjectCompositeSerDesRule(),
 };
+
 
 //export function getAtomicSerDesRuleForExtension(ext: string): SerDesRule | undefined {
 //  return Object.values(ATOMIC_SER_DES_RULES).find(rule =>
