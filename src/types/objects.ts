@@ -1,13 +1,14 @@
-/* Objects describe logical data atoms.
-
-   An object is comprised of one or more **buffers**.
-
-   Object path is taken to be the path to its root buffer
-   relative to dataset (not repository as a whole).
-
-   Conversion between buffers and objects is specified
-   by object specs.
-*/
+/**
+ * Objects describe logical data atoms.
+ *
+ * On physical level, an object is comprised of one or more **buffers**.
+ *
+ * Object path is taken to be the path to its root buffer
+ * relative to dataset (not repository as a whole).
+ *
+ * Conversion between buffers and objects is specified
+ * by ser/des rules.
+ */
 
 import { Change, Changeset } from './changes';
 
