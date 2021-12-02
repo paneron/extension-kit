@@ -19,6 +19,6 @@ export type Object = Record<string, any>;
 
 export type ObjectDataset = { [objectPath: string]: Object | null };
 
-export type ObjectChange<T extends Object = any> = Change<T>;
+export type ObjectChange<T extends Object = Record<string, any>> = Change<T>;
 
-export type ObjectChangeset<T extends Object = any> = Changeset<ObjectChange<T>>
+export type ObjectChangeset<T extends Object = Record<string, any>> = Changeset<ObjectChange<T>>
