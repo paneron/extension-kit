@@ -224,11 +224,18 @@ export interface DatasetContext {
    * Invokes file selection dialog,
    * if any files were selected adds them to dataset at specified path,
    * and makes a commit with specified commit message.
-   * 
+   *
+   * For performance, this function breaks the logical object layer abstraction:
+   * it does not deserialize buffers and treats selected files
+   * as pre-serialized low-level repository buffers.
+   *
+   * If object(s) with same names already exist at the path,
+   * will overwrite them with new versions.
+   *
    * `opts` can modify that behavior,
    * see its member documentation for details.
-   * 
-   * Returns a CommitOutcome with an additional member `addedObjectPaths`.
+   *
+   * Returned commit outcome can be null if no objects were selected.
    */
   addFromFilesystem?: (
     /**
@@ -245,7 +252,9 @@ export interface DatasetContext {
      * Default behavior is to preserve original filenames
      * and treat `targetPath` as a tree root under which
      * new objects will be written as leaf objects with full contents.
-     * If target path exists and is a leaf object (file), the call will fail.
+     * If target path exists and is a leaf object (file),
+     * or a leaf object exists with the same name as one of the selected files,
+     * the call will fail.
      *
      * Note: `opts.replaceTarget` changes this behavior.
      */
@@ -253,7 +262,9 @@ export interface DatasetContext {
 
     opts: {
       /**
-       * Treat `targetPath` as a file and replace it.
+       * Whether to replace `targetPath`.
+       *
+       * Treat `targetPath` as a leaf buffer (file) and replace it.
        * The user will be able to select only one file in this case
        * (`dialogOpts.allowMultiple` will have no effect).
        * 
@@ -264,22 +275,28 @@ export interface DatasetContext {
       replaceTarget?: true
 
       /**
-       * If specified as true, first selected file(s) will be uploaded to LFS,
-       * and only after successful upload LFS pointer files will be written
-       * in place of actual file content and committed.
+       * If specified as true, selected file(s) will be uploaded to LFS,
+       * and only after successful upload LFS pointer files will be committed
+       * in place of actual file contents.
        *
-       * NOTE: If LFS upload succeds but subsequent commit fails
-       * (or is later reverted), LFS objects may remain and keep costing storage.
+       * If upload fails, an error will be thrown.
+       *
+       * NOTE: If some LFS upload succeeds but subsequent commit fails
+       * (or is later reverted), or upload for another object fails,
+       * already uploaded data may remain on LFS and keep costing storage.
+       *
+       * NOTE: If repository does not have the remote configured,
+       * this option will have no effect
+       * (actual blobs will be stored directly in repository).
+       *
+       * NOTE: Regarding authentication, LFS is expected to use the same
+       * credentials as Git. If Git authentication details
+       * (both username and password) cannot be retrieved
+       * from OS credential storage, the call will throw an error.
        */
-      useLFS?: true
+      offloadToLFS?: true
     },
-  ) => Promise<CommitOutcome & {
-    /**
-     * A list of added object paths.
-     * (Obviously, less useful if `opts.replaceTarget` is set to true.)
-     */
-    addedObjectPaths: string[]
-  }>
+  ) => Promise<{ commitOutcome: CommitOutcome | null }>
 }
 
 
