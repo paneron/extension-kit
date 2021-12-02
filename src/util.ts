@@ -1,4 +1,4 @@
-import { Progress } from './types/progress';
+import type { Progress } from './types/progress';
 
 
 export function stripLeadingSlash(fp: string): string {
