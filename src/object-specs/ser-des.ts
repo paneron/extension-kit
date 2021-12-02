@@ -1,6 +1,8 @@
 /**
  * Serialization/deserialization rules describe how physical buffers
  * are represented as JS structures at runtime.
+ * 
+ * This is Node-only code due to use of Buffer API.
  */
 
 import path from 'path';
