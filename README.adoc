@@ -127,6 +127,7 @@ General purpose libs:
 * "js-yaml"
 * "jsondiffpatch"
 * "throttle-debounce"
+* "async-mutex"
 * "immutability-helper"
 * "immer"
 * "ramda"
