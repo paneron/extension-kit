@@ -49,13 +49,14 @@ React.FC<SearchResultListProps> {
 
     const stringItemDescription = objPath ? `item at ${objPath}` : `item #${listItemRef}`;
 
+    const fallbackView = <span css={css`opacity: .4`}>{stringItemDescription}</span>;
+
     const objectDataResp = useObjectData({
       objectPaths: objPath ? [objPath] : [],
     });
 
     let isUpdating: boolean = filteredObjectResp.isUpdating;
     let itemView: JSX.Element;
-    let fallbackView = <span css={css`opacity: .4`}>{stringItemDescription}</span>;
 
     if (objPath.trim() !== '') {
       try {
