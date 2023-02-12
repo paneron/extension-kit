@@ -13,6 +13,10 @@ import { DetailTab, DetailTabTitle } from './detail';
 import SuperSidebar from './SuperSidebar';
 
 
+/**
+ * Wraps Workspace, adding tabbed GUI features.
+ * Use inside TabbedWorkspaceContextProvider.
+ */
 interface TabbedWorkspaceProps<SidebarID extends string> {
   sidebarConfig: SuperSidebarConfig<SidebarID>
   sidebarIDs: readonly SidebarID[]

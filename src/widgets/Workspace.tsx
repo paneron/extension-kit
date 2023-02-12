@@ -1,8 +1,6 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-/* Workspace has a main area, a sidebar, and a status bar with item count & possibly refresh & other actions. */
-
 import { jsx, css } from '@emotion/react';
 import React, { useContext } from 'react';
 import { Classes, Colors } from '@blueprintjs/core';
@@ -11,6 +9,10 @@ import Navbar, { NavbarProps }from './Navbar';
 import { GlobalSettingsContext } from '../SettingsContext';
 
 
+/**
+ * Workspace has a main area, a sidebar,
+ * and a status bar with item count & possibly refresh & other actions.
+ */
 const Workspace: React.FC<{
   navbarProps?: NavbarProps
   toolbar?: JSX.Element
