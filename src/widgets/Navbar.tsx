@@ -24,19 +24,20 @@ function ({ breadcrumbs, onGoBack, onGoForward, hideBackForwardNav, className })
             display: flex; flex-flow: row nowrap; align-items: center;
             font-size: 80%; line-height: 0;
           `}>
-        {breadcrumbs.map((crumb, idx) => <React.Fragment key={idx}>
-          <Breadcrumb {...crumb} />
-          {idx !== breadcrumbs.length - 1
-            ? <Icon icon="chevron-right" iconSize={10} key={idx} />
-            : null}
-        </React.Fragment>
+        {breadcrumbs.map((crumb, idx) =>
+          <React.Fragment key={idx}>
+            <Breadcrumb {...crumb} />
+            {idx !== breadcrumbs.length - 1
+              ? <Icon icon="chevron-right" iconSize={10} key={idx} />
+              : null}
+          </React.Fragment>
         )}
       </div>
       {!hideBackForwardNav
         ? <ButtonGroup>
-          <Button disabled={!onGoBack} icon="arrow-left" title="Back" />
-          <Button disabled={!onGoForward} icon="arrow-right" title="Forward" />
-        </ButtonGroup>
+            <Button disabled={!onGoBack} icon="arrow-left" title="Back" />
+            <Button disabled={!onGoForward} icon="arrow-right" title="Forward" />
+          </ButtonGroup>
         : null}
     </>
   );
