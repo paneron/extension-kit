@@ -18,8 +18,8 @@
   "license": "MIT",
   "peerDependencies": {
     "electron": "^11.4.11",
-    "electron-log": "^4.3.0"
-    "@riboseinc/isogit-lfs": "0.1.6",
+    "electron-log": "^4.3.0",
+    "@riboseinc/isogit-lfs": "0.1.6"
   },
   "resolutions": {
     "@types/react": "16.9.49"
