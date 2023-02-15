@@ -26,17 +26,19 @@ interface Timeline<S> {
 }
 type TimeTravelingPersistentStateReducerHookParams<S, A extends BaseAction> = [
 
-  /* How far back to allow the state to be rewound. */
+  /** How far back to allow the state to be rewound. */
   maxHistorySteps: number,
 
-  /* Persistent reducer hook iplementation to delegate to. */
+  /** Persistent reducer hook iplementation to delegate to. */
   usePersistentReducer: PersistentStateReducerHook<Timeline<S>, A | TimeTravelAction>,
 
-  /* Each component should specify a unique storage key. */
+  /** Each component should specify a unique storage key. */
   storageKey: string,
 
-  /* Calls to store state will be debounced according to this delay
-     in case state change too often. */
+  /**
+   * Calls to store state will be debounced according to this delay
+   * in case state change too often.
+   */
   storageDebounceMS?: number,
 
   validateLoadedState?: (loadedValue: any) => loadedValue is S,
