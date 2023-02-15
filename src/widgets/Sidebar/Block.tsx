@@ -3,6 +3,7 @@
 
 import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
+import BlockStateButtonGroup from './BlockStateButtonGroup';
 import React from 'react';
 
 
@@ -20,20 +21,21 @@ interface SidebarBlockProps {
   block: SidebarBlockConfig
   onExpand?: () => void
   onCollapse?: () => void
+  onCollapseOthers?: () => void
   expanded?: boolean
   className?: string
 }
 
 
 const SidebarBlock: React.FC<SidebarBlockProps> =
-function ({ expanded, onExpand, onCollapse, block, className }) {
+function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }) {
   return (
     <div css={css`
           display: flex; flex-flow: column nowrap; background: ${Colors.LIGHT_GRAY2};
         `}
         className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
       <div
-          onClick={block.nonCollapsible !== true ? expanded ? onCollapse : onExpand : undefined}
+          onClick={() => { expanded ? onCollapse?.() : onExpand?.() }}
           css={css`
             height: 24px; overflow: hidden; background: linear-gradient(to top, ${Colors.LIGHT_GRAY2}, ${Colors.LIGHT_GRAY3});
             display: flex; flex-flow: row nowrap; align-items: center;
@@ -52,8 +54,33 @@ function ({ expanded, onExpand, onCollapse, block, className }) {
             `}>
           {block.title}
         </div>
-        {block.nonCollapsible !== true
-          ? <Button minimal disabled icon={expanded ? 'expand-all' : 'collapse-all'} />
+        {onCollapse || onExpand || onCollapseOthers
+          ? <BlockStateButtonGroup>
+              {onCollapseOthers
+                ? <Button
+                    minimal
+                    small
+                    icon='vertical-distribution'
+                    title="Collapse other blocks"
+                    onClick={(evt) => { evt.stopPropagation(); onCollapseOthers() }} />
+                : null}
+              {onCollapse
+                ? <Button
+                    minimal
+                    small
+                    icon='collapse-all'
+                    title="Collapse this block"
+                    onClick={(evt) => { evt.stopPropagation(); onCollapse() }} />
+                : null}
+              {onExpand
+                ? <Button
+                    minimal
+                    small
+                    icon='expand-all'
+                    title="Expand this block"
+                    onClick={(evt) => { evt.stopPropagation(); onExpand() }} />
+                  : null}
+            </BlockStateButtonGroup>
           : null}
       </div>
       {expanded

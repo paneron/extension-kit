@@ -4,8 +4,9 @@
 import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
 import React from 'react';
-import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
+import type { PersistentStateReducerHook } from '../../usePersistentStateReducer';
 import SidebarBlock, { SidebarBlockConfig } from './Block';
+import BlockStateButtonGroup from './BlockStateButtonGroup';
 
 
 interface State {
@@ -14,7 +15,7 @@ interface State {
 
 type Action =
   | { type: 'expand-all' | 'collapse-all' | 'reset-state' }
-  | { type: 'collapse-one' | 'expand-one', payload: { blockKey: string } };
+  | { type: 'collapse-one' | 'expand-one' | 'collapse-others', payload: { blockKey: string } };
 
 export interface SidebarProps {
   stateKey: string
@@ -27,10 +28,12 @@ export interface SidebarProps {
   className?: string 
 }
 
-function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<State, Action>) {
+function makeSidebar(
+  persistentReducer: PersistentStateReducerHook<State, Action>,
+) {
   const Sidebar: React.FC<SidebarProps> =
   function ({ title, stateKey, blocks, representsSelection, className }) {
-    const [state, dispatch, stateLoaded] = persistentStateReducerHook(
+    const [ state, dispatch, stateLoaded ] = persistentReducer(
       stateKey,
       undefined,
       undefined,
@@ -52,6 +55,8 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
             return { blockState: { ...prevState.blockState, [action.payload.blockKey]: true } };
           case 'collapse-one':
             return { blockState: { ...prevState.blockState, [action.payload.blockKey]: false } };
+          case 'collapse-others':
+            return { blockState: withOtherBlocksCollapsed(action.payload.blockKey) };
           default:
             throw new Error("Unexpected sidebar state");
         }
@@ -64,7 +69,19 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
       },
       null);
 
-    const hasCollapsibleBlocks = blocks.filter(block => block.nonCollapsible !== true).length > 0;
+    function withOtherBlocksCollapsed(blockKey: string) {
+      return blocks.
+        map(b => ({ [b.key]: b.nonCollapsible !== true && b.key !== blockKey ? false : true })).
+        reduce((prev, curr) => ({ ...prev, ...curr }))
+    }
+
+    function hasOthersCollapsed(blockKey: string): boolean {
+      // Using JSON.stringify for quick and dirty object structure comparison.
+      return JSON.stringify(withOtherBlocksCollapsed(blockKey)) === JSON.stringify(state.blockState);
+    }
+
+    const collapsibleBlocks = blocks.filter(block => block.nonCollapsible !== true);
+    const hasCollapsibleBlocks = collapsibleBlocks.length > 0;
 
     // Single blocks are styled so that they occupy the entire sidebar.
     const isSingleBlock = blocks.length === 1;
@@ -90,12 +107,26 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
           </div>
 
           {hasCollapsibleBlocks
-            ? <Button
-                minimal
-                title="Restore default collapsed state"
-                icon="reset"
-                onClick={() => dispatch({ type: 'reset-state' })}
-              />
+            ? <BlockStateButtonGroup>
+                <Button
+                  small
+                  title="Expand all blocks"
+                  icon="expand-all"
+                  onClick={() => dispatch({ type: 'expand-all' })}
+                />
+                <Button
+                  small
+                  title="Collapse all blocks"
+                  icon="collapse-all"
+                  onClick={() => dispatch({ type: 'collapse-all' })}
+                />
+                <Button
+                  small
+                  title="Restore default collapsed state"
+                  icon="reset"
+                  onClick={() => dispatch({ type: 'reset-state' })}
+                />
+              </BlockStateButtonGroup>
             : null}
         </div>
         <div css={css`
@@ -113,10 +144,21 @@ function makeSidebar(persistentStateReducerHook: PersistentStateReducerHook<Stat
                     css={css`${isSingleBlock
                       ? 'position: absolute; inset: 0;'
                       : ''}`}
-                    expanded={state.blockState[b.key]}
+                    expanded={isSingleBlock || b.nonCollapsible || state.blockState[b.key]}
                     block={b}
-                    onCollapse={() => dispatch({ type: 'collapse-one', payload: { blockKey: b.key } })}
-                    onExpand={() => dispatch({ type: 'expand-one', payload: { blockKey: b.key } })}
+                    onCollapseOthers={
+                      !isSingleBlock &&
+                      collapsibleBlocks.filter(_b => _b.key !== b.key).length > 0 &&
+                      !hasOthersCollapsed(b.key)
+                        ? () => dispatch({ type: 'collapse-others', payload: { blockKey: b.key } })
+                        : undefined
+                    }
+                    onCollapse={!isSingleBlock && b.nonCollapsible !== true && state.blockState[b.key]
+                      ? () => dispatch({ type: 'collapse-one', payload: { blockKey: b.key } })
+                      : undefined}
+                    onExpand={!state.blockState[b.key]
+                      ? () => dispatch({ type: 'expand-one', payload: { blockKey: b.key } })
+                      : undefined}
                   />
                 )}
                 <div css={css`font-size: 40px; text-align: center; color: ${Colors.LIGHT_GRAY4}`}>— ❧ —</div>
