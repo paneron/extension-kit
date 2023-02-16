@@ -18,9 +18,24 @@ import SuperSidebar from './SuperSidebar';
  * Use inside TabbedWorkspaceContextProvider.
  */
 interface TabbedWorkspaceProps<SidebarID extends string> {
+  /**
+   * Configuration for individual sidebars, keyed by internal sidebar ID.
+   * If there is more than one sidebar, sidebar selector is shown.
+   */
   sidebarConfig: SuperSidebarConfig<SidebarID>
+
+  /**
+   * Sidebar IDs as a list. This is used to order sidebars.
+   * TODO: Eliminate in favor of using weights or another way of ordering?
+   */
   sidebarIDs: readonly SidebarID[]
+
+  /**
+   * “Home” view shown by default when there are no tabs
+   * or when explicitly invoked by the user.
+   */
   newTabPrompt: JSX.Element
+
   className?: string
 }
 const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
