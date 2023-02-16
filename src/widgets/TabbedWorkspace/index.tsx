@@ -106,7 +106,7 @@ function ({
               /* Accommodate the new tab button, absolutely positioned */
               display: block;
               white-space: nowrap;
-              padding-left: 24px;
+              padding-left: 70px;
 
               /* Remove spacing between tabs */
               > *:not(:last-child) {
@@ -132,12 +132,13 @@ function ({
           id={SPECIAL_TAB_IDX.new}
           title={
             <TabTitleButton
-              active={state.focusedTabIdx === SPECIAL_TAB_IDX.new}
-              intent={state.focusedTabIdx === SPECIAL_TAB_IDX.new ? 'primary' : undefined}
-              small
-              icon="home"
-              css={css`position: absolute; top: 0; left: 0; z-index: 10;`}
-            />
+                active={state.focusedTabIdx === SPECIAL_TAB_IDX.new}
+                intent={state.focusedTabIdx === SPECIAL_TAB_IDX.new ? 'primary' : undefined}
+                small
+                icon="home"
+                css={css`position: absolute; top: 0; left: 0; z-index: 10;`}>
+              Home
+            </TabTitleButton>
           }
           panel={newTabPrompt}
         />
