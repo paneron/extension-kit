@@ -156,7 +156,7 @@ function makeSidebar(
                     onCollapse={!isSingleBlock && b.nonCollapsible !== true && state.blockState[b.key]
                       ? () => dispatch({ type: 'collapse-one', payload: { blockKey: b.key } })
                       : undefined}
-                    onExpand={!state.blockState[b.key]
+                    onExpand={!state.blockState[b.key] && b.nonCollapsible !== true
                       ? () => dispatch({ type: 'expand-one', payload: { blockKey: b.key } })
                       : undefined}
                   />
