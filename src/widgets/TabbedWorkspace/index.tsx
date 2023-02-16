@@ -131,7 +131,7 @@ function ({
               active={state.focusedTabIdx === SPECIAL_TAB_IDX.new}
               intent={state.focusedTabIdx === SPECIAL_TAB_IDX.new ? 'primary' : undefined}
               small
-              icon="plus"
+              icon="home"
               css={css`position: absolute; top: 0; left: 0; z-index: 10;`}
             />
           }
