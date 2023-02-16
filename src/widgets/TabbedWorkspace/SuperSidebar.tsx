@@ -48,18 +48,20 @@ function ({ config, sidebarIDs, selectedSidebarID, onSelectSidebar, className })
         `}>
         {sidebarEls[selectedSidebarID]}
       </div>
-      <ButtonGroup vertical className={className} css={css`background: ${Colors.LIGHT_GRAY2}`}>
-        {sidebarIDs.map(sid => {
-          const Icon = config[sid].icon;
-          return <SidebarButton
-            key={sid}
-            icon={<Icon />}
-            active={selectedSidebarID === sid}
-            onClick={onSelectSidebar ? () => onSelectSidebar(sid) : undefined}
-            disabled={!onSelectSidebar}
-          />
-        })}
-      </ButtonGroup>
+      {sidebarIDs.length > 1
+        ? <ButtonGroup vertical className={className} css={css`background: ${Colors.LIGHT_GRAY2}`}>
+            {sidebarIDs.map(sid => {
+              const Icon = config[sid].icon;
+              return <SidebarButton
+                key={sid}
+                icon={<Icon />}
+                active={selectedSidebarID === sid}
+                onClick={onSelectSidebar ? () => onSelectSidebar(sid) : undefined}
+                disabled={!onSelectSidebar}
+              />
+            })}
+          </ButtonGroup>
+        : null}
     </>
   );
 };

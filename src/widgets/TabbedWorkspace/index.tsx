@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Button, ButtonGroup, Colors, NonIdealState, Tab, Tabs } from '@blueprintjs/core';
+import { Button, ButtonGroup, Colors, Tab, Tabs } from '@blueprintjs/core';
 import Workspace from '../Workspace';
 import { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
@@ -75,8 +75,12 @@ function ({
     <SuperSidebar
       config={sidebarConfig}
       sidebarIDs={sidebarIDs}
-      selectedSidebarID={state.selectedSidebarID}
-      onSelectSidebar={id => dispatch({ type: 'focus-sidebar', payload: { id } })}
+      selectedSidebarID={sidebarIDs.length > 1
+        ? state.selectedSidebarID
+        : sidebarIDs[0]}
+      onSelectSidebar={sidebarIDs.length > 1
+        ? id => dispatch({ type: 'focus-sidebar', payload: { id } })
+        : undefined}
     />
   );
 
