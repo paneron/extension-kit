@@ -99,10 +99,10 @@ function ({
               height: 24px;
               position: unset;
 
-              /* Accommodate the new tab button on the right */
+              /* Accommodate the new tab button, absolutely positioned */
               display: block;
               white-space: nowrap;
-              padding-right: 24px;
+              padding-left: 24px;
 
               /* Remove spacing between tabs */
               > *:not(:last-child) {
@@ -132,7 +132,7 @@ function ({
               intent={state.focusedTabIdx === SPECIAL_TAB_IDX.new ? 'primary' : undefined}
               small
               icon="plus"
-              css={css`position: absolute; top: 0; right: 0; z-index: 10;`}
+              css={css`position: absolute; top: 0; left: 0; z-index: 10;`}
             />
           }
           panel={
