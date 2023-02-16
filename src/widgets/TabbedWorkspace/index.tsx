@@ -135,12 +135,7 @@ function ({
               css={css`position: absolute; top: 0; left: 0; z-index: 10;`}
             />
           }
-          panel={
-            <NonIdealState
-              icon="rocket-slant"
-              description={newTabPrompt}
-            />
-          }
+          panel={newTabPrompt}
         />
         {(state.detailTabURIs ?? []).map((uri, idx) =>
           <Tab
