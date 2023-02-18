@@ -13,7 +13,7 @@ import { GlobalSettingsContext } from '../SettingsContext';
  * Workspace has a main area, a sidebar,
  * and a status bar with item count & possibly refresh & other actions.
  */
-const Workspace: React.FC<{
+export interface WorkspaceProps {
   /** What to show in the sidebar. */
   sidebar?: JSX.Element
 
@@ -24,7 +24,16 @@ const Workspace: React.FC<{
 
   className?: string
   style?: React.CSSProperties
-}> = function ({ navbarProps, toolbar, sidebar, statusBarProps, className, style, children }) {
+}
+const Workspace: React.FC<WorkspaceProps> = function ({
+  navbarProps,
+  toolbar,
+  sidebar,
+  statusBarProps,
+  className,
+  style,
+  children,
+}) {
   const { settings } = useContext(GlobalSettingsContext);
 
   return (
