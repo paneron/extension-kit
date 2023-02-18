@@ -14,10 +14,14 @@ import { GlobalSettingsContext } from '../SettingsContext';
  * and a status bar with item count & possibly refresh & other actions.
  */
 const Workspace: React.FC<{
+  /** What to show in the sidebar. */
+  sidebar?: JSX.Element
+
+  // These may be obsolete.
   navbarProps?: NavbarProps
   toolbar?: JSX.Element
-  sidebar?: JSX.Element
   statusBarProps?: ItemCountProps
+
   className?: string
   style?: React.CSSProperties
 }> = function ({ navbarProps, toolbar, sidebar, statusBarProps, className, style, children }) {
