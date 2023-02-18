@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Button, ButtonGroup, Colors, Tab, Tabs } from '@blueprintjs/core';
-import Workspace from '../Workspace';
+import Workspace, { WorkspaceProps } from '../Workspace';
 import { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
 import { DetailTab, DetailTabTitle } from './detail';
@@ -36,6 +36,9 @@ export interface TabbedWorkspaceProps<SidebarID extends string> {
    */
   newTabPrompt: JSX.Element
 
+  /** Set global mode bar for the workspace. */
+  globalMode?: WorkspaceProps['globalMode']
+
   className?: string
 }
 const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
@@ -43,6 +46,7 @@ function ({
   sidebarConfig,
   sidebarIDs,
   newTabPrompt,
+  globalMode,
   className,
 }) {
   const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
@@ -85,7 +89,7 @@ function ({
   );
 
   return (
-    <Workspace className={className} sidebar={sidebar}>
+    <Workspace className={className} sidebar={sidebar} globalMode={globalMode}>
       <Tabs
           id="detailTabs"
           selectedTabId={state.focusedTabIdx}

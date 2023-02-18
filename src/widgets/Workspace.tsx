@@ -3,7 +3,7 @@
 
 import { jsx, css } from '@emotion/react';
 import React, { useContext } from 'react';
-import { Classes, Colors } from '@blueprintjs/core';
+import { Classes, Colors, Intent, Tag } from '@blueprintjs/core';
 import ItemCount, { ItemCountProps } from './ItemCount';
 import Navbar, { NavbarProps }from './Navbar';
 import { GlobalSettingsContext } from '../SettingsContext';
@@ -17,6 +17,9 @@ export interface WorkspaceProps {
   /** What to show in the sidebar. */
   sidebar?: JSX.Element
 
+  /** Global mode bar. Use sparingly. */
+  globalMode?: { content: JSX.Element, intent?: Intent, onClick?: () => void }
+
   // These may be obsolete.
   navbarProps?: NavbarProps
   toolbar?: JSX.Element
@@ -27,6 +30,7 @@ export interface WorkspaceProps {
 }
 const Workspace: React.FC<WorkspaceProps> = function ({
   navbarProps,
+  globalMode,
   toolbar,
   sidebar,
   statusBarProps,
@@ -37,7 +41,29 @@ const Workspace: React.FC<WorkspaceProps> = function ({
   const { settings } = useContext(GlobalSettingsContext);
 
   return (
-    <div css={css`display: flex; flex-flow: column nowrap; overflow: hidden;`} className={className} style={style}>
+    <div
+        css={css`
+          display: flex;
+          flex-flow: column nowrap;
+          overflow: hidden;
+          background: ${Colors.LIGHT_GRAY2};
+          margin-top: ${globalMode ? '0' : '-20px'};
+          transition: margin-top .4s ${globalMode ? 'ease-out' : 'ease-in'};
+        `}
+        className={className}
+        style={style}>
+      <Tag
+          css={css`
+            border-radius: 0;
+            position: relative;
+            opacity: ${globalMode ? '1' : '0'};
+            transition: opacity .8s;
+          `}
+          interactive={globalMode?.onClick !== undefined}
+          onClick={globalMode?.onClick}
+          intent={globalMode?.intent}>
+        {globalMode?.content ?? ' '}
+      </Tag>
       <div css={css`flex: 1; display: flex; flex-flow: ${settings.sidebarPosition === 'right' ? 'row' : 'row-reverse'} nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
           {navbarProps
