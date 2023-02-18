@@ -17,7 +17,7 @@ import SuperSidebar from './SuperSidebar';
  * Wraps Workspace, adding tabbed GUI features.
  * Use inside TabbedWorkspaceContextProvider.
  */
-interface TabbedWorkspaceProps<SidebarID extends string> {
+export interface TabbedWorkspaceProps<SidebarID extends string> {
   /**
    * Configuration for individual sidebars, keyed by internal sidebar ID.
    * If there is more than one sidebar, sidebar selector is shown.
