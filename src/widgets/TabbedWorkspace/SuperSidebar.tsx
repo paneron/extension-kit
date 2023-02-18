@@ -69,7 +69,7 @@ function ({ config, sidebarIDs, selectedSidebarID, onSelectSidebar, className })
 export default SuperSidebar;
 
 const StyledSidebarButton = styled(Button)`
-  border-radius: 0;
+  border-radius: 0 !important;
 `;
 
 const SidebarButton: React.FC<ButtonProps> = function (props) {
