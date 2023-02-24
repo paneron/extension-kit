@@ -97,7 +97,6 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       } else {
         effectiveState = loadedState ?? initialState;
       }
-      console.debug("Effective state", effectiveState);
       dispatch({
         type: LOAD_STATE_ACTION_TYPE,
         payload: effectiveState,
