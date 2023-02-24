@@ -110,7 +110,7 @@ function ({
               /* Accommodate the new tab button, absolutely positioned */
               display: block;
               white-space: nowrap;
-              padding-left: 70px;
+              margin-left: 69px;
 
               /* Remove spacing between tabs */
               > *:not(:last-child) {
