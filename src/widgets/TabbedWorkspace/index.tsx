@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Button, ButtonGroup, Colors, Tab, Tabs } from '@blueprintjs/core';
+import { Tag, Colors, Classes, Tab, Tabs } from '@blueprintjs/core';
 import Workspace, { WorkspaceProps } from '../Workspace';
 import { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
@@ -105,16 +105,17 @@ function ({
             .bp3-tab-list {
               overflow-x: auto;
               height: 24px;
-              position: unset;
+              position: relative;
+
+              background: ${Colors.GRAY1};
 
               /* Accommodate the new tab button, absolutely positioned */
-              display: block;
               white-space: nowrap;
-              margin-left: 69px;
+              padding-left: 72px;
 
               /* Remove spacing between tabs */
               > *:not(:last-child) {
-                margin-right: 0;
+                margin-right: 2px;
               }
 
               /* Hide horizontal scrollbar (overlaps with tab titles on macOS) */
@@ -124,8 +125,19 @@ function ({
               }
             }
             .bp3-tab-indicator { display: none; }
-            .bp3-tab { line-height: unset; position: unset; display: inline-block; }
-            .bp3-tab-panel { flex: 1; margin: 0; padding: 5px; background: white; position: relative; }
+            .bp3-tab {
+              line-height: unset;
+              position: unset;
+              display: inline-block;
+              overflow: visible;
+            }
+            .bp3-tab-panel {
+              flex: 1;
+              margin: 0;
+              padding: 5px;
+              position: relative;
+              background: ${Colors.LIGHT_GRAY3};
+            }
           `}>
         {title
           ? <Helmet>
@@ -136,11 +148,14 @@ function ({
           id={SPECIAL_TAB_IDX.new}
           title={
             <TabTitleButton
-                active={state.focusedTabIdx === SPECIAL_TAB_IDX.new}
-                intent={state.focusedTabIdx === SPECIAL_TAB_IDX.new ? 'primary' : undefined}
-                small
+                minimal={state.focusedTabIdx !== SPECIAL_TAB_IDX.new}
                 icon="home"
-                css={css`position: absolute; top: 0; left: 0; z-index: 10;`}>
+                css={css`
+                  position: absolute;
+                  bottom: 0;
+                  left: 1px;
+                  z-index: 10;
+                `}>
               Home
             </TabTitleButton>
           }
@@ -152,42 +167,16 @@ function ({
             key={uri}
             panel={<DetailTab uri={uri} />}
             title={
-              <ButtonGroup
-                  css={css`
-                    // styling “close tab” button:
-                    & > :last-child {
-                      opacity: 0;
-                      transition: opacity .2s linear;
-                      transform: translateX(-1px) scale(0.8);
-                      transform-origin: left center;
-                    }
-                    &:hover {
-                      & > :last-child {
-                        opacity: 1;
-                      }
-                    }`}>
+              <div css={css`height: 24px;`} ref={idx === state.focusedTabIdx ? focusedTabRef : undefined}>
                 <TabTitleButton
-                    small
-                    intent={idx === state.focusedTabIdx ? 'primary' : undefined}
-                    active={idx === state.focusedTabIdx}>
+                    minimal={idx !== state.focusedTabIdx}
+                    onRemove={(evt: React.MouseEvent) => {
+                      dispatch({ type: 'close-tab', payload: { idx }});
+                      evt.stopPropagation();
+                    }}>
                   <DetailTabTitle uri={uri} />
                 </TabTitleButton>
-
-                {/* A handle for scrolling this tab handle into view, when e.g. a new tab is opened outside of the scroll view. */}
-                <div ref={idx === state.focusedTabIdx ? focusedTabRef : undefined} />
-
-                <TabTitleButton
-                  small
-                  outlined
-                  intent="danger"
-                  title={`Tab URI: ${uri}`}
-                  icon="cross"
-                  onClick={(evt: React.MouseEvent) => {
-                    dispatch({ type: 'close-tab', payload: { idx }});
-                    evt.stopPropagation();
-                  }}
-                />
-              </ButtonGroup>
+              </div>
             }
           />
         )}
@@ -197,8 +186,13 @@ function ({
 };
 
 
-const TabTitleButton = styled(Button)`
+const TabTitleButton = styled(Tag)`
   border-radius: 0;
+  height: 24px;
+  padding: 0 8px;
+  color: ${({ minimal }) => minimal ? Colors.WHITE : Colors.BLACK} !important;
+  ${({ minimal }) => minimal ? '' : `background: ${Colors.LIGHT_GRAY3}`} !important;
+  box-shadow: unset;
 `;
 
 
