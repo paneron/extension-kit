@@ -18,7 +18,7 @@ export interface BaseAction {
 }
 
 
-/* Action issued when previously stored state is loaded. */
+/** Action issued when previously stored state is loaded. */
 export interface LoadStateAction<S> extends BaseAction {
   type: typeof LOAD_STATE_ACTION_TYPE
   payload?: S
@@ -34,11 +34,13 @@ export type StateReducerHook<S, A extends BaseAction> =
 
 export type PersistentStateReducerHook<S, A extends BaseAction> =
   (
-    /* Each component should specify a unique storage key. */
+    /** Each component should specify a unique storage key. */
     storageKey: string,
 
-    /* Calls to store state will be debounced according to this delay
-       in case state change too often. */
+    /**
+     * Calls to store state will be debounced according to this delay
+     * in case state change too often.
+     */
     storageDebounceMS?: number,
 
     validateLoadedState?: (loadedValue: Partial<S> & any) => loadedValue is S,
@@ -47,9 +49,11 @@ export type PersistentStateReducerHook<S, A extends BaseAction> =
   ) => [state: S, dispatch: Dispatch<A>, stateRecalled: boolean];
 
 
-/* Creates a reducer that handles a special loadedState action,
-   relevant to persistent state reducer, in addition to any other
-   action handled by component-specific reducer function passed in. */
+/**
+ * Creates a reducer that handles a special `loadedState` action,
+ * relevant to persistent state reducer, in addition to any other
+ * action handled by component-specific reducer function passed in.
+ */
 function reducerFactory<S, A extends BaseAction>(
   reducer: Reducer<S, A>,
 ): Reducer<S, A | LoadStateAction<S>> {
@@ -64,9 +68,14 @@ function reducerFactory<S, A extends BaseAction>(
 }
 
 
-/* A reducer that persists each new state,
-   and attempts to load persisted state when component is mounted.
-   During the initial load, initialized is set to false. */
+/**
+ * A reducer that persists each new state,
+ * and attempts to load persisted state when component is mounted.
+ *
+ * During the initial load, `initialized` is set to false.
+ *
+ * `storeState` is called on each change of state but debounced.
+ */
 function usePersistentStateReducer<S, A extends BaseAction>(
   storeState: (key: string, newState: S) => void,
   loadState: (key: string) => Promise<S | undefined>,
