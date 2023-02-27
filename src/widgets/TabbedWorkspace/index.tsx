@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Tag, Colors, Classes, Tab, Tabs } from '@blueprintjs/core';
+import { Tag, Colors, Tab, Tabs } from '@blueprintjs/core';
 import Workspace, { WorkspaceProps } from '../Workspace';
 import { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
