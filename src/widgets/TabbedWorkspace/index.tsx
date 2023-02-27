@@ -169,6 +169,7 @@ function ({
             title={
               <div css={css`height: 24px;`} ref={idx === state.focusedTabIdx ? focusedTabRef : undefined}>
                 <TabTitleButton
+                    interactive={idx !== state.focusedTabIdx}
                     minimal={idx !== state.focusedTabIdx}
                     onRemove={(evt: React.MouseEvent) => {
                       dispatch({ type: 'close-tab', payload: { idx }});
