@@ -39,6 +39,9 @@ export interface TabbedWorkspaceProps<SidebarID extends string> {
   /** Set global mode bar for the workspace. */
   globalMode?: WorkspaceProps['globalMode']
 
+  /** Set the status bar for the workspace. */
+  statusBar?: WorkspaceProps['statusBar']
+
   className?: string
 }
 const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
@@ -47,6 +50,7 @@ function ({
   sidebarIDs,
   newTabPrompt,
   globalMode,
+  statusBar,
   className,
 }) {
   const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
@@ -89,7 +93,7 @@ function ({
   );
 
   return (
-    <Workspace className={className} sidebar={sidebar} globalMode={globalMode}>
+    <Workspace className={className} sidebar={sidebar} globalMode={globalMode} statusBar={statusBar}>
       <Tabs
           id="detailTabs"
           selectedTabId={state.focusedTabIdx}
