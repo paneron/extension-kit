@@ -18,7 +18,7 @@ export interface WorkspaceProps {
   sidebar?: JSX.Element
 
   /** Global mode bar. Use sparingly. */
-  globalMode?: { content: JSX.Element, intent?: Intent, onClick?: () => void }
+  globalMode?: { content: JSX.Element, intent: Intent, onClick?: () => void }
 
   // These may be obsolete.
   navbarProps?: NavbarProps
@@ -52,13 +52,11 @@ const Workspace: React.FC<WorkspaceProps> = function ({
           overflow: hidden;
           background: ${Colors.LIGHT_GRAY2};
           margin-top: ${globalMode ? '0' : '-20px'};
-          transition: margin-top .4s ${globalMode ? 'ease-out' : 'ease-in'};
         `}
         className={className}
         style={style}>
-      <Tag
+      <Bar
           css={css`
-            border-radius: 0;
             position: relative;
             opacity: ${globalMode ? '1' : '0'};
             transition: opacity .8s;
@@ -67,7 +65,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
           onClick={globalMode?.onClick}
           intent={globalMode?.intent}>
         {globalMode?.content ?? ' '}
-      </Tag>
+      </Bar>
       <div css={css`flex: 1; display: flex; flex-flow: ${settings.sidebarPosition === 'right' ? 'row' : 'row-reverse'} nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
           {navbarProps
@@ -118,6 +116,10 @@ const Workspace: React.FC<WorkspaceProps> = function ({
     </div>
   );
 }
+
+const Bar = styled(Tag)`
+  border-radius: 0;
+`;
 
 
 export default Workspace;
