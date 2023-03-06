@@ -2,9 +2,9 @@
 /** @jsxFrag React.Fragment */
 
 import { jsx, css } from '@emotion/react';
+import styled from '@emotion/styled';
 import React, { useContext } from 'react';
 import { Classes, Colors, Intent, Tag } from '@blueprintjs/core';
-import ItemCount, { ItemCountProps } from './ItemCount';
 import Navbar, { NavbarProps }from './Navbar';
 import { GlobalSettingsContext } from '../SettingsContext';
 
@@ -23,7 +23,11 @@ export interface WorkspaceProps {
   // These may be obsolete.
   navbarProps?: NavbarProps
   toolbar?: JSX.Element
-  statusBarProps?: ItemCountProps
+
+  /** Status bar, shown on the bottom. Should not be turned on or off willy-nilly. */
+  statusBar?:
+    | { content: JSX.Element, items?: never }
+    | { content?: never, items: { id: string, content: JSX.Element, flex?: true }[] }
 
   className?: string
   style?: React.CSSProperties
@@ -33,7 +37,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
   globalMode,
   toolbar,
   sidebar,
-  statusBarProps,
+  statusBar,
   className,
   style,
   children,
@@ -102,11 +106,14 @@ const Workspace: React.FC<WorkspaceProps> = function ({
         {sidebar}
       </div>
 
-      {statusBarProps
-        ? <ItemCount
-            css={css`font-size: 80%; height: 24px; padding: 0 10px; background: ${Colors.LIGHT_GRAY5}; z-index: 2;`}
-            className={Classes.ELEVATION_2}
-            {...statusBarProps} />
+      {statusBar
+        ? <Bar className={Classes.ELEVATION_2} css={css`display: flex; flex-flow: row nowrap; align-items: stretch; background: ${Colors.LIGHT_GRAY1}; color: ${Colors.GRAY2};`}>
+            {statusBar.content ?? statusBar.items.map(i =>
+              <span key={i.id} css={css`${i.flex ? 'flex: 1;' : 'flex: 0;'}`}>
+                {i.content}
+              </span>
+            )}
+          </Bar>
         : null}
     </div>
   );
