@@ -4,7 +4,7 @@
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useContext } from 'react';
-import { Classes, Colors, Intent, Tag } from '@blueprintjs/core';
+import { Classes, Colors, TagProps, Tag } from '@blueprintjs/core';
 import Navbar, { NavbarProps }from './Navbar';
 import { GlobalSettingsContext } from '../SettingsContext';
 
@@ -18,7 +18,12 @@ export interface WorkspaceProps {
   sidebar?: JSX.Element
 
   /** Global mode bar. Use sparingly. */
-  globalMode?: { content: JSX.Element, intent: Intent, onClick?: () => void }
+  globalMode?: {
+    content: JSX.Element
+    intent: TagProps["intent"]
+    icon?: TagProps["icon"]
+    onClick?: () => void
+  }
 
   // These may be obsolete.
   navbarProps?: NavbarProps
