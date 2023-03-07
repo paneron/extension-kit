@@ -68,6 +68,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
           `}
           interactive={globalMode?.onClick !== undefined}
           onClick={globalMode?.onClick}
+          icon={globalMode?.icon}
           intent={globalMode?.intent}>
         {globalMode?.content ?? ' '}
       </Bar>
