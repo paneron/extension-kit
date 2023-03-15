@@ -71,7 +71,7 @@ function ({
         setTitle(null);
       }
     })();
-  }, [focusedTabURI]);
+  }, [focusedTabURI, JSON.stringify(protocolConfiguration)]);
 
   useEffect(() => {
     if (state.focusedTabIdx >= 0) {
