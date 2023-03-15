@@ -49,7 +49,7 @@ function ({ config, sidebarIDs, selectedSidebarID, onSelectSidebar, className })
         {sidebarEls[selectedSidebarID]}
       </div>
       {sidebarIDs.length > 1
-        ? <ButtonGroup vertical className={className} css={css`background: ${Colors.LIGHT_GRAY2}`}>
+        ? <ButtonGroup vertical className={className}>
             {sidebarIDs.map(sid => {
               const Icon = config[sid].icon;
               return <SidebarButton
