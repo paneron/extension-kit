@@ -3,7 +3,7 @@
 
 import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import type { PersistentStateReducerHook } from '../../usePersistentStateReducer';
 import SidebarBlock, { SidebarBlockConfig } from './Block';
 import BlockStateButtonGroup from './BlockStateButtonGroup';
@@ -33,6 +33,12 @@ function makeSidebar(
 ) {
   const Sidebar: React.FC<SidebarProps> =
   function ({ title, stateKey, blocks, representsSelection, className }) {
+    const withOtherBlocksCollapsed = useCallback((blockKey: string) => {
+      return blocks.
+        map(b => ({ [b.key]: b.nonCollapsible !== true && b.key !== blockKey ? false : true })).
+        reduce((prev, curr) => ({ ...prev, ...curr }));
+    }, [blocks]);
+
     const [ state, dispatch, stateLoaded ] = persistentReducer(
       stateKey,
       undefined,
@@ -69,18 +75,15 @@ function makeSidebar(
       },
       null);
 
-    function withOtherBlocksCollapsed(blockKey: string) {
-      return blocks.
-        map(b => ({ [b.key]: b.nonCollapsible !== true && b.key !== blockKey ? false : true })).
-        reduce((prev, curr) => ({ ...prev, ...curr }))
-    }
-
     function hasOthersCollapsed(blockKey: string): boolean {
       // Using JSON.stringify for quick and dirty object structure comparison.
       return JSON.stringify(withOtherBlocksCollapsed(blockKey)) === JSON.stringify(state.blockState);
     }
 
-    const collapsibleBlocks = blocks.filter(block => block.nonCollapsible !== true);
+    const collapsibleBlocks = useMemo(
+      () => blocks.filter(block => block.nonCollapsible !== true),
+      [blocks]);
+
     const hasCollapsibleBlocks = collapsibleBlocks.length > 0;
 
     // Single blocks are styled so that they occupy the entire sidebar.
