@@ -116,7 +116,6 @@ function ({
 
               /* Accommodate the new tab button, absolutely positioned */
               white-space: nowrap;
-              padding-left: 72px;
 
               /* Remove spacing between tabs */
               > *:not(:last-child) {
@@ -154,13 +153,7 @@ function ({
           title={
             <TabTitleButton
                 minimal={state.focusedTabIdx !== SPECIAL_TAB_IDX.new}
-                icon="home"
-                css={css`
-                  position: absolute;
-                  bottom: 0;
-                  left: 1px;
-                  z-index: 10;
-                `}>
+                icon="home">
               Home
             </TabTitleButton>
           }
