@@ -9,7 +9,14 @@ export type URIDetailView = React.FC<{ uri: string }>;
 export interface ProtocolConfig {
   main: URIDetailView
   title: URIDetailView
-  plainTitle: (uri: string) => Promise<string>
+
+  /**
+   * Provides plain-text title.
+   *
+   * Do not use. For window titles, prefer using <Helmet> in your component
+   * directly.
+   */
+  plainTitle?: (uri: string) => Promise<string>
 }
 
 /** Defines which React components should be used for which protocol among tabs. */
