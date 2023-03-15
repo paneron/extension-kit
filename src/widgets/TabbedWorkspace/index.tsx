@@ -96,6 +96,7 @@ function ({
     <Workspace className={className} sidebar={sidebar} globalMode={globalMode} statusBar={statusBar}>
       <Tabs
           id="detailTabs"
+          renderActiveTabPanelOnly
           selectedTabId={state.focusedTabIdx}
           onChange={(idx: number, oldIdx: number) => dispatch({ type: 'focus-tab', payload: { idx } })}
           css={css`
