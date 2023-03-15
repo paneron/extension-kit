@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -79,8 +79,8 @@ function ({
     }
   }, [state.focusedTabIdx]);
 
-  const sidebar = (
-    <SuperSidebar
+  const sidebar = useMemo(() => {
+    return <SuperSidebar
       config={sidebarConfig}
       sidebarIDs={sidebarIDs}
       selectedSidebarID={sidebarIDs.length > 1
@@ -90,7 +90,7 @@ function ({
         ? id => dispatch({ type: 'focus-sidebar', payload: { id } })
         : undefined}
     />
-  );
+  }, [JSON.stringify(sidebarConfig), JSON.stringify(sidebarIDs), state.selectedSidebarID]);
 
   return (
     <Workspace className={className} sidebar={sidebar} globalMode={globalMode} statusBar={statusBar}>
