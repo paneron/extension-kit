@@ -29,7 +29,7 @@ function ({ content: tooltip, intent, iconSize, tooltipProps }) {
             popoverClassName={`${css2`
               margin: 10px;
 
-              .bp3-popover2-content {
+              .bp4-popover2-content {
                 font-size: 90%;
               }
             `}`}

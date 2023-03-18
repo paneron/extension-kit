@@ -76,7 +76,7 @@ export const Panel = React.forwardRef<HTMLDivElement, PanelProps>(function Panel
           overflow: hidden;
           min-height: ${titleBarHeight};
 
-          .bp3-form-group {
+          .bp4-form-group {
             padding: 0 .25rem;
             padding-bottom: .25rem;
             margin-bottom: 0;
@@ -85,11 +85,11 @@ export const Panel = React.forwardRef<HTMLDivElement, PanelProps>(function Panel
               padding-top: .25rem;
             }
 
-            .bp3-label {
+            .bp4-label {
               margin-bottom: 0;
             }
 
-            &.bp3-inline {
+            &.bp4-inline {
               padding-right: .5rem;
             }
           }

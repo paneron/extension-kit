@@ -107,7 +107,7 @@ function ({
 
             position: relative;
 
-            .bp3-tab-list {
+            .bp4-tab-list {
               overflow-x: auto;
               height: 24px;
               position: relative;
@@ -128,14 +128,14 @@ function ({
                 background: transparent;
               }
             }
-            .bp3-tab-indicator { display: none; }
-            .bp3-tab {
+            .bp4-tab-indicator { display: none; }
+            .bp4-tab {
               line-height: unset;
               position: unset;
               display: inline-block;
               overflow: visible;
             }
-            .bp3-tab-panel {
+            .bp4-tab-panel {
               flex: 1;
               margin: 0;
               padding: 5px;
@@ -190,6 +190,15 @@ const TabTitleButton = styled(Tag)`
   height: 24px;
   padding: 0 8px;
   color: ${({ minimal }) => minimal ? Colors.WHITE : Colors.BLACK} !important;
+
+  .bp4-tag-remove {
+    color: ${({ minimal }) => minimal ? Colors.WHITE : Colors.BLACK} !important;
+    opacity: .5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
   ${({ minimal }) => minimal ? '' : `background: ${Colors.LIGHT_GRAY3}`} !important;
   box-shadow: unset;
 `;

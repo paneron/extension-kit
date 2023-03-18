@@ -54,7 +54,7 @@ function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, c
             padding-top: 3px;
             padding-bottom: 2px;
 
-            .bp3-input-group .bp3-input {
+            .bp4-input-group .bp4-input {
               margin-top: -5px;
               margin-bottom: -2px;
               font-size: unset;
@@ -90,7 +90,7 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
       small
       disabled={!onChange}
       value={value}
-      css={css`${invalid && onChange ? `.bp3-input { background: mistyrose }` : ''}`}
+      css={css`${invalid && onChange ? `.bp4-input { background: mistyrose }` : ''}`}
       placeholder={placeholder}
       rightElement={invalid
         ? <Tooltip2
@@ -133,7 +133,7 @@ function ({ value, options, onChange }) {
           height: 18px;
           font-size: unset;
         }
-        & .bp3-icon-double-caret-vertical {
+        & .bp4-icon-double-caret-vertical {
           top: 2px;
         }
       `}
