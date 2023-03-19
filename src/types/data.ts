@@ -14,50 +14,51 @@
 export type FileChangeType = 'modified' | 'added' | 'removed' | 'unchanged';
 
 
-/* Describes single object’s data, can be text with specified encoding or binary data. */
+/** Describes single object’s data, can be text with specified encoding or binary data. */
 export type ObjectData = null
   | { value: string, encoding: string }
   | { value: Uint8Array, encoding: undefined }
 
 
-/* Maps a set of object paths to respective data. */
+/** Maps a set of object paths to respective data. */
 export interface ObjectDataset {
   [objectPath: string]: ObjectData
 }
 
 
-/* Maps a set of object paths to object’s change status. */
+/** Maps a set of object paths to object’s change status. */
 export interface ObjectChangeStatusSet {
   [objectPath: string]: FileChangeType
 }
 
 
-/* Describes a query to retrieve which objects exist without knowing their paths. */
+/** Describes a query to retrieve which objects exist without knowing their paths. */
 export interface ObjectQuery {
   pathPrefix: string
   contentSubstring?: string
 }
 
 
-/* Describes a query to get object data for specified object paths. */
+/** Describes a query to get object data for specified object paths. */
 export type ObjectDataRequest = Record<string, 'utf-8' | 'binary'>;
 
 
-/* Describes a change made to a single object.
-
-   For data consistency, users must provide `oldValue` to indicate which value should be replaced;
-   if preexisting value is different from `oldValue` then there was likely a race condition
-   (object data changed e.g. by another user), the new value should not be written
-   and user should be informed about a conflict.
-
-   `encoding` is not expected to change through the lifetime of an object.
-*/
+/**
+ * Describes a change made to a single object.
+ *
+ * For data consistency, users must provide `oldValue` to indicate which value should be replaced;
+ * if preexisting value is different from `oldValue` then there was likely a race condition
+ * (object data changed e.g. by another user), the new value should not be written
+ * and user should be informed about a conflict.
+ *
+ * `encoding` is not expected to change through the lifetime of an object.
+ */
 export type ObjectChange =
   | { newValue: string | null, encoding: string, oldValue?: string | null }
   | { newValue: Uint8Array | null, encoding: undefined, oldValue?: Uint8Array | null }
 
 
-/* Maps object data changes to object paths. */
+/** Maps object data changes to object paths. */
 export interface ObjectChangeset {
   // Object path must be supplied / is returned relative to repository root.
   // Writing null must cause the object to be deleted.
@@ -66,9 +67,9 @@ export interface ObjectChangeset {
 }
 
 
-/* The result of applying an ObjectChangeset. */
-// TODO: “Commit hash” ties this to Git; potentially this could be made generic.
+/** The result of applying an ObjectChangeset. */
 export interface CommitOutcome {
+  // TODO: “Commit hash” ties this to Git; potentially this could be made generic.
   newCommitHash?: string
   conflicts?: {
     [objectPath: string]: true

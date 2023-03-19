@@ -65,6 +65,9 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   getFilteredIndexPosition: async () => ({ position: null }),
 
+  useMapReducedData: getValueHookPlaceholder({}) as DatasetContextSpec["useMapReducedData"],
+  getMapReducedData: (async () => ({})) as DatasetContextSpec["getMapReducedData"],
+
   usePersistentDatasetStateReducer: initialPersistentStateReducerHook,
   useTimeTravelingPersistentDatasetStateReducer: initialTimeTravelingPersistentStateReducerHook,
 
