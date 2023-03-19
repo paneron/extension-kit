@@ -41,7 +41,7 @@
     "@types/semver": "^7.3.4",
     "@types/throttle-debounce": "^2.1.0",
     "date-fns": "^2.22.1",
-    "electron": "15.5.7",
+    "electron": "~15.5.7",
     "electron-log": "^4.3.0",
     "immer": "^9.0.2",
     "isomorphic-git": "^1.7.8",
