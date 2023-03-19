@@ -139,10 +139,6 @@ General purpose libs:
 * "@react-three/fiber"
 * "@react-three/drei"
 
-Logging:
-
-* "electron-log"
-
 Again, you must not have anything in your dependencies,
 but you may want to add what you use from the above to your _devDependencies_
 for TypeScript development convenience.
