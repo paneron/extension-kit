@@ -4,15 +4,15 @@ export interface FileFilter {
   name: string;
 }
 
-import { ObjectDataset, ObjectChangeset } from './objects';
-import { CommitOutcome, ChangeStatus } from './changes';
-import { IndexStatus } from './indexes';
-import { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
-import { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
-import { Settings, GlobalSettings } from '../settings';
-import { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
-import { SubprocessDescription } from './binary-invocation';
-import { ObjectSpecViewID, ObjectViewProps } from './object-spec';
+import type { ObjectDataset, ObjectChangeset } from './objects';
+import type { CommitOutcome, ChangeStatus } from './changes';
+import type { IndexStatus } from './indexes';
+import type { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
+import type { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
+import type { Settings, GlobalSettings } from '../settings';
+import type { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
+import type { SubprocessDescription } from './binary-invocation';
+import type { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
 
 export interface DatasetContext {
