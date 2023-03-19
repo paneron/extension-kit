@@ -31,6 +31,7 @@ function ({ content: tooltip, intent, iconSize, tooltipProps }) {
 
               .bp4-popover2-content {
                 font-size: 90%;
+                max-width: 500px;
               }
             `}`}
             hoverCloseDelay={600}
