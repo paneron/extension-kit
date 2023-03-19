@@ -17,7 +17,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "electron": "^11.4.11",
+    "electron": "~15.5.7",
     "electron-log": "^4.3.0",
     "@riboseinc/isogit-lfs": "0.1.6"
   },
