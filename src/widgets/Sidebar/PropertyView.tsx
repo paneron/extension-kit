@@ -120,12 +120,15 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
 
 interface SelectProps extends HTMLSelectProps {}
 export const Select: React.FC<SelectProps> =
-function ({ value, options, onChange }) {
+function ({ value, options, onChange, large, minimal, fill }) {
   return (
     <HTMLSelect
       options={options}
       onChange={onChange}
       value={value}
+      large={large}
+      minimal={minimal}
+      fill={fill}
       css={css`
         margin-top: -2px;
         & select {
