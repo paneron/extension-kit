@@ -46,7 +46,7 @@ function ({ content: tooltip, intent, iconSize, tooltipProps }) {
               <span
                   {...targetProps}
                   css={css`
-                    display: inline-block;
+                    display: inline !important /* BP4 overrides it to block in a few niche scenarios. */;
                     padding: .15em;
                     margin: -.15em;
                     transition: opacity .2s linear;
