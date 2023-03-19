@@ -93,7 +93,7 @@ These are available for import in extensions.
 Don’t add them as `dependencies` to your extension’s package.json;
 add them as `devDependencies` instead.
 
-Paneron kits:
+Paneron extension building kits:
 
 * "@riboseinc/paneron-extension-kit"
 * "@riboseinc/paneron-registry-kit"
