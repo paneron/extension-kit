@@ -90,8 +90,12 @@ after opening a repository using your extension and “DevTools was disconnected
 ==== Modules you can import
 
 These are available for import in extensions.
-Don’t add them as `dependencies` to your extension’s package.json;
-add them as `devDependencies` instead.
+Add them (and, where applicable, the corresponding "@types/*" counterparts)
+as `devDependencies` in your extension’s package.json for development.
+(Do not specify any `dependencies`.)
+
+NOTE: Versions matter, for specific versions that will be provided at runtime by Paneron
+see Paneron’s `package.json`.
 
 Paneron extension building kits:
 
@@ -138,10 +142,6 @@ General purpose libs:
 * "three-stdlib"
 * "@react-three/fiber"
 * "@react-three/drei"
-
-Again, you must not have anything in your dependencies,
-but you may want to add what you use from the above to your _devDependencies_
-for TypeScript development convenience.
 
 === Using Emotion for styling components
 
