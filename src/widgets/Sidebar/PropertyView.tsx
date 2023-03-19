@@ -125,6 +125,7 @@ function ({ value, options, onChange, large, minimal, fill }) {
     <HTMLSelect
       options={options}
       onChange={onChange}
+      disabled={!onChange}
       value={value}
       large={large}
       minimal={minimal}
