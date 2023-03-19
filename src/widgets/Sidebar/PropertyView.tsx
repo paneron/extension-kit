@@ -118,8 +118,7 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
   )
 }
 
-interface SelectProps extends HTMLSelectProps {
-}
+interface SelectProps extends HTMLSelectProps {}
 export const Select: React.FC<SelectProps> =
 function ({ value, options, onChange }) {
   return (
