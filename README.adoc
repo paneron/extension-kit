@@ -98,8 +98,8 @@ see Paneron’s `package.json`.
 
 Paneron extension building kits:
 
-* "@riboseinc/paneron-extension-kit"
-* "@riboseinc/paneron-registry-kit"
+* "@riboseinc/paneron-extension-kit" (major and minor version match Paneron’s)
+* "@riboseinc/paneron-registry-kit" (major and minor version match Paneron’s)
 
 Basic React and related:
 
