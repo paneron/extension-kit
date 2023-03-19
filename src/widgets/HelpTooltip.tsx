@@ -4,7 +4,7 @@
 import React from 'react';
 import { ClassNames, jsx, css } from '@emotion/react';
 import { Popover2InteractionKind, Tooltip2, Tooltip2Props } from '@blueprintjs/popover2';
-import { Icon, IconSize, Intent } from '@blueprintjs/core';
+import { Icon, IconName, IconSize, Intent } from '@blueprintjs/core';
 
 
 export interface HelpTooltipProps {
@@ -12,6 +12,9 @@ export interface HelpTooltipProps {
 
   /** Applies to both icon and tooltip. */
   intent?: Intent
+
+  /** Icon, if unspecified then default info icon is used. */
+  icon?: IconName
 
   /** Default: 12. */
   iconSize?: IconSize
@@ -21,7 +24,7 @@ export interface HelpTooltipProps {
 
 /** Info icon with a customized BP3 tooltip. */
 const HelpTooltip: React.VoidFunctionComponent<HelpTooltipProps> =
-function ({ content: tooltip, intent, iconSize, tooltipProps }) {
+function ({ content: tooltip, icon, intent, iconSize, tooltipProps }) {
   return (
     <ClassNames>
       {({ css: css2, cx }) => (
@@ -54,7 +57,7 @@ function ({ content: tooltip, intent, iconSize, tooltipProps }) {
                   `}
                   ref={ref}>
                 <Icon
-                  icon="help"
+                  icon={icon ?? 'help'}
                   intent={intent}
                   css={css`margin-bottom: 1px;`}
                   size={iconSize ?? 12}
