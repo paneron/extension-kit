@@ -112,7 +112,7 @@ GUI components:
 * "react-visual-diff"
 * "react-helmet" (you can use it for setting window title)
 
-BP3:
+Blueprint 4:
 
 * "@blueprintjs/core"
 * "@blueprintjs/datetime"
