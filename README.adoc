@@ -1,7 +1,7 @@
 = Paneron extension kit
 
 The kit currently contains a set of types relevant for Paneron extension development,
-a helper function `exposePlugin()`, and a couple of UI widgets.
+a helper function `makeExtension()`, and a couple of UI widgets.
 
 == Extension development
 
@@ -50,7 +50,7 @@ $ yarn build
 ==== Release
 
 An extension must be released as a separate NPM package, specifying entry as `plugin.js`.
-That entry file should call `exposePlugin()` imported from the extension kit,
+That entry file should call `makeExtension()` imported from the extension kit,
 passing it extension configuration.
 
 NOTE: See the template extension for example packaging.
