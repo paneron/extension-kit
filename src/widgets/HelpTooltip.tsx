@@ -13,7 +13,7 @@ export interface HelpTooltipProps {
   /** Applies to both icon and tooltip. */
   intent?: Intent
 
-  /** Icon, if unspecified then default info icon is used. */
+  /** Icon, if unspecified then default “help” question mark icon is used. */
   icon?: IconName
 
   /** Default: 12. */
