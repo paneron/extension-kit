@@ -42,6 +42,10 @@ export interface TabbedWorkspaceProps<SidebarID extends string> {
   /** Set the status bar for the workspace. */
   statusBar?: WorkspaceProps['statusBar']
 
+  sidebarWidth?: number
+  /** If not provided, sidebar cannot be resized. */
+  onSidebarResize?: (newWidth: number) => void
+
   className?: string
 }
 const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
@@ -51,6 +55,10 @@ function ({
   newTabPrompt,
   globalMode,
   statusBar,
+
+  sidebarWidth,
+  onSidebarResize,
+
   className,
 }) {
   const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
@@ -83,6 +91,10 @@ function ({
     return <SuperSidebar
       config={sidebarConfig}
       sidebarIDs={sidebarIDs}
+      width={sidebarWidth}
+      onResize={onSidebarResize}
+      minWidth={250}
+      maxWidth={600}
       selectedSidebarID={sidebarIDs.length > 1
         ? state.selectedSidebarID
         : sidebarIDs[0]}
@@ -94,6 +106,8 @@ function ({
     JSON.stringify(sidebarConfig),
     JSON.stringify(sidebarIDs),
     state.selectedSidebarID,
+    sidebarWidth,
+    onSidebarResize,
   ]);
 
   return (
