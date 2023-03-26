@@ -37,6 +37,7 @@
     "@types/js-yaml": "^4.0.1",
     "@types/react": "17.0.53",
     "@types/react-helmet": "^6.1.0",
+    "@types/react-resizable": "^3.0.3",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
     "@types/semver": "^7.3.4",

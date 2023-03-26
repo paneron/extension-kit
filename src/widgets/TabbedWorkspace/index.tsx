@@ -90,7 +90,11 @@ function ({
         ? id => dispatch({ type: 'focus-sidebar', payload: { id } })
         : undefined}
     />
-  }, [JSON.stringify(sidebarConfig), JSON.stringify(sidebarIDs), state.selectedSidebarID]);
+  }, [
+    JSON.stringify(sidebarConfig),
+    JSON.stringify(sidebarIDs),
+    state.selectedSidebarID,
+  ]);
 
   return (
     <Workspace className={className} sidebar={sidebar} globalMode={globalMode} statusBar={statusBar}>
