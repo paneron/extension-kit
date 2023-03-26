@@ -66,19 +66,27 @@ function ({
   const [title, setTitle] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+    if (!focusedTabURI) {
+      setTitle(null);
+      return;
+    }
     (async () => {
       if (focusedTabURI) {
         const [proto, path] = focusedTabURI.split(':');
         const title = await protocolConfiguration[proto]?.plainTitle?.(path);
+
+        if (cancelled) { return; }
+
         if (title) {
           setTitle(title);
         } else {
           setTitle(null);
         }
-      } else {
-        setTitle(null);
       }
     })();
+
+    return function cleanUp() { cancelled = true; }
   }, [focusedTabURI, JSON.stringify(protocolConfiguration)]);
 
   useEffect(() => {
