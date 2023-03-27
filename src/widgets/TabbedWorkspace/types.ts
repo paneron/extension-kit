@@ -47,6 +47,8 @@ export type TabbedWorkspaceContext<Proto extends string, SidebarID extends strin
   /** Spawns a new tab with specified URI */
   spawnTab: (uri: string) => void
 
+  closeTabWithURI: (uri: string) => void
+
   protocolConfiguration: ProtocolRegistry<Proto>,
 
   state: State<SidebarID>

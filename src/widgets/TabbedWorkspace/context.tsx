@@ -16,6 +16,7 @@ const initialState: State<''> = {
 
 export const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<any, any>>({
   spawnTab: () => void 0,
+  closeTabWithURI: () => void 0,
   protocolConfiguration: {},
   state: initialState,
   dispatch: () => void 0,
@@ -169,6 +170,12 @@ React.FC<TabbedWorkspaceContextProviderProps> {
 
     const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = {
       spawnTab: uri => dispatch({ type: 'spawn-tab', payload: { uri } }),
+
+      closeTabWithURI: uri => {
+        const idx = state.detailTabURIs.indexOf(uri);
+        if (idx >= 0) { dispatch({ type: 'close-tab', payload: { idx } }); }
+      },
+
       navigateFocusedTab: uri => dispatch({ type: 'navigate-focused-tab', payload: { uri }}),
       protocolConfiguration,
       focusedTabURI,
