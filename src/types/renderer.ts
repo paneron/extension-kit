@@ -156,8 +156,18 @@ export interface DatasetContext {
 
   // Settings
 
+  /**
+   * Returns Paneron-global settings that may make sense for extensions
+   * (e.g., sidebar positioning).
+   *
+   * TODO: Allow overriding global settings with scoped?
+   */
   useGlobalSettings: Hooks.Settings.UseGlobalSettings
+
+  /** Returns arbitrary settings scoped to current dataset. */
   useSettings: Hooks.Settings.UseSettings
+
+  /** Updates a given setting in dataset scope. */
   updateSetting: Hooks.Settings.UpdateSetting
 
   //useObjectChangeStatus: ObjectChangeStatusHook
