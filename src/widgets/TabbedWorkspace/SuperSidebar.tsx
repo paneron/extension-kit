@@ -24,6 +24,8 @@ interface SuperSidebarProps<SidebarID extends string> {
   width?: number
   maxWidth?: number
   minWidth?: number
+
+  /** Ran when sidebar is resized, debounced. */
   onResize?: (width: number) => void
 
   className?: string
