@@ -1,11 +1,16 @@
 import semver from 'semver';
-import 'electron';
-import log from 'electron-log';
 import type { Extension } from './types/extension';
 import type { ExtensionMaker } from './types/extension-maker';
 import type { DatasetMigrationFunction } from './types/migrations';
 import { withDatasetContext } from './context';
 import { matchesPath } from './object-specs';
+
+
+/**
+ * Provides a type for electron’s `process`
+ * without having to add Electron as dependency.
+ */
+declare const process: NodeJS.Process & { type: 'browser' | 'renderer' }
 
 
 /* The default export of Paneron extension’s extension.ts entry file
@@ -71,14 +76,14 @@ export const makeExtension: ExtensionMaker = async (options) => {
           const view = spec._viewCache[viewID];
           return view;
         } else {
-          log.error("Unable to find object view for object path", objectPath, viewID);
+          console.error("Unable to find object view for object path", objectPath, viewID);
           throw new Error("Cannot find object view");
         }
       },
     };
 
   } else {
-    log.error("Paneron extension: Unsupported process type", options.name);
+    console.error("Paneron extension: Unsupported process type", options.name);
     throw new Error("Unsupported process type");
   }
 

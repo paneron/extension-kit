@@ -18,9 +18,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@riboseinc/isogit-lfs": "0.1.6",
-    "electron": "~15.5.7",
-    "electron-log": "^4.3.0"
+    "@riboseinc/isogit-lfs": "0.1.6"
   },
   "resolutions": {
     "@types/react": "17.0.53"
@@ -35,6 +33,7 @@
     "@emotion/styled": "^11.10.6",
     "@riboseinc/isogit-lfs": "0.1.6",
     "@types/js-yaml": "^4.0.1",
+    "@types/node": "^18.15.11",
     "@types/react": "17.0.53",
     "@types/react-helmet": "^6.1.0",
     "@types/react-resizable": "^3.0.3",
@@ -43,8 +42,6 @@
     "@types/semver": "^7.3.4",
     "@types/throttle-debounce": "^2.1.0",
     "date-fns": "^2.22.1",
-    "electron": "~15.5.7",
-    "electron-log": "^4.3.0",
     "immer": "^9.0.2",
     "isomorphic-git": "^1.7.8",
     "react-helmet": "^6.1.0",

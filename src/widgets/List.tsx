@@ -1,7 +1,6 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import log from 'electron-log';
 import { debounce } from 'throttle-debounce';
 import { jsx, css } from '@emotion/react';
 import React, { ComponentType, useEffect, useRef } from 'react';
@@ -93,7 +92,7 @@ React.FC<ListProps<P>> {
         if (result?.index !== undefined) {
           listEl.scrollToItem(result.index, 'smart');
         } else {
-          log.warn("List: couldn’t find row/column index of the selected item to jump to it", selectedItem);
+          console.warn("List: couldn’t find row/column index of the selected item to jump to it", selectedItem);
         }
       }
     }

@@ -1,4 +1,3 @@
-import log from 'electron-log';
 import React from 'react';
 import { INITIAL_GLOBAL_SETTINGS } from './settings';
 import {
@@ -22,10 +21,13 @@ function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
 }
 
 
+function noOp() {}
+
+
 const INITIAL_CONTEXT: DatasetContextSpec = {
   title: '',
 
-  logger: log,
+  logger: { log: noOp, error: noOp, debug: noOp },
 
   performOperation: (_, f) => f,
 
