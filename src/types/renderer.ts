@@ -15,6 +15,7 @@ import type { SubprocessDescription } from './binary-invocation';
 import type { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
 
+/** A specification of context available to extension component. */
 export interface DatasetContext {
   /** Dataset title, as specified by dataset manifest/metadata YAML file in the repository. */
   title: string
