@@ -1,6 +1,7 @@
 import { Extension } from './extension';
 import { MigrationModule } from './migrations';
 import { ObjectSpec } from './object-spec';
+import { ExporterModule } from './export-formats';
 
 
 export interface ExtensionMakerProps {
@@ -20,6 +21,10 @@ export interface ExtensionMakerProps {
   /* Instructs which migration to run if new dataset is being initialized.
      The migration is supposed to return version matching latest extension version. */
   datasetInitializer?: () => MigrationModule
+
+  exportFormats?: {
+    [exportFormatID: string]: () => ExporterModule
+  }
 
   /* Instructs a migration to run if current dataset version matches
      one of these specs (in semver format).
