@@ -1,7 +1,7 @@
-import { Extension } from './extension';
-import { MigrationModule } from './migrations';
-import { ObjectSpec } from './object-spec';
-import { ExporterModule } from './export-formats';
+import type { Extension } from './extension';
+import type { MigrationModule } from './migrations';
+import type { ObjectSpec } from './object-spec';
+import type { ExporterModule } from './export-formats';
 
 
 export interface ExtensionMakerProps {
@@ -14,7 +14,8 @@ export interface ExtensionMakerProps {
   /* Object specs allow an extension to provide information about
      logical objects extension manipulates,
      such as object view/edit GUI components.
-     Eventually this could also make mainView optional.
+     Intended to eventually make mainView optional.
+     TODO: Deprecated.
   */
   objects?: ObjectSpec[]
 

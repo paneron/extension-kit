@@ -83,7 +83,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
     };
 
   } else {
-    console.error("Paneron extension: Unsupported process type", options.name);
+    console.error(`Paneron extension: Unsupported process type ${process.type} for extension ${options.name}`);
     throw new Error("Unsupported process type");
   }
 
