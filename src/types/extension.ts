@@ -28,7 +28,10 @@ export interface MainPlugin {
 
 /** The interface that extension instance exposes in browser. */
 export interface RendererPlugin {
+  /** Dataset-wide view. */
   mainView?: React.FC<DatasetContext>
+
+  /** Deprecated. */
   getObjectView:
     (opts: { objectPath: string, viewID: ObjectSpecViewID }) =>
       React.FC<ObjectViewProps> | undefined
