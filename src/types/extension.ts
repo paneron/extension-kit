@@ -35,6 +35,13 @@ export interface RendererPlugin {
   getObjectView:
     (opts: { objectPath: string, viewID: ObjectSpecViewID }) =>
       React.FC<ObjectViewProps> | undefined
+
+  getExporter: (name: string) => Promise<ExporterConstructor>
 }
 
-export type Extension = MainPlugin | RendererPlugin;
+/** The interface that extension instance exposes to CLI user. */
+export interface CLIPlugin {
+  getExporter: (name: string) => Promise<ExporterConstructor>
+}
+
+export type Extension = MainPlugin | RendererPlugin | CLIPlugin;

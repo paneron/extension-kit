@@ -1,6 +1,7 @@
 import semver from 'semver';
 import type { Extension } from './types/extension';
 import type { ExtensionMaker } from './types/extension-maker';
+import type { ExporterConstructor } from './types/export-formats';
 import type { DatasetMigrationFunction } from './types/migrations';
 import { withDatasetContext } from './context';
 import { matchesPath } from './object-specs';
@@ -20,7 +21,18 @@ export const makeExtension: ExtensionMaker = async (options) => {
 
   const objectSpecs = options.objects ?? [];
 
+  const getExporter: (exporterName: string) => Promise<ExporterConstructor> =
+  async function getExporter(exporterName) {
+    const exporter = options.exportFormats?.[exporterName];
+    if (!exporter) {
+      throw new Error(`No export format ${exporterName}`);
+    }
+    return (await exporter()).default;
+  }
+
   if (process.type === 'browser') {
+    // Initializes the Electron main thread part of the extension.
+    // Can use Node environment. (Deprecated)
     const migration: DatasetMigrationFunction = options.datasetInitializer
       ? (await options.datasetInitializer()).default
       : async () => ({
@@ -53,6 +65,8 @@ export const makeExtension: ExtensionMaker = async (options) => {
     };
 
   } else if (process.type === 'renderer') {
+    // Initializes the renderer thread part of the extension
+    // (the primary part that runs in browser)
     const mainViewImportResult = (options.mainView || (options as any).repoView)
       ? await (
           options.mainView ||
@@ -80,11 +94,16 @@ export const makeExtension: ExtensionMaker = async (options) => {
           throw new Error("Cannot find object view");
         }
       },
+
+      getExporter,
     };
 
   } else {
-    console.error(`Paneron extension: Unsupported process type ${process.type} for extension ${options.name}`);
-    throw new Error("Unsupported process type");
+    // Initializes extension for CLI. Runs in Node.
+    // Primarily intended for e.g. exporting stuff in CI
+    plugin = {
+      getExporter,
+    };
   }
 
   return plugin;
