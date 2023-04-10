@@ -2,10 +2,11 @@ import type React from 'react';
 import type { ObjectSpec, ObjectSpecViewID, ObjectViewProps } from './object-spec';
 import type { DatasetMigrationFunction, MigrationModule } from './migrations';
 import type { DatasetContext } from './renderer';
+import type { ExporterConstructor } from './export-formats';
 
 
 /**
- * The interface that extension instance exposes to Paneron in main thread.
+ * The interface that extension instance exposes in Electron main thread.
  * 
  * TODO: Deprecated.
  */
@@ -25,7 +26,7 @@ export interface MainPlugin {
 }
 
 
-/** The interface that extension instance exposes to Paneron in renderer thread. */
+/** The interface that extension instance exposes in browser. */
 export interface RendererPlugin {
   mainView?: React.FC<DatasetContext>
   getObjectView:
