@@ -10,10 +10,10 @@ export interface ExportOptions {
 /**
  * An exporter is a generator of buffer datasets.
  */
-export type Exporter = AsyncGenerator<BufferDataset, never, void>;
+export type Exporter = AsyncGenerator<BufferDataset, void, void>;
 
 /**
- * Prepares the exporter given configuration (progress handler, etc.).
+ * Prepares exporter given configuration (progress handler, etc.).
  */
 export type ExporterConstructor = (opts: ExportOptions) => Exporter;
 
