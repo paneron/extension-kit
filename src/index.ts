@@ -1,7 +1,6 @@
 import semver from 'semver';
 import type { Extension } from './types/extension';
 import type { ExtensionMaker } from './types/extension-maker';
-import type { ExporterConstructor } from './types/export-formats';
 import type { DatasetMigrationFunction } from './types/migrations';
 import { withDatasetContext } from './context';
 import { matchesPath } from './object-specs';
@@ -21,14 +20,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
 
   const objectSpecs = options.objects ?? [];
 
-  const getExporter: (exporterName: string) => Promise<ExporterConstructor> =
-  async function getExporter(exporterName) {
-    const exporter = options.exportFormats?.[exporterName];
-    if (!exporter) {
-      throw new Error(`No export format ${exporterName}`);
-    }
-    return (await exporter()).default;
-  }
+  const exportFormats = options.exportFormats ?? {};
 
   if (process.type === 'browser') {
     // Initializes the Electron main thread part of the extension.
@@ -95,14 +87,14 @@ export const makeExtension: ExtensionMaker = async (options) => {
         }
       },
 
-      getExporter,
+      exportFormats,
     };
 
   } else {
     // Initializes extension for CLI. Runs in Node.
     // Primarily intended for e.g. exporting stuff in CI
     plugin = {
-      getExporter,
+      exportFormats,
     };
   }
 

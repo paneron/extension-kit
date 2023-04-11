@@ -2,7 +2,7 @@ import type React from 'react';
 import type { ObjectSpec, ObjectSpecViewID, ObjectViewProps } from './object-spec';
 import type { DatasetMigrationFunction, MigrationModule } from './migrations';
 import type { DatasetContext } from './renderer';
-import type { ExporterConstructor } from './export-formats';
+import type { ExporterModule } from './export-formats';
 
 
 /**
@@ -36,12 +36,16 @@ export interface RendererPlugin {
     (opts: { objectPath: string, viewID: ObjectSpecViewID }) =>
       React.FC<ObjectViewProps> | undefined
 
-  getExporter: (name: string) => Promise<ExporterConstructor>
+  exportFormats: {
+    [name: string]: () => ExporterModule
+  }
 }
 
 /** The interface that extension instance exposes to CLI user. */
 export interface CLIPlugin {
-  getExporter: (name: string) => Promise<ExporterConstructor>
+  exportFormats: {
+    [name: string]: () => ExporterModule
+  }
 }
 
 export type Extension = MainPlugin | RendererPlugin | CLIPlugin;
