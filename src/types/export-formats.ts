@@ -1,4 +1,4 @@
-import { BufferDataset } from './buffers';
+import type { BufferDataset } from './buffers';
 import type { DatasetContext } from './renderer';
 
 
