@@ -1,7 +1,7 @@
 import type { Extension } from './extension';
 import type { MigrationModule } from './migrations';
 import type { ObjectSpec } from './object-spec';
-import type { ExporterModule } from './export-formats';
+import type { ExportFormatInfo, ExporterModule } from './export-formats';
 
 
 export interface ExtensionMakerProps {
@@ -24,7 +24,9 @@ export interface ExtensionMakerProps {
   datasetInitializer?: () => MigrationModule
 
   exportFormats?: {
-    [exportFormatID: string]: () => ExporterModule
+    [exportFormatID: string]: ExportFormatInfo & {
+      getModule: () => ExporterModule
+    }
   }
 
   /* Instructs a migration to run if current dataset version matches

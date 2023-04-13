@@ -12,6 +12,7 @@ import type { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelin
 import type { Settings, GlobalSettings } from '../settings';
 import type { OpenFileDialogProps, SaveFileDialogProps } from './dialogs';
 import type { SubprocessDescription } from './binary-invocation';
+import type { ExportFormatInfo } from './export-formats';
 import type { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
 

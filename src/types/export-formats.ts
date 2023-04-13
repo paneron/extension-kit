@@ -1,10 +1,17 @@
 import { BufferDataset } from './buffers';
+import type { DatasetContext } from './renderer';
 
 
 /** Options supplied implicitly to the exporter. */
 export interface ExportOptions {
-  datasetRootPath: string
+  getObjectData: DatasetContext["getObjectData"]
+  mapReduce: DatasetContext["getMapReducedData"]
   onProgress?: (message: string) => void
+}
+
+export interface ExportFormatInfo {
+  name: string
+  description: string
 }
 
 /**
