@@ -6,7 +6,7 @@ import type { DatasetContext } from './renderer';
 export interface ExportOptions {
   getObjectData: DatasetContext["getObjectData"]
   mapReduce: DatasetContext["getMapReducedData"]
-  onProgress?: (message: string) => void
+  onProgress?: (message: string, loaded?: number, total?: number) => void
 }
 
 export interface ExportFormatInfo {
