@@ -250,6 +250,13 @@ export interface DatasetContext {
       Promise<{ success: true, savedToFileAtPath: string }>
 
   /**
+   * List available export options.
+   * Some may be registered by dataset extension,
+   * some may be default provided by host app itself.
+   */
+  listExporters: () => { [exporter: string]: ExportFormatInfo }
+
+  /**
    * Invokes file selection dialog,
    * if any files were selected adds them to dataset at specified path,
    * and makes a commit with specified commit message.

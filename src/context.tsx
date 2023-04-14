@@ -90,6 +90,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   updateSetting: async () => ({ success: true as true }),
 
+  listExporters: () => ({}),
+
 } as const;
 
 
