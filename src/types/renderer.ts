@@ -1,6 +1,9 @@
 //import type { FileFilter } from 'electron';
 export interface FileFilter {
+  /** NOTE: Extensions should not contain the leading separator (dot/period). */
   extensions: string[];
+
+  /** Name to be shown to the user for this filter. */
   name: string;
 }
 
