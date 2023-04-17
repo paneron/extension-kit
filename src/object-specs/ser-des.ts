@@ -9,17 +9,13 @@ import path from 'path';
 
 import {
   formatPointerInfo,
-  PointerInfo as LFSPointerInfo,
+  type PointerInfo as LFSPointerInfo,
   readPointerInfo,
 } from '@riboseinc/isogit-lfs/pointers';
 import { pointsToLFS } from '@riboseinc/isogit-lfs/util';
 
-import {
-  SerDesRule,
-  AtomicSerDesRuleName,
-  SerDesRuleName,
-  SerDesRuleNameExtensionMap,
-} from '../types/object-spec';
+import { AtomicSerDesRuleName } from '../types/object-spec';
+import type { SerDesRule, SerDesRuleName, SerDesRuleNameExtensionMap } from '../types/object-spec';
 import type { OnlyJSON } from '../util';
 import type { BufferDataset } from '../types/buffers';
 
