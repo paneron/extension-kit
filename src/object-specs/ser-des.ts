@@ -5,8 +5,6 @@
  * This is Node-only code due to use of Buffer API.
  */
 
-import path from 'path';
-
 import {
   formatPointerInfo,
   type PointerInfo as LFSPointerInfo,
@@ -30,7 +28,7 @@ const utf8Decoder = new TextDecoder('utf-8');
  * Cross-platform separator for buffer path components.
  * Since buffer paths use POSIX format, this is a POSIX path separator.
  */
-const sep = path.posix.sep;
+const sep = '/'  // path.posix.sep;
 
 /** Returns whether buffer dataset has only one root buffer at `sep`. */
 function isLeaf(buffers: BufferDataset) {
@@ -53,9 +51,13 @@ function isLeaf(buffers: BufferDataset) {
  * using provided extension map.
  */
 function findSerDesRuleForExtension(objPath: string, map: SerDesRuleNameExtensionMap): SerDesRule | null {
-  const extension = path.extname(objPath).toLowerCase();
-  const ruleName = map[extension];
-  return ruleName ? getSerDesRuleByName(ruleName) : null;
+  const extension = objPath.split('.').pop()?.toLowerCase() ?? null;
+  if (extension) {
+    const ruleName = map[extension];
+    return ruleName ? getSerDesRuleByName(ruleName) : null;
+  } else {
+    return null;
+  }
 }
 
 
@@ -160,7 +162,7 @@ const KNOWN_BINARY_EXTENSIONS: Set<string> = new Set([
 ]);
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
   worksForPath: (objPath) =>
-    KNOWN_BINARY_EXTENSIONS.has(path.extname(objPath).toLowerCase()),
+    KNOWN_BINARY_EXTENSIONS.has(objPath.split('.').pop()?.toLowerCase() ?? ''),
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
     asBase64: Buffer.from(buffers[sep]).toString('base64'),
