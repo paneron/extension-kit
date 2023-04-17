@@ -35,6 +35,18 @@ function isLeaf(buffers: BufferDataset) {
   return Object.keys(buffers).length === 1 && buffers[sep] !== undefined;
 }
 
+/**
+ * Returns extension normalized to lower-case with leading dot,
+ * or empty string if no extension could be determined.
+ */
+function getExt(str: string): string {
+  const _str = str.trim();
+  if (_str === '') { return _str; }
+  const ext = _str.split('.').pop()?.toLowerCase() ?? '';
+  if (!ext || ext === _str) { return ''; }
+  return `.${ext}`;
+}
+
 // /**
 //  * Returns whether buffer dataset looks like a tree.
 //  * A tree won’t have root buffer path mapped to any contents.
@@ -51,13 +63,9 @@ function isLeaf(buffers: BufferDataset) {
  * using provided extension map.
  */
 function findSerDesRuleForExtension(objPath: string, map: SerDesRuleNameExtensionMap): SerDesRule | null {
-  const extension = objPath.split('.').pop()?.toLowerCase() ?? null;
-  if (extension) {
-    const ruleName = map[extension];
-    return ruleName ? getSerDesRuleByName(ruleName) : null;
-  } else {
-    return null;
-  }
+  const extension = getExt(objPath);
+  const ruleName = map[extension];
+  return ruleName ? getSerDesRuleByName(ruleName) : null;
 }
 
 
@@ -162,7 +170,7 @@ const KNOWN_BINARY_EXTENSIONS: Set<string> = new Set([
 ]);
 export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; }> = {
   worksForPath: (objPath) =>
-    KNOWN_BINARY_EXTENSIONS.has(objPath.split('.').pop()?.toLowerCase() ?? ''),
+    KNOWN_BINARY_EXTENSIONS.has(getExt(objPath)),
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
     asBase64: Buffer.from(buffers[sep]).toString('base64'),
