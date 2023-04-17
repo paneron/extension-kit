@@ -44,9 +44,9 @@ export interface DatasetContext {
   getObjectData: (opts: ObjectDatasetRequest) => Promise<ObjectDatasetResponse>
 
   /**
-   * Builds (or reuses) custom dataset index for high-performance windowed data access.
+   * Builds (or reuses) custom dataset index for windowed data access.
    *
-   * Filtered indexes work around *query expressions*.
+   * Filtered indexes are based on *query expressions*.
    * A query expression is a small predicate function that returns true or false for each object
    * in the dataset; objects for which true is returned are included in the filtered index.
    *
