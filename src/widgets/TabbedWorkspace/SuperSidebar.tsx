@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 
 import { DatasetContext } from '../../context';
 import makeSidebar from '../Sidebar';
+import ErrorBoundary from '../ErrorBoundary';
 import type { SuperSidebarConfig } from './types';
 
 
@@ -56,12 +57,14 @@ function ({
         const Sidebar = makeSidebar(usePersistentDatasetStateReducer);
         return {
           [sid]:
-            <Sidebar
-              css={css`z-index: 5`}
-              title={sconf.title}
-              stateKey={sid}
-              blocks={sconf.blocks}
-            />
+            <ErrorBoundary viewName={`Sidebar ${sconf.title}`}>
+              <Sidebar
+                css={css`z-index: 5`}
+                title={sconf.title}
+                stateKey={sid}
+                blocks={sconf.blocks}
+              />
+            </ErrorBoundary>
         };
       }).
       reduce((prev, curr) => ({ ...prev, ...curr })) as Record<string, JSX.Element>),
