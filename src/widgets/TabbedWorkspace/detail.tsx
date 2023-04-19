@@ -15,7 +15,7 @@ export const DetailTab: React.FC<{ uri: string }> = function ({ uri }) {
     const View = protoConf.main;
     return <View uri={_path} />;
   } else {
-    return <NonIdealState icon="heart-broken" description={`Unknown protocol ${proto}`} />
+    return <NonIdealState icon="heart-broken" description={`Unknown protocol ${proto}`} />;
   }
 };
 
