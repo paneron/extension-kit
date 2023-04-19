@@ -4,6 +4,7 @@
 import React, { useContext } from 'react';
 import { jsx } from '@emotion/react';
 import { NonIdealState } from '@blueprintjs/core';
+import ErrorBoundary from '../ErrorBoundary';
 import { TabbedWorkspaceContext } from './context';
 
 
@@ -13,7 +14,7 @@ export const DetailTab: React.FC<{ uri: string }> = function ({ uri }) {
   const protoConf = protocolConfiguration[proto];
   if (protoConf) {
     const View = protoConf.main;
-    return <View uri={_path} />;
+    return <ErrorBoundary viewName={`${proto} view`}><View uri={_path} /></ErrorBoundary>;
   } else {
     return <NonIdealState icon="heart-broken" description={`Unknown protocol ${proto}`} />;
   }
