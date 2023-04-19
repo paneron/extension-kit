@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 
 import { DatasetContext } from '../../context';
 import makeSidebar from '../Sidebar';
-import { SuperSidebarConfig } from './types';
+import type { SuperSidebarConfig } from './types';
 
 
 const DEFAULT_MIN_WIDTH = 250;
