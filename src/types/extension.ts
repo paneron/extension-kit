@@ -2,7 +2,7 @@ import type React from 'react';
 import type { ObjectSpec, ObjectSpecViewID, ObjectViewProps } from './object-spec';
 import type { DatasetMigrationFunction, MigrationModule } from './migrations';
 import type { DatasetContext } from './renderer';
-import type { ExportFormatInfo, ExporterModule } from './export-formats';
+import type { ExportFormatConfiguration } from './export-formats';
 
 
 /**
@@ -37,14 +37,14 @@ export interface RendererPlugin {
       React.FC<ObjectViewProps> | undefined
 
   exportFormats: {
-    [name: string]: ExportFormatInfo & { getModule: () => ExporterModule }
+    [name: string]: ExportFormatConfiguration
   }
 }
 
 /** The interface that extension instance exposes to CLI user. */
 export interface CLIPlugin {
   exportFormats: {
-    [name: string]: ExportFormatInfo & { getModule: () => ExporterModule }
+    [name: string]: ExportFormatConfiguration
   }
 }
 
