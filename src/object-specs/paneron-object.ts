@@ -1,4 +1,3 @@
-import path from 'path';
 import { SerDesRule } from '../types/object-spec';
 import { OnlyJSON } from '../util';
 
@@ -130,6 +129,9 @@ export function unflattenObject<T extends Record<string, any>>
 }
 
 
+const POSIX_SEP = '/'
+
+
 /* Recursively decomposes an arbitrarily nested object into a flat record
    of slash-separated part paths mapped to respective structures.
 
@@ -158,8 +160,8 @@ export function flattenObject(
   }
 
   const prefix = _prefix !== false
-    ? (_prefix + path.posix.sep)
-    : path.posix.sep;
+    ? (_prefix + POSIX_SEP)
+    : POSIX_SEP;
 
   for (const i in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, i)) {
