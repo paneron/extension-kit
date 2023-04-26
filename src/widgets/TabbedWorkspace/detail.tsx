@@ -32,4 +32,3 @@ export const DetailTabTitle: React.FC<{ uri: string }> = function ({ uri }) {
     return <>{uri}</>;
   }
 };
-
