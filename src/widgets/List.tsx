@@ -175,7 +175,8 @@ function ({ isSelected, onSelect, onOpen, contentClassName, entityType, classNam
           cursor: default;
           z-index: ${isSelected ? 2 : 1};
           display: flex; flex-flow: row nowrap; align-items: center; align-content: center; justify-content: flex-start;
-          background: ${isSelected ? `linear-gradient(345deg, ${Colors.LIGHT_GRAY3}, white)` : Colors.LIGHT_GRAY5};`}>
+          background: ${isSelected ? `linear-gradient(345deg, ${Colors.LIGHT_GRAY3}, white)` : Colors.LIGHT_GRAY5};
+        `}>
       {entityType
         ? <div css={css`
               z-index: 3; font-size: 85%; line-height: 1.4;
