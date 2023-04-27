@@ -111,7 +111,15 @@ const Workspace: React.FC<WorkspaceProps> = function ({
       </div>
 
       {statusBar
-        ? <Bar className={Classes.ELEVATION_2} css={css`display: flex; flex-flow: row nowrap; align-items: stretch; background: ${Colors.LIGHT_GRAY1}; color: ${Colors.GRAY2};`}>
+        ? <Bar
+            className={Classes.ELEVATION_2}
+            css={css`
+              display: flex;
+              flex-flow: row nowrap;
+              align-items: stretch;
+              background: ${Colors.LIGHT_GRAY1};
+              color: ${Colors.GRAY2};
+          `}>
             {statusBar.content ?? statusBar.items.map(i =>
               <span key={i.id} css={css`${i.flex ? 'flex: 1;' : 'flex: 0;'}`}>
                 {i.content}
