@@ -20,5 +20,5 @@ export function isValidGlobalSettings(val: any): val is GlobalSettings {
     val
     && ['left', 'right'].indexOf(val.sidebarPosition) >= 0
     && ['top', 'bottom'].indexOf(val.mainNavbarPosition) >= 0
-    && ['dark', 'light', null].indexOf(val.defaultTheme));
+    && ['dark', 'light', null].indexOf(val.defaultTheme) >= 0);
 }
