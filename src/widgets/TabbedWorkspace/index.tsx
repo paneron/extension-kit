@@ -140,6 +140,7 @@ function ({
           onChange={(idx: number, oldIdx: number) => dispatch({ type: 'focus-tab', payload: { idx } })}
           css={css`
             background: ${Colors.LIGHT_GRAY2};
+            .bp4-dark & { background: ${Colors.GRAY1}; }
             flex: 1;
             display: flex;
             flex-flow: column nowrap;
@@ -152,6 +153,7 @@ function ({
               position: relative;
 
               background: ${Colors.GRAY1};
+              .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
 
               /* Accommodate the new tab button, absolutely positioned */
               white-space: nowrap;
@@ -180,6 +182,7 @@ function ({
               padding: 5px;
               position: relative;
               background: ${Colors.LIGHT_GRAY3};
+              .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
             }
           `}>
         {title
@@ -224,11 +227,16 @@ function ({
 };
 
 
+// NOTE: Minimal is set when it’s *not* selected
 const TabTitleButton = styled(Tag)`
   border-radius: 0;
   height: 24px;
   padding: 0 8px;
+  box-shadow: unset;
+
   color: ${({ minimal }) => minimal ? Colors.WHITE : Colors.BLACK} !important;
+  ${({ minimal }) => minimal ? '' : `background: ${Colors.LIGHT_GRAY3}`} !important;
+  /* NOTE: Selected item’s background must sync with tab-panel background. */
 
   .bp4-tag-remove {
     color: ${({ minimal }) => minimal ? Colors.WHITE : Colors.BLACK} !important;
@@ -238,8 +246,14 @@ const TabTitleButton = styled(Tag)`
     }
   }
 
-  ${({ minimal }) => minimal ? '' : `background: ${Colors.LIGHT_GRAY3}`} !important;
-  box-shadow: unset;
+  .bp4-dark & {
+    color: ${({ minimal }) => minimal ? Colors.LIGHT_GRAY2 : Colors.WHITE} !important;
+    ${({ minimal }) => minimal ? '' : `background: ${Colors.DARK_GRAY3}`} !important;
+
+    .bp4-tag-remove {
+      color: ${({ minimal }) => minimal ? Colors.LIGHT_GRAY2 : Colors.WHITE} !important;
+    }
+  }
 `;
 
 

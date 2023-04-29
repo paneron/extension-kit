@@ -31,9 +31,12 @@ function ({ title, tooltip, className, titleStyle }) {
       </StyledHeader>
     : <hr
         css={css`
-          border-color: ${Colors.LIGHT_GRAY4};
-          border-style: solid;
           width: 100%;
+          border-style: solid;
+          border-color: ${Colors.LIGHT_GRAY4};
+          .bp4-dark & {
+            border-color: ${Colors.DARK_GRAY4};
+          }
         `}
         className={className}
       />);

@@ -94,7 +94,9 @@ function makeSidebar(
           css={css`display: flex; flex-flow: column nowrap;`}
           className={`${Classes.ELEVATION_1} ${className ?? ''}`}>
         <div css={css`
-              height: 24px; background: ${representsSelection ? Colors.BLUE2 : Colors.GRAY1};
+              height: 24px;
+              background: ${representsSelection ? Colors.BLUE2 : Colors.GRAY1};
+              .bp4-dark & { background: ${representsSelection ? Colors.BLUE1 : Colors.DARK_GRAY3}; }
               color: white; display: flex; flex-flow: row nowrap; align-items: center;
               overflow: hidden;
               font-variation-settings: 'GRAD' 500;
@@ -136,8 +138,10 @@ function makeSidebar(
               flex: 1;
               overflow-x: hidden;
               overflow-y: auto;
-              background: ${Colors.LIGHT_GRAY1};
               position: relative;
+
+              background: ${Colors.LIGHT_GRAY1};
+              .bp4-dark & { background: ${Colors.GRAY1}; }
             `}>
           {stateLoaded
             ? <>
@@ -164,7 +168,12 @@ function makeSidebar(
                       : undefined}
                   />
                 )}
-                <div css={css`font-size: 40px; text-align: center; color: ${Colors.LIGHT_GRAY4}`}>— ❧ —</div>
+                <div css={css`
+                  font-size: 40px;
+                  text-align: center;
+                  color: ${Colors.LIGHT_GRAY4};
+                  .bp4-dark & { color: ${Colors.GRAY2}; }
+                `}>— ❧ —</div>
               </>
             : null}
         </div>

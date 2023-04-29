@@ -37,11 +37,18 @@ function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }
       <div
           onClick={() => { expanded ? onCollapse?.() : onExpand?.() }}
           css={css`
-            height: 24px; overflow: hidden; background: linear-gradient(to top, ${Colors.LIGHT_GRAY2}, ${Colors.LIGHT_GRAY3});
+            height: 24px; overflow: hidden;
             display: flex; flex-flow: row nowrap; align-items: center;
             font-variation-settings: 'GRAD' 600, 'opsz' 20;
+
+            background: linear-gradient(to top, ${Colors.LIGHT_GRAY2}, ${Colors.LIGHT_GRAY3});
             color: ${Colors.GRAY2};
             text-shadow: 1px 1px 1px ${Colors.LIGHT_GRAY5};
+            .bp4-dark & {
+              background: linear-gradient(to top, ${Colors.GRAY1}, ${Colors.GRAY1});
+              color: ${Colors.GRAY4};
+              text-shadow: 1px 1px 1px ${Colors.GRAY1};
+            }
           `}>
         <div
             css={css`
@@ -90,6 +97,7 @@ function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }
                 position: relative;
                 ${block.height ? `height: ${block.height}px;` : '' }
                 background: ${Colors.LIGHT_GRAY4};
+                .bp4-dark & { background: ${Colors.GRAY2}; }
                 flex: 1 1 auto;
                 line-height: 1.4;
                 font-size: 90%;

@@ -168,19 +168,28 @@ function ({ isSelected, onSelect, onOpen, contentClassName, entityType, classNam
         css={css`
           position: absolute;
           inset: 0;
-          ${!isSelected
-            ? `box-shadow: 1px 1px 0 ${Colors.LIGHT_GRAY5} inset, -1px -1px 0 ${Colors.LIGHT_GRAY1} inset;`
-            : ''}
           overflow: hidden;
           cursor: default;
           z-index: ${isSelected ? 2 : 1};
           display: flex; flex-flow: row nowrap; align-items: center; align-content: center; justify-content: flex-start;
-          background: ${isSelected ? `linear-gradient(345deg, ${Colors.LIGHT_GRAY3}, white)` : Colors.LIGHT_GRAY5};
+          background: ${isSelected ? `linear-gradient(345deg, ${Colors.LIGHT_GRAY3}, ${Colors.WHITE})` : Colors.LIGHT_GRAY5};
+          ${!isSelected
+            ? `box-shadow: 1px 1px 0 ${Colors.LIGHT_GRAY5} inset, -1px -1px 0 ${Colors.LIGHT_GRAY1} inset;`
+            : ''}
+          .bp4-dark & {
+            background: ${isSelected ? `linear-gradient(345deg, ${Colors.DARK_GRAY4}, ${Colors.BLACK})` : Colors.DARK_GRAY5};
+            ${!isSelected
+              ? `box-shadow: 1px 1px 0 ${Colors.DARK_GRAY5} inset, -1px -1px 0 ${Colors.DARK_GRAY1} inset;`
+              : ''}
+          }
         `}>
       {entityType
         ? <div css={css`
               z-index: 3; font-size: 85%; line-height: 1.4;
               background: ${isSelected ? Colors.BLUE2 : Colors.LIGHT_GRAY3};
+              .bp4-dark & {
+                background: ${isSelected ? Colors.BLUE1 : Colors.DARK_GRAY4};
+              }
               padding: 10px 5px;
               margin-right: 5px;
               letter-spacing: -0.03em;

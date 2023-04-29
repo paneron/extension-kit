@@ -55,6 +55,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
           flex-flow: column nowrap;
           overflow: hidden;
           background: ${Colors.LIGHT_GRAY2};
+          .bp4-dark & { background: ${Colors.DARK_GRAY2}; color: ${Colors.LIGHT_GRAY4}; }
           margin-top: ${globalMode ? '0' : '-20px'};
         `}
         className={className}
@@ -92,6 +93,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
                   css={css`
                     display: flex; flex-flow: row nowrap; align-items: center;
                     background: ${Colors.LIGHT_GRAY3};
+                    .bp4-dark & { background: ${Colors.GRAY3}; color: ${Colors.LIGHT_GRAY4}; }
                     height: 24px;
                     overflow: hidden;
                     z-index: 1;
@@ -118,6 +120,10 @@ const Workspace: React.FC<WorkspaceProps> = function ({
               align-items: stretch;
               background: ${Colors.LIGHT_GRAY1};
               color: ${Colors.GRAY2};
+              .bp4-dark & {
+                background: ${Colors.DARK_GRAY1};
+                color: ${Colors.LIGHT_GRAY2};
+              }
           `}>
             {statusBar.content ?? statusBar.items.map(i =>
               <span key={i.id} css={css`${i.flex ? 'flex: 1;' : 'flex: 0;'}`}>

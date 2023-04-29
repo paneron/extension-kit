@@ -90,7 +90,17 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
       small
       disabled={!onChange}
       value={value}
-      css={css`${invalid && onChange ? `.bp4-input { background: mistyrose }` : ''}`}
+      css={css`
+        ${invalid && onChange
+          ? `.bp4-input {
+                background: mistyrose;
+                .bp4-dark & {
+                  background: ${Colors.RED1};
+                  color: ${Colors.WHITE};
+                }
+              }`
+          : ''}
+      `}
       placeholder={placeholder}
       rightElement={invalid
         ? <Tooltip2
