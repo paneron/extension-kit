@@ -43,6 +43,9 @@ export interface TabbedWorkspaceProps<SidebarID extends string> {
   statusBar?: WorkspaceProps['statusBar']
 
   sidebarWidth?: number
+
+  sidebarPosition?: WorkspaceProps['sidebarPosition']
+
   /** If not provided, sidebar cannot be resized. */
   onSidebarResize?: (newWidth: number) => void
 
@@ -57,6 +60,7 @@ function ({
   statusBar,
 
   sidebarWidth,
+  sidebarPosition,
   onSidebarResize,
 
   className,
@@ -101,6 +105,10 @@ function ({
       sidebarIDs={sidebarIDs}
       width={sidebarWidth}
       onResize={onSidebarResize}
+      resizeSensorPosition={
+        //Resize sensor is on the side where main content is,
+        //i.e. opposite of where sidebar is relative to main content.
+        sidebarPosition === 'left' ? 'right' : 'left'}
       minWidth={250}
       maxWidth={600}
       selectedSidebarID={sidebarIDs.length > 1
@@ -119,7 +127,12 @@ function ({
   ]);
 
   return (
-    <Workspace className={className} sidebar={sidebar} globalMode={globalMode} statusBar={statusBar}>
+    <Workspace
+        sidebar={sidebar}
+        sidebarPosition={sidebarPosition}
+        globalMode={globalMode}
+        statusBar={statusBar}
+        className={className}>
       <Tabs
           id="detailTabs"
           renderActiveTabPanelOnly
