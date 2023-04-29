@@ -32,11 +32,18 @@ interface SuperSidebarProps<SidebarID extends string> {
    */
   onResize?: (width: number) => void
 
+  /**
+   * Normally depends on where sidebar is positioned relative to main content.
+   * Used for resize sensor icon.
+   * If not provided, resizing is not possible.
+   */
+  resizeSensorPosition?: 'left' | 'right'
+
   className?: string
 }
 const SuperSidebar: React.FC<SuperSidebarProps<any>> =
 function ({
-  config, sidebarIDs, selectedSidebarID,
+  config, resizeSensorPosition, sidebarIDs, selectedSidebarID,
   onSelectSidebar,
   width, maxWidth, minWidth, onResize,
   className,
@@ -49,10 +56,10 @@ function ({
 
   // NOTE: Width changes must be debounced to avoid excess effect runs
   useEffect(() => {
-    if (onResize && resizedWidthPX) {
+    if (onResize && resizedWidthPX && resizeSensorPosition) {
       onResize(resizedWidthPX);
     }
-  }, [onResize, resizedWidthPX]);
+  }, [onResize, resizedWidthPX, resizeSensorPosition]);
 
   const sidebarEls = useMemo(
     (() => Object.entries(config).
@@ -82,11 +89,21 @@ function ({
           axis='x'
           // Grid means we store nice round values and also debounce the event
           draggableOpts={{ grid: [50, 50] }}
-          resizeHandles={onResize ? ['se'] : []}
-          handle={onResize
-            ? <div className="react-resizable-handle react-resizable-handle-se" style={{ zIndex: 20 }} />
+          resizeHandles={onResize
+            ? resizeSensorPosition === 'right'
+              ? ['se']
+              : ['sw']
+            : []}
+          handle={onResize && resizeSensorPosition
+            ? <div
+                className={`
+                  react-resizable-handle
+                  react-resizable-handle-${resizeSensorPosition === 'right' ? 'se' : 'sw'}
+                `}
+                style={{ zIndex: 20 }}
+              />
             : undefined}
-          onResize={onResize
+          onResize={onResize && resizeSensorPosition
             ? (_, { size }) => setResizedWidthPX(size.width)
             : undefined}>
         <div css={css`
