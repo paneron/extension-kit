@@ -26,7 +26,10 @@ interface SuperSidebarProps<SidebarID extends string> {
   maxWidth?: number
   minWidth?: number
 
-  /** Ran when sidebar is resized, debounced. */
+  /**
+   * Ran when sidebar is resized, debounced.
+   * If not provided, resizing is not possible.
+   */
   onResize?: (width: number) => void
 
   className?: string
