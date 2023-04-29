@@ -3,10 +3,9 @@
 
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Classes, Colors, TagProps, Tag } from '@blueprintjs/core';
 import Navbar, { NavbarProps }from './Navbar';
-import { GlobalSettingsContext } from '../SettingsContext';
 
 
 /**
@@ -16,6 +15,7 @@ import { GlobalSettingsContext } from '../SettingsContext';
 export interface WorkspaceProps {
   /** What to show in the sidebar. */
   sidebar?: JSX.Element
+  sidebarPosition?: 'left' | 'right'
 
   /** Global mode bar. Use sparingly. */
   globalMode?: {
@@ -42,13 +42,12 @@ const Workspace: React.FC<WorkspaceProps> = function ({
   globalMode,
   toolbar,
   sidebar,
+  sidebarPosition,
   statusBar,
   className,
   style,
   children,
 }) {
-  const { settings } = useContext(GlobalSettingsContext);
-
   return (
     <div
         css={css`
@@ -72,7 +71,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
           intent={globalMode?.intent}>
         {globalMode?.content ?? ' '}
       </Bar>
-      <div css={css`flex: 1; display: flex; flex-flow: ${settings.sidebarPosition === 'right' ? 'row' : 'row-reverse'} nowrap; overflow: hidden;`}>
+      <div css={css`flex: 1; display: flex; flex-flow: ${sidebarPosition === 'left' ? 'row-reverse' : 'row'} nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
           {navbarProps
             ? <div
