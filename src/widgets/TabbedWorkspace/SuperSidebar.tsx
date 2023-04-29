@@ -4,7 +4,7 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Resizable } from 'react-resizable';
-import { Button, ButtonGroup, ButtonProps, Colors } from '@blueprintjs/core';
+import { Button, ButtonGroup, ButtonProps } from '@blueprintjs/core';
 import styled from '@emotion/styled';
 
 import { DatasetContext } from '../../context';
@@ -89,7 +89,6 @@ function ({
         <div css={css`
             width: ${effectiveSidebarWidthPX}px; position: relative;
             & > :first-child { position: absolute; inset: 0; }
-            background: ${Colors.LIGHT_GRAY4};
           `}>
           {sidebarEls[selectedSidebarID]}
         </div>
