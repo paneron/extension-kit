@@ -13,3 +13,12 @@ export const INITIAL_GLOBAL_SETTINGS: GlobalSettings = {
   mainNavbarPosition: 'top',
   defaultTheme: 'light',
 };
+
+
+export function isValidGlobalSettings(val: any): val is GlobalSettings {
+  return (
+    val
+    && ['left', 'right'].indexOf(val.sidebarPosition) >= 0
+    && ['top', 'bottom'].indexOf(val.mainNavbarPosition) >= 0
+    && ['dark', 'light', null].indexOf(val.defaultTheme));
+}
