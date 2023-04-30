@@ -141,7 +141,7 @@ function makeSidebar(
               position: relative;
 
               background: ${Colors.LIGHT_GRAY1};
-              .bp4-dark & { background: ${Colors.GRAY1}; }
+              .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
             `}>
           {stateLoaded
             ? <>

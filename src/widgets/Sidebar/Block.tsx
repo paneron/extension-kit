@@ -45,9 +45,9 @@ function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }
             color: ${Colors.GRAY2};
             text-shadow: 1px 1px 1px ${Colors.LIGHT_GRAY5};
             .bp4-dark & {
-              background: linear-gradient(to top, ${Colors.GRAY1}, ${Colors.GRAY1});
+              background: linear-gradient(to top, ${Colors.DARK_GRAY4}, ${Colors.DARK_GRAY5});
               color: ${Colors.GRAY4};
-              text-shadow: 1px 1px 1px ${Colors.GRAY1};
+              text-shadow: 1px 1px 1px ${Colors.DARK_GRAY5};
             }
           `}>
         <div
@@ -97,7 +97,7 @@ function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }
                 position: relative;
                 ${block.height ? `height: ${block.height}px;` : '' }
                 background: ${Colors.LIGHT_GRAY4};
-                .bp4-dark & { background: ${Colors.GRAY2}; }
+                .bp4-dark & { background: ${Colors.DARK_GRAY4}; }
                 flex: 1 1 auto;
                 line-height: 1.4;
                 font-size: 90%;
