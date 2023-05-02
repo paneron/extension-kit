@@ -595,12 +595,6 @@ export namespace Hooks {
         reduceFunc?: string,
       }>
 
-    export type GetMapReducedData<C extends Record<string, unknown>> =
-      (opts: { chains: MapReduceChains }) => Promise<C>
-
-    export type UseMapReducedData<C extends Record<string, unknown>> =
-      (opts: { chains: MapReduceChains }) => ValueHook<C>
-
   }
 
 }
