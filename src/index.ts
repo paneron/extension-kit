@@ -10,7 +10,7 @@ import { matchesPath } from './object-specs';
  * Provides a type for electron’s `process`
  * without having to add Electron as dependency.
  */
-declare const process: NodeJS.Process & { type: 'browser' | 'renderer' }
+declare const process: { type: 'browser' | 'renderer' }
 
 
 /* The default export of Paneron extension’s extension.ts entry file
