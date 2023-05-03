@@ -4,7 +4,7 @@ export interface GlobalSettings extends Settings {
   sidebarPosition: 'left' | 'right'
   mainNavbarPosition: 'top' | 'bottom'
 
-  /** Theme to prefer, if `null` then use system theme. */
+  /** Color scheme, if `null` then use OS native color scheme. */
   defaultTheme: 'dark' | 'light' | null
 }
 
