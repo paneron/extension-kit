@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Classes, IconProps } from '@blueprintjs/core';
 
@@ -144,7 +144,7 @@ React.FC<SearchResultListProps> {
       selectedItemPath,
     };
 
-    function getListData(): ListData<SearchResultListData> | null {
+    const getListData = useCallback(function _getListData(): ListData<SearchResultListData> | null {
       if (indexID) {
         return {
           items: stubs,
@@ -177,7 +177,7 @@ React.FC<SearchResultListProps> {
       } else {
         return null;
       }
-    }
+    }, [selectedIndexPos, selectItemByPosition, indexID, stubs]);
 
     return <List
       className={className}
