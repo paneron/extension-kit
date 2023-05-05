@@ -107,6 +107,11 @@ React.FC<SearchResultListProps> {
 
     const indexDescReq = useIndexDescription({ indexID });
     const itemCount = indexDescReq.value.status.objectCount;
+
+    const stubs: string[] = useMemo(
+      () => [...new Array(itemCount)].map((_, idx) => `${idx}`),
+      [itemCount]);
+
     //const indexProgress = indexDescReq.value.status.progress;
     useEffect(() => {
       let cancelled = false;
@@ -141,7 +146,6 @@ React.FC<SearchResultListProps> {
 
     function getListData(): ListData<SearchResultListData> | null {
       if (indexID) {
-        const stubs: string[] = [...new Array(itemCount)].map((_, idx) => `${idx}`);
         return {
           items: stubs,
           selectedItem: selectedIndexPos,
