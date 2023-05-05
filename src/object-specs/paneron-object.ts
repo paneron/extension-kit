@@ -3,6 +3,7 @@ import { OnlyJSON } from '../util';
 
 
 export const utf8Decoder = new TextDecoder('utf-8');
+export const textEncoder = new TextEncoder();
 
 
 interface PartSerDes<T> {
@@ -13,12 +14,12 @@ interface PartSerDes<T> {
 
 const stringSerDes: PartSerDes<string> = {
   deserialize: (buf) => utf8Decoder.decode(buf),
-  serialize: (val) => Buffer.from(val, 'utf-8'),
+  serialize: (val) => textEncoder.encode(val),
 };
 
 const numberSerDes: PartSerDes<number> = {
   deserialize: (buf) => parseInt(utf8Decoder.decode(buf), 10),
-  serialize: (val) => Buffer.from(val.toString(), 'utf-8'),
+  serialize: (val) => textEncoder.encode(val.toString()),
 };
 
 const partSerDes: { [key in DataType]: PartSerDes<any> } = {
