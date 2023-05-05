@@ -126,7 +126,7 @@ React.FC<SearchResultListProps> {
       return function cleanUp() { cancelled = true; };
     }, [selectedItemPath, selectedIndexPos, indexID]);
 
-    function selectItemByPosition(pos: string) {
+    const selectItemByPosition = useCallback(function _selectItemByPosition(pos: string) {
       try {
         const position = parseInt(pos, 10);
         getObjectPathFromFilteredIndex({ indexID, position }).then(({ objectPath }) => {
@@ -137,7 +137,7 @@ React.FC<SearchResultListProps> {
       } catch (e) {
         console.error("Unable to select item by position");
       }
-    }
+    }, [selectedItemPath, indexID]);
 
     const extraData: SearchResultListData = {
       indexID,
