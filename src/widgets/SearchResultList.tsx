@@ -109,14 +109,16 @@ React.FC<SearchResultListProps> {
     const itemCount = indexDescReq.value.status.objectCount;
     //const indexProgress = indexDescReq.value.status.progress;
     useEffect(() => {
+      let cancelled = false;
       if (selectedItemPath !== null && indexID !== '') {
         getFilteredIndexPosition({ indexID, objectPath: selectedItemPath }).
           then(({ position }) => {
-            if (selectedIndexPos !== position && position !== null) {
+            if (!cancelled && selectedIndexPos !== position && position !== null) {
               selectIndexPos(`${position}`);
             }
           });
       }
+      return function cleanUp() { cancelled = true; };
     }, [selectedItemPath, selectedIndexPos, indexID]);
 
     function selectItemByPosition(pos: string) {
