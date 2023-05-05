@@ -117,7 +117,7 @@ React.FC<SearchResultListProps> {
             }
           });
       }
-    }, [selectedItemPath, indexID]);
+    }, [selectedItemPath, selectedIndexPos, indexID]);
 
     function selectItemByPosition(pos: string) {
       try {
