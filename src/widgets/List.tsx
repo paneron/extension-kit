@@ -114,7 +114,7 @@ React.FC<ListProps<P>> {
       return function cleanup() {
         window.removeEventListener('resize', updateListHeight);
       }
-    }, [getListData, listData?.selectedItem, ref.current]);
+    }, [listData?.items, listData?.selectedItem, ref.current]);
 
     return (
       <AutoSizer className={className}>
