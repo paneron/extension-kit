@@ -188,8 +188,10 @@ export interface DatasetContext {
    * 
    * NOTE: Does not resolve LFS references. If target object path is an LFS pointer,
    * the returned absolute path will also to the LFS pointer file.
+   *
+   * @deprecated not applicable in browser.
    */
-  makeAbsolutePath: (path: string) => string
+  makeAbsolutePath?: (path: string) => string
 
   // /**
   //  * Provides a full system-absolute path to a path given relative to dataset root;
