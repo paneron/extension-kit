@@ -6,7 +6,7 @@
   "repository": "https://github.com/paneron/extension-kit",
   "author": "Ribose Inc. <open.source@ribose.com>",
   "scripts": {
-    "build": "mkdir -p compiled dist; rm -r compiled/* dist/*; tsc --outDir compiled --allowJs; babel compiled --out-dir dist; cp package.json dist/; rsync -a --include '*/' --include '*.d.ts' --include '*.js.map' --exclude '*' compiled/ dist/"
+    "build": "mkdir -p compiled dist && rm -r compiled/* dist/*; tsc --outDir compiled --allowJs && babel compiled --out-dir dist && cp package.json dist/ && rsync -a --include '*/' --include '*.d.ts' --include '*.js.map' --exclude '*' compiled/ dist/"
   },
   "files": [
     "*.js",
