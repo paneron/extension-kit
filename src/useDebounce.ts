@@ -6,13 +6,8 @@ export function useDebounce<T>(value: T, wait: number): T {
   const setDebounced = useCallback(() => setDebouncedValue(value), [value]);
 
   useEffect(() => {
-    if (wait > 0) {
-      let timeout = setTimeout(setDebounced, wait);
-      return () => clearTimeout(timeout);
-    } else {
-      setImmediate(setDebounced);
-      return () => void 0;
-    }
+    let timeout = setTimeout(setDebounced, wait);
+    return () => clearTimeout(timeout);
   }, [value, wait]);
 
   return debouncedValue;
