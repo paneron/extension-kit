@@ -1,7 +1,7 @@
 import { Type } from 'js-yaml';
 
 
-function resolveYamlBoolean(data) {
+function resolveYamlBoolean(data: null | string) {
   if (data === null) return false;
 
   var max = data.length;
@@ -12,7 +12,7 @@ function resolveYamlBoolean(data) {
          (max === 2 && (data === 'no' || data === 'No' || data === 'NO'));
 }
 
-function constructYamlBoolean(data) {
+function constructYamlBoolean(data: string) {
   return data === 'yes' ||
          data === 'Yes' ||
          data === 'YES' ||
@@ -21,7 +21,7 @@ function constructYamlBoolean(data) {
          data === 'TRUE';
 }
 
-function isBoolean(object) {
+function isBoolean(object: any): object is Boolean {
   return Object.prototype.toString.call(object) === '[object Boolean]';
 }
 
