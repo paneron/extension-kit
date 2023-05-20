@@ -174,7 +174,9 @@ function ({
               line-height: unset;
               position: unset;
               display: inline-block;
-              overflow: visible;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 400px;
             }
             .bp4-tab-panel {
               flex: 1;
