@@ -1,4 +1,4 @@
-import { BufferChangeset } from './buffers';
+import type { BufferChangeset } from './buffers';
 
 
 export interface DatasetMigrationOptions {
