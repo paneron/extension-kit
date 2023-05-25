@@ -4,6 +4,8 @@
  * and in current implementation maps to a file on disk
  * (or an object in Git repo).
  *
+ * A `null` value indicates nothing exists at given path.
+ *
  * A buffer is associated with a path (in POSIX format)
  * that describes its place in data repository tree.
  *
