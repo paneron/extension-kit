@@ -117,10 +117,10 @@ export function getSerDesRuleByName(ruleName: SerDesRuleName): SerDesRule {
 export const lfsPointer: SerDesRule<{ lfsPointerInfo: LFSPointerInfo }> = {
   worksForObject: (obj) => obj.lfsPointerInfo !== undefined,
   worksForBufferDataset: (buffers) =>
-    isLeaf(buffers) && pointsToLFS(Buffer.from(buffers[sep]!)),
+    isLeaf(buffers) && pointsToLFS(buffers[sep]!),
 
   deserialize: (buffers) =>
-    ({ lfsPointerInfo: readPointerInfo(Buffer.from(buffers[sep])) }),
+    ({ lfsPointerInfo: readPointerInfo(buffers[sep]) }),
   serialize: (objectData) =>
     ({ [sep]: formatPointerInfo(objectData.lfsPointerInfo) }),
 }
