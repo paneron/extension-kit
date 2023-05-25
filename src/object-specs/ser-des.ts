@@ -23,6 +23,14 @@ import yaml from './yaml';
 // Tools for working with buffers
 
 const utf8Decoder = new TextDecoder('utf-8');
+const utf8Encoder = new TextEncoder();
+
+/** Takes bytes and outputs Base64. */
+function base64Encoder(bytes: Uint8Array): string {
+  return btoa(
+    bytes.reduce((acc, current) => acc + String.fromCharCode(current), "")
+  );
+}
 
 /**
  * Cross-platform separator for buffer path components.
@@ -130,7 +138,7 @@ export const textFile: SerDesRule<{ asText: string }> = {
   deserialize: (buffers) =>
     ({ asText: utf8Decoder.decode(buffers[sep]) }),
   serialize: (objectData) =>
-    ({ [sep]: Buffer.from(objectData.asText, 'utf-8') }),
+    ({ [sep]: utf8Encoder.encode(objectData.asText) }),
 };
 
 
@@ -138,7 +146,7 @@ export const jsonFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
   worksForPath: (path) => path.endsWith('.json'),
   worksForBufferDataset: isLeaf,
   deserialize: (buffers) => JSON.parse(utf8Decoder.decode(buffers[sep])),
-  serialize: (data) => ({ [sep]: Buffer.from(JSON.stringify(data), 'utf8') }),
+  serialize: (data) => ({ [sep]: utf8Encoder.encode(JSON.stringify(data)) }),
 };
 
 
@@ -154,7 +162,7 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
     }
   },
   serialize: (data) =>
-    ({ [sep]: Buffer.from(yaml.dump(data), 'utf8') }),
+    ({ [sep]: utf8Encoder.encode(yaml.dump(data)) }),
 };
 
 
@@ -173,7 +181,7 @@ export const binaryFile: SerDesRule<{ binaryData: Uint8Array; asBase64: string; 
     KNOWN_BINARY_EXTENSIONS.has(getExt(objPath)),
   deserialize: (buffers) => ({
     binaryData: buffers[sep],
-    asBase64: Buffer.from(buffers[sep]).toString('base64'),
+    asBase64: base64Encoder(buffers[sep]),
   }),
   serialize: (data) =>
     ({ [sep]: data.binaryData }),
