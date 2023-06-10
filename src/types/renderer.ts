@@ -182,16 +182,16 @@ export interface DatasetContext {
     (opts: { objectPath: string, viewID: ObjectSpecViewID }) =>
       React.FC<ObjectViewProps> | undefined
 
-  /**
-   * Provides a full system-absolute path to a path given relative to dataset root,
-   * which is useful in rare cases.
-   * 
-   * NOTE: Does not resolve LFS references. If target object path is an LFS pointer,
-   * the returned absolute path will also to the LFS pointer file.
-   *
-   * @deprecated not applicable in browser.
-   */
-  makeAbsolutePath?: (path: string) => string
+  // /**
+  //  * Provides a full system-absolute path to a path given relative to dataset root,
+  //  * which is useful in rare cases.
+  //  * 
+  //  * NOTE: Does not resolve LFS references. If target object path is an LFS pointer,
+  //  * the returned absolute path will also to the LFS pointer file.
+  //  *
+  //  * @deprecated not applicable in browser.
+  //  */
+  // makeAbsolutePath?: (path: string) => string
 
   // /**
   //  * Provides a full system-absolute path to a path given relative to dataset root;
@@ -199,13 +199,13 @@ export interface DatasetContext {
   //  */
   // useAbsolutePath: (opts: { objectPath: string, resolveLFS?: true }) => Promise<string>
 
-  /**
-   * This may be useful in rare cases with poorly-integrated third-party libraries.
-   *
-   * NOTE: only works for dependencies with corresponding `unpackAsar` entries
-   * in Paneron’s electron-builder config.
-   */
-  getRuntimeNodeModulePath?: (moduleName: string) => string
+  // /**
+  //  * This may be useful in rare cases with poorly-integrated third-party libraries.
+  //  *
+  //  * NOTE: only works for dependencies with corresponding `unpackAsar` entries
+  //  * in Paneron’s electron-builder config.
+  //  */
+  // getRuntimeNodeModulePath?: (moduleName: string) => string
 
   /** Returns a string value obtained from a binary blob given as Uint8Array. */
   useDecodedBlob: Hooks.UseDecodedBlob

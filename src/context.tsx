@@ -82,7 +82,7 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   requestFileFromFilesystem: async () => ({}),
 
-  makeAbsolutePath: () => '',
+  //makeAbsolutePath: () => '',
 
   useSettings: getValueHookPlaceholder({ settings: {} }),
 
