@@ -17,8 +17,7 @@ declare const process: { type: 'browser' | 'renderer' }
    should be the result of calling this function. */
 export const makeExtension: ExtensionMaker = async (options) => {
   let plugin: Extension;
-
-  const objectSpecs = options.objects ?? [];
+  //const objectSpecs = options.objects ?? [];
 
   const exportFormats = options.exportFormats ?? {};
 

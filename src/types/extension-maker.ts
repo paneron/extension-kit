@@ -1,6 +1,5 @@
 import type { Extension } from './extension';
 import type { MigrationModule } from './migrations';
-import type { ObjectSpec } from './object-spec';
 import type { ExportFormatConfiguration } from './export-formats';
 
 
@@ -10,14 +9,6 @@ export interface ExtensionMakerProps {
 
   /* Principal dataset view. */
   mainView: () => Promise<{ default: React.FC<Record<never, never>> }>
-
-  /* Object specs allow an extension to provide information about
-     logical objects extension manipulates,
-     such as object view/edit GUI components.
-     Intended to eventually make mainView optional.
-     TODO: Deprecated.
-  */
-  objects?: ObjectSpec[]
 
   /* Instructs which migration to run if new dataset is being initialized.
      The migration is supposed to return version matching latest extension version. */

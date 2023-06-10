@@ -22,6 +22,7 @@ export interface MainPlugin {
 
   initialMigration: DatasetMigrationFunction
 
+  /** @deprecated Do not use. API may change. */
   getObjectSpecs: () => ObjectSpec[]
 }
 
