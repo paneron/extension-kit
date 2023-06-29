@@ -1,5 +1,5 @@
 import type { Extension } from './extension';
-import type { MigrationModule } from './migrations';
+import type { MigrationInfo } from './migrations';
 import type { ExportFormatConfiguration } from './export-formats';
 
 
@@ -8,11 +8,11 @@ export interface ExtensionMakerProps {
   requiredHostAppVersion: string
 
   /* Principal dataset view. */
-  mainView: () => Promise<{ default: React.FC<Record<never, never>> }>
+  mainView: React.FC<Record<never, never>>
 
   /* Instructs which migration to run if new dataset is being initialized.
      The migration is supposed to return version matching latest extension version. */
-  datasetInitializer?: () => MigrationModule
+  datasetInitializer?: MigrationInfo
 
   exportFormats?: {
     [exportFormatID: string]: ExportFormatConfiguration
@@ -59,7 +59,7 @@ export interface ExtensionMakerProps {
      as they could create infinite migration loops if they wanted to.
   */
   datasetMigrations?: {
-    [versionSpec: string]: () => MigrationModule
+    [versionSpec: string]: MigrationInfo
   }
 }
 

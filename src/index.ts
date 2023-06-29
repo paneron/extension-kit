@@ -1,101 +1,77 @@
 import semver from 'semver';
-import type { Extension } from './types/extension';
 import type { ExtensionMaker } from './types/extension-maker';
-import type { DatasetMigrationFunction } from './types/migrations';
+import type { MigrationInfo } from './types/migrations';
 import { withDatasetContext } from './context';
-import { matchesPath } from './object-specs';
+
+
+function isView(val: unknown): val is React.FC {
+  return typeof val === 'function' &&  String(val).includes('react.jsx');
+}
 
 
 /**
- * Provides a type for electron’s `process`
- * without having to add Electron as dependency.
+ * The default export of Paneron extension’s extension.ts entry file
+ * should be the result of calling this function.
  */
-declare const process: { type: 'browser' | 'renderer' }
-
-
-/* The default export of Paneron extension’s extension.ts entry file
-   should be the result of calling this function. */
 export const makeExtension: ExtensionMaker = async (options) => {
-  let plugin: Extension;
   //const objectSpecs = options.objects ?? [];
 
   const exportFormats = options.exportFormats ?? {};
 
-  if (process.type === 'browser') {
-    // Initializes the Electron main thread part of the extension.
-    // Can use Node environment. (Deprecated)
-    const migration: DatasetMigrationFunction = options.datasetInitializer
-      ? (await options.datasetInitializer()).default
-      : async () => ({
-          bufferChangeset: {},
-          versionAfter: '1.0',
-        });
+  const migration: MigrationInfo = options.datasetInitializer ?? {
+    versionAfter: '1.0.0',
+    migrator: async function* defaultDatasetInitializer() { yield {} },
+  };
 
-    plugin = {
+  // Await dynamic import for compatibility with old API
+  const mainView = isView(options.mainView)
+    ? options.mainView
+    : (await (options as any).mainView()).default;
 
-      isCompatible: (hostAppVersion: string) => (
-        options.requiredHostAppVersion !== undefined &&
-        semver.satisfies(hostAppVersion, options.requiredHostAppVersion)
-      ),
+  //const objectSpecsWithCachedViews = (await Promise.all(objectSpecs.
+  //  filter(spec => spec.views !== undefined).
+  //  map(async (spec) => ({ ...spec, _viewCache: (await spec.views!()).default }))));
 
-      getObjectSpecs: () => {
-        return objectSpecs;
-      },
+  return {
+    mainView: withDatasetContext(mainView),
 
-      getMigration: (datasetVersion) => (
-        Object.entries(options.datasetMigrations || {}).
-        filter(([migrationVersionSpec, _]) =>
-          semver.satisfies(datasetVersion, migrationVersionSpec)
-        ).
-        map(([versionSpec, migration]) =>
-          ({ versionSpec, migration })
-        )[0]
-      ),
+    requiredHostAppVersionSpec: options.requiredHostAppVersion,
 
-      initialMigration: migration,
-    };
+    getObjectView: ({ objectPath, viewID }) => {
+      return undefined;
+      // const spec = Object.values(objectSpecsWithCachedViews).
+      //   find(c => matchesPath(objectPath, c.matches));
+      // if (spec) {
+      //   const view = spec._viewCache[viewID];
+      //   return view;
+      // } else {
+      //   console.error("Unable to find object view for object path", objectPath, viewID);
+      //   throw new Error("Cannot find object view");
+      // }
+    },
 
-  } else if (process.type === 'renderer') {
-    // Initializes the renderer thread part of the extension
-    // (the primary part that runs in browser)
-    const mainViewImportResult = (options.mainView || (options as any).repoView)
-      ? await (
-          options.mainView ||
-          /* Deprecated */(options as any).repoView
-        )()
-      : undefined;
+    exportFormats,
 
-    const objectSpecsWithCachedViews = (await Promise.all(objectSpecs.
-      filter(spec => spec.views !== undefined).
-      map(async (spec) => ({ ...spec, _viewCache: (await spec.views!()).default }))));
+    isCompatible: (hostAppVersion: string) => (
+      options.requiredHostAppVersion !== undefined &&
+      semver.satisfies(hostAppVersion, options.requiredHostAppVersion)
+    ),
 
-    plugin = {
-      mainView: mainViewImportResult
-        ? withDatasetContext(mainViewImportResult.default)
-        : undefined,
+    getObjectSpecs: () => {
+      return []
+      //return objectSpecs;
+    },
 
-      getObjectView: ({ objectPath, viewID }) => {
-        const spec = Object.values(objectSpecsWithCachedViews).
-          find(c => matchesPath(objectPath, c.matches));
-        if (spec) {
-          const view = spec._viewCache[viewID];
-          return view;
-        } else {
-          console.error("Unable to find object view for object path", objectPath, viewID);
-          throw new Error("Cannot find object view");
-        }
-      },
+    getMigration: (datasetVersion) => (
+      Object.entries(options.datasetMigrations || {}).
+      filter(([migrationVersionSpec, _]) =>
+        semver.satisfies(datasetVersion, migrationVersionSpec)
+      ).
+      map(([versionSpec, migration]) =>
+        ({ versionSpec, migration })
+      )[0]
+    ),
 
-      exportFormats,
-    };
-
-  } else {
-    // Initializes extension for CLI. Runs in Node.
-    // Primarily intended for e.g. exporting stuff in CI
-    plugin = {
-      exportFormats,
-    };
-  }
-
-  return plugin;
+    initialMigration: migration,
+  };
 }

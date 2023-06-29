@@ -1,25 +1,42 @@
-import type { BufferChangeset } from './buffers';
+/**
+ * Migrations are used to update dataset structure as extension evolves.
+ * Not every extension version requires a structure update.
+ *
+ * “Dataset extension”
+ * generally means “extension version captured in dataset metadata”.
+ *
+ * A migration uses functions to retrieve deserialized object data
+ * and generates serialized buffer data as a result.
+ */
+
+import type { BufferDataset } from './buffers';
+import type { DatasetContext } from './renderer';
 
 
-export interface DatasetMigrationOptions {
-  datasetRootPath: string
+export interface DatasetMigrationOptions
+extends Pick<DatasetContext, 'getObjectData' | 'getMapReducedData'> {
+  /** Current version of the dataset. */
   versionBefore?: string
-  onProgress?: (message: string) => void
+  onProgress?: (message: string, loaded?: number, total?: number) => void
 }
 
-/* Changeset describing changes that will make the dataset
-   conform to a version, and that version. */
-interface DatasetMigrationSpec {
-  bufferChangeset: BufferChangeset
+export interface MigrationInfo {
+  /**
+   * Version of the dataset to set after applying the migration.
+   * Must not satisfy `versionBefore`, otherwise means infinite migration loop.
+   *
+   * This is ignored for initial migration, which is naturally expected
+   * to migrate the dataset to extension version. 
+   */
   versionAfter: string
+  migrator: MigratorConstructor
 }
 
-/* Given dataset path and current (‘before’) version, checks files at that path
-   and returns a migration spec.
+/**
+ * Migrator function is a generator of buffer datasets
+ * with dataset-relative paths. A path assigned to `null`
+ * means buffer at that path will be deleted, if existed.
+ */
+export type Migrator = AsyncGenerator<BufferDataset, void, void>;
 
-   If current version is not given, assume that a new dataset is initialized. */
-export type DatasetMigrationFunction =
-  (opts: DatasetMigrationOptions) => Promise<DatasetMigrationSpec>;
-
-export type MigrationModule =
-  Promise<{ default: DatasetMigrationFunction }>;
+export type MigratorConstructor = (opts: DatasetMigrationOptions) => Migrator;

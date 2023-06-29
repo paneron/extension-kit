@@ -3,8 +3,8 @@ import type { DatasetContext } from './renderer';
 
 
 /** Options supplied implicitly to the exporter. */
-export interface ExportOptions {
-  getObjectData: DatasetContext["getObjectData"]
+export interface ExportOptions
+extends Pick<DatasetContext, 'getObjectData' | 'getMapReducedData'> {
   onProgress?: (message: string, loaded?: number, total?: number) => void
 }
 
