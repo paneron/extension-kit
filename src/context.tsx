@@ -1,6 +1,6 @@
 import React from 'react';
 import { INITIAL_GLOBAL_SETTINGS } from './settings';
-import {
+import type {
   DatasetContext as DatasetContextSpec,
   ValueHook,
 } from './types';
