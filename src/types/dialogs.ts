@@ -17,5 +17,6 @@ export interface SelectDirectoryProps extends FSDialogProps {
 
 export interface SaveFileDialogProps extends FSDialogProps {
   prompt: string
+  defaultPath?: string
   filters?: FileFilter[]
 }
