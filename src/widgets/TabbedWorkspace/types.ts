@@ -1,5 +1,5 @@
 import type React from 'react';
-import { SidebarBlockConfig } from '../Sidebar/Block';
+import type { SidebarBlockConfig } from '../Sidebar/Block';
 
 
 // Detail view protocols

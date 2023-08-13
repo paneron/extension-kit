@@ -1,4 +1,4 @@
-import { FileFilter } from './renderer';
+import type { FileFilter } from './renderer';
 
 
 export interface FSDialogProps {
