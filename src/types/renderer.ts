@@ -1,4 +1,5 @@
 //import type { FileFilter } from 'electron';
+/** Mimics FileFilter from electron without having to import Electron. */
 export interface FileFilter {
   /** NOTE: Extensions should not contain the leading separator (dot/period). */
   extensions: string[];

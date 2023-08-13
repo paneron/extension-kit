@@ -1,6 +1,7 @@
 import type { FileFilter } from './renderer';
 
 
+/** Mimics Electron’s dialog options without having to import from Electron. */
 export interface FSDialogProps {
   prompt: string
 }
@@ -17,6 +18,12 @@ export interface SelectDirectoryProps extends FSDialogProps {
 
 export interface SaveFileDialogProps extends FSDialogProps {
   prompt: string
+
+  /**
+   * Pre-written path to save as.
+   * Ideally, at least extension should be specified.
+   */
   defaultPath?: string
+
   filters?: FileFilter[]
 }

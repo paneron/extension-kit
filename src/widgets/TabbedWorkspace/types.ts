@@ -13,8 +13,8 @@ export interface ProtocolConfig {
   /**
    * Provides plain-text title.
    *
-   * Do not use. For window titles, prefer using <Helmet> in your component
-   * directly.
+   * @deprecated do not use.
+   * For window titles, use <Helmet> in relevant component.
    */
   plainTitle?: (uri: string) => Promise<string>
 }
@@ -44,9 +44,10 @@ export type TabbedWorkspaceContext<Proto extends string, SidebarID extends strin
   /** Navigates currently focused tab to a new URI. */
   navigateFocusedTab?: (newURI: string) => void
 
-  /** Spawns a new tab with specified URI */
+  /** Open a new tab with specified URI next to the focused one. */
   spawnTab: (uri: string) => void
 
+  /** Despawns tab with given URI. */
   closeTabWithURI: (uri: string) => void
 
   protocolConfiguration: ProtocolRegistry<Proto>,
@@ -58,9 +59,22 @@ export type TabbedWorkspaceContext<Proto extends string, SidebarID extends strin
 
 // Reducer-related types
 
+/** Current state of tabs and sidebars in the workspace. */
 export interface State<SidebarID extends string> {
+  /**
+   * Tabs, according to the order
+   * (would be left-to-right in LTR, currently the only direction supported).
+   */
   detailTabURIs: string[]
+
+  /** Selected tab index in `detailTabURIs`. */
   focusedTabIdx: number
+
+  /**
+   * Selected sidebar ID
+   * (see `TabbedWorkspaceProps['sidebarConfig']`, sidebar configuration
+   * is not part of state (though maybe it should be?)).
+   */
   selectedSidebarID: SidebarID
 }
 
