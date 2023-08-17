@@ -73,6 +73,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
           focusedTabIdx: action.payload.idx,
         };
 
+      // Not a common case, usually different URLs open in different tabs.
       case 'navigate-focused-tab':
         const existingTabIdx = prevState.detailTabURIs.indexOf(action.payload.uri);
         if (existingTabIdx >= 0) {
