@@ -12,6 +12,9 @@ import {
 } from '@riboseinc/isogit-lfs/pointers';
 import { pointsToLFS } from '@riboseinc/isogit-lfs/util';
 
+import { MMELToText, textToMMEL } from '@paneron/libmmel';
+import { type MMELModel } from '@paneron/libmmel/interface/model';
+
 import { AtomicSerDesRuleName } from '../types/object-spec';
 import type { SerDesRule, SerDesRuleName, SerDesRuleNameExtensionMap } from '../types/object-spec';
 import type { OnlyJSON } from '../util';
@@ -166,6 +169,18 @@ export const yamlFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
 };
 
 
+export const mmelFile: SerDesRule<OnlyJSON<Record<string, any>>> = {
+  worksForPath: (path) => path.endsWith('.mmel'),
+  worksForBufferDataset: isLeaf,
+  deserialize: (buffers) => {
+    const result: MMELModel = textToMMEL(utf8Decoder.decode(buffers[sep]));
+    return result;
+  },
+  serialize: (data) =>
+    ({ [sep]: utf8Encoder.encode(MMELToText(data as MMELModel)) }),
+};
+
+
 const KNOWN_BINARY_EXTENSIONS: Set<string> = new Set([
   '.jpg',
   '.jpeg',
@@ -207,6 +222,7 @@ const ATOMIC_SER_DES_RULES: { [key in AtomicSerDesRuleName]: SerDesRule } = {
   [AtomicSerDesRuleName.lfsPointer]: lfsPointer,
   [AtomicSerDesRuleName.jsonFile]: jsonFile,
   [AtomicSerDesRuleName.yamlFile]: yamlFile,
+  [AtomicSerDesRuleName.mmelFile]: mmelFile,
   [AtomicSerDesRuleName.binaryFile]: binaryFile,
   [AtomicSerDesRuleName.textFile]: textFile,
 };

@@ -1069,6 +1069,11 @@
   resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
+"@paneron/libmmel@~0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@paneron/libmmel/-/libmmel-0.1.3.tgz#9e38e233d77e0653e135d9ed19a7bb08108089ab"
+  integrity sha512-BmpcuqowAj4DubcPZ76xqi70xOiJtIMs/XakgvM3lpQWaeFj0avRpGJX1Lcag2R/FZnWlxm1AwYVsnE9FfVfVA==
+
 "@popperjs/core@^2.11.6":
   version "2.11.6"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"

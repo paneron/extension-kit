@@ -73,6 +73,7 @@ interface ObjectSpecViews {
 export enum AtomicSerDesRuleName {
   lfsPointer = 'lfspointer',
   textFile = 'textfile',
+  mmelFile = 'mmelFile',
   jsonFile = 'jsonfile',
   yamlFile = 'yamlfile',
   binaryFile = 'binaryfile',
