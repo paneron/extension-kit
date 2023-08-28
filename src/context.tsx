@@ -8,6 +8,7 @@ import { INITIAL_INDEX_STATUS } from './types/indexes';
 import { initialHook as initialPersistentStateReducerHook } from './usePersistentStateReducer';
 import { initialHook as initialTimeTravelingPersistentStateReducerHook } from './useTimeTravelingPersistentStateReducer';
 import { GlobalSettingsContext } from './SettingsContext';
+import { INITIAL_CONTEXT as INITIAL_OPERATION_CONTEXT } from './widgets/OperationQueue/context';
 
 
 function getValueHookPlaceholder<T>(value: T): () => ValueHook<T> {
@@ -25,11 +26,11 @@ function noOp() {}
 
 
 const INITIAL_CONTEXT: DatasetContextSpec = {
+  ...INITIAL_OPERATION_CONTEXT,
+
   title: '',
 
   logger: { log: noOp, error: noOp, debug: noOp },
-
-  performOperation: (_, f) => f,
 
   requestCopiedObjects: async () => ({}),
 

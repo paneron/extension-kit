@@ -19,9 +19,11 @@ import type { SubprocessDescription } from './binary-invocation';
 import type { ExportFormatInfo } from './export-formats';
 import type { ObjectSpecViewID, ObjectViewProps } from './object-spec';
 
+import type { ContextSpec as OperationContext } from '../widgets/OperationQueue/context';
+
 
 /** A specification of context available to extension component. */
-export interface DatasetContext {
+export interface DatasetContext extends OperationContext {
   /** Dataset title, as specified by dataset manifest/metadata YAML file in the repository. */
   title: string
 
@@ -137,9 +139,6 @@ export interface DatasetContext {
    * - Will auto-refresh returned subprocess description.
    */
   useMetanormaInvocationStatus?: () => ValueHook<SubprocessDescription | null>
-
-  /** Provides an isBusy flag and informs user of operation outcome using a “toaster” widget. */
-  performOperation: <P extends any[], R>(gerund: string, func: (...opts: P) => Promise<R>) => (...opts: P ) => Promise<R>
 
   operationKey?: string
 
@@ -547,7 +546,7 @@ export namespace Hooks {
   export namespace Data {
 
     export type GetObjectDataset =
-      (opts: ObjectDatasetRequest) =>
+      (opts: ObjectDatasetRequest & { nounLabel?: string }) =>
         ValueHook<ObjectDatasetResponse>
 
     export type UpdateObjects = (opts: {
