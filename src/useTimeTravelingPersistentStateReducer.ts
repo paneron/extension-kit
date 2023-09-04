@@ -1,6 +1,6 @@
 import produce, { Draft } from 'immer';
-import { Dispatch } from 'react';
-import { BaseAction, PersistentStateReducerHook, StateReducerHook } from './usePersistentStateReducer';
+import type { Dispatch } from 'react';
+import type { BaseAction, PersistentStateReducerHook, StateReducerHook } from './usePersistentStateReducer';
 
 const UNDO_ACTION_TYPE = 'undo' as const;
 const REDO_ACTION_TYPE = 'redo' as const;
