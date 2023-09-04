@@ -60,7 +60,10 @@ interface TimeTravelingPersistentStateReducerInterface<S, A extends BaseAction> 
   initialized: boolean;
 }
 
-/* Supports persistent state reducer features, but also offers time travel through undo/redo/reset actions. */
+/**
+ * Supports persistent state reducer features,
+ * but also offers time travel through undo/redo/reset actions.
+ */
 export function useTimeTravelingPersistentStateReducer<S, A extends BaseAction>(
   ...args: TimeTravelingPersistentStateReducerHookParams<S, A>
 ): TimeTravelingPersistentStateReducerInterface<S, A> {
