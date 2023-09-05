@@ -1,4 +1,4 @@
-import produce, { Draft } from 'immer';
+import produce, { type Draft } from 'immer';
 import type { Dispatch } from 'react';
 import type { BaseAction, PersistentStateReducerHook, StateReducerHook } from './usePersistentStateReducer';
 
