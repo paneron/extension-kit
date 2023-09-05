@@ -1,5 +1,5 @@
 export interface OperationOptions {
-  /*
+  /**
    * Consider this operation globally locking.
    *
    * If an operation is queued with this flag,
