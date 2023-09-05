@@ -39,7 +39,7 @@ function ({ toaster, children }) {
     }
   }, ops);
 
-  const unqueue = useCallback(function _unqueue(opKey: string, isBlocking: boolean) {
+  const dequeue = useCallback(function _dequeue(opKey: string, isBlocking: boolean) {
     if (isBlocking) {
       setLockingOperationKey(null);
     }
@@ -80,7 +80,7 @@ function ({ toaster, children }) {
           try {
             const result = await func(...args);
 
-            unqueue(opKey, isBlocking);
+            dequeue(opKey, isBlocking);
 
             return result;
           } catch (e) {
@@ -99,7 +99,7 @@ function ({ toaster, children }) {
               icon: 'error',
               timeout: 0,
               onDismiss: () => {
-                unqueue(opKey, isBlocking);
+                dequeue(opKey, isBlocking);
               },
             }, opKey);
 
