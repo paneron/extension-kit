@@ -3,10 +3,7 @@
 
 import { jsx, css } from '@emotion/react';
 import React, { useCallback, useState } from 'react';
-import {
-  ProgressBar,
-  type ToasterInstance,
-} from '@blueprintjs/core';
+import { ProgressBar, type ToasterInstance } from '@blueprintjs/core';
 
 import Context from './context';
 
