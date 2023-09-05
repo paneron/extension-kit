@@ -2,6 +2,7 @@ import produce, { type Draft } from 'immer';
 import type { Dispatch } from 'react';
 import type { BaseAction, PersistentStateReducerHook, StateReducerHook } from './usePersistentStateReducer';
 
+
 const UNDO_ACTION_TYPE = 'undo' as const;
 const REDO_ACTION_TYPE = 'redo' as const;
 const RESET_ACTION_TYPE = 'reset' as const;
@@ -19,11 +20,20 @@ export interface ResetAction extends BaseAction {
 }
 
 export type TimeTravelAction = UndoAction | RedoAction | ResetAction;
+
 interface Timeline<S> {
   present: S;
+
+  /** States that led to present state. */
   past: S[];
+
+  /**
+   * Undoing a state makes present state first future state,
+   * and last past state the present.
+   */
   future: S[];
 }
+
 type TimeTravelingPersistentStateReducerHookParams<S, A extends BaseAction> = [
 
   /** How far back to allow the state to be rewound. */
@@ -51,12 +61,35 @@ export type TimeTravelingPersistentStateReducerHook<S, A extends BaseAction> =
     TimeTravelingPersistentStateReducerInterface<S, A>;
 
 interface TimeTravelingPersistentStateReducerInterface<S, A extends BaseAction> {
-  timeline: Timeline<S>;
+  /** Present state. */
   state: S;
+
+  /** Supports actions by wrapped reduce, and time-traveling actions below. */
   dispatch: Dispatch<A>;
+
+  /**
+   * Go to previous state in the timeline;
+   * present state will become next “future” state.
+   */
   undo: () => void;
+
+  /** Makes next (if any) “future” state in the timeline present. */
   redo: () => void;
+
+  /**
+   * Resetting rewinds the timeline back to the beginning.
+   * All states are future states.
+   * Redoing is still possible (in that sense it’s not a proper reset).
+   */
   reset: () => void;
+
+  // TODO: Implenment “proper” reset that makes initial state present
+  // and also clears past and future.
+
+  /** State change history. */
+  timeline: Timeline<S>;
+
+  /** Proxied from persistent reducer. */
   initialized: boolean;
 }
 
