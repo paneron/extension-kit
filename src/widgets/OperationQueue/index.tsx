@@ -23,13 +23,14 @@ function notify(opKey: string, blocking: boolean) {
     }, opKey);
   } else {
     toaster.show({
-      message: <div css={css`display: flex; flex-flow: row nowrap; white-space: nowrap; align-items: center;`}>
-        {blocking
-          ? <ProgressBar intent="primary" css={css`width: 50px;`} />
-          : <Spinner size={SpinnerSize.SMALL} />}
-        &emsp;
-        {opKey}{opCount > 1 ? <>&nbsp;({opCount})</> : null}…
-      </div>,
+      message:
+        <div css={css`display: flex; flex-flow: row nowrap; white-space: nowrap; align-items: center;`}>
+          {blocking
+            ? <ProgressBar intent="primary" css={css`width: 50px;`} />
+            : <Spinner size={SpinnerSize.SMALL} />}
+          &emsp;
+          {opKey}{opCount > 1 ? <>&nbsp;({opCount})</> : null}…
+        </div>,
       intent: blocking ? 'primary' : undefined,
       timeout: 0,
     }, opKey);
