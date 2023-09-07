@@ -58,7 +58,10 @@ function ({ children }) {
 
   const queue = useCallback(function _queue(opKey: string, isBlocking: boolean) {
     if (_lockingOperationKey && isBlocking) {
-      toaster.show({ message: `Can’t handle ${opKey}: already busy`, intent: 'warning' });
+      toaster.show({
+        message: `Can’t handle ${opKey} again: already busy`,
+        intent: 'warning',
+      });
       throw new Error("Failed to queue operation: queue busy");
     }
     if (isBlocking) {
