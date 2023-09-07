@@ -21,3 +21,11 @@ export type OnlyJSON<T> =
     : T extends object
       ? { [K in keyof T]: OnlyJSON<T[K]> }
       : never;
+
+/**
+ * Normalizes object by ensuring its keys are sorted.
+ * May not be the most efficient way of doing so.
+ */
+export function normalizeObject<T extends Record<string, any>>(obj: T): T {
+  return Object.fromEntries(Object.entries(obj).sort()) as T;
+}
