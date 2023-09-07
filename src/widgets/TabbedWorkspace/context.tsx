@@ -1,6 +1,6 @@
 /** @jsx jsx */
 
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useMemo, useContext, useEffect } from 'react';
 import { jsx } from '@emotion/react';
 import { DatasetContext } from '../../context';
 import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
@@ -169,7 +169,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
       }
     }, [focusedTabURI]);
 
-    const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = {
+    const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = useMemo(() => ({
       spawnTab: uri => dispatch({ type: 'spawn-tab', payload: { uri } }),
 
       closeTabWithURI: uri => {
@@ -182,7 +182,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
       focusedTabURI,
       state,
       dispatch,
-    };
+    }), [dispatch, state]);
 
     return (
       <TabbedWorkspaceContext.Provider value={ctx}>
