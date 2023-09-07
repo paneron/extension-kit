@@ -112,7 +112,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       });
       setInitialized(true);
     })();
-  }, [storageKey]);
+  }, [dispatch, validator, loadState, initialState, storageKey]);
 
   useEffect(() => {
     if (initialized === true) {
@@ -122,7 +122,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       return () => clearTimeout(timeout);
     }
     return () => void 0;
-  }, [storageKey, state]);
+  }, [storeState, storageKey, state]);
 
   return [state, dispatch, initialized];
 }
