@@ -94,7 +94,7 @@ function ({
     })();
 
     return function cleanUp() { cancelled = true; }
-  }, [focusedTabURI, JSON.stringify(protocolConfiguration)]);
+  }, [focusedTabURI]);
 
   useEffect(() => {
     if (state.focusedTabIdx >= 0) {
