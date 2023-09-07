@@ -94,8 +94,11 @@ function usePersistentStateReducer<S, A extends BaseAction>(
 
   useEffect(() => {
     setInitialized(false);
+    let cancelled = false;
     (async () => {
       const loadedState = await loadState(storageKey);
+      if (cancelled) { return; }
+
       let effectiveState: S | undefined;
       if (loadedState && validator) {
         if (validator(loadedState)) {
@@ -112,6 +115,9 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       });
       setInitialized(true);
     })();
+    return function cleanUp() {
+      cancelled = true;
+    }
   }, [dispatch, validator, loadState, initialState, storageKey]);
 
   useEffect(() => {
