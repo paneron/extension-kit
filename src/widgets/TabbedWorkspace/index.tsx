@@ -5,8 +5,8 @@ import React, { useContext, useEffect, useRef, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Tag, Colors, Tab, Tabs } from '@blueprintjs/core';
 import Workspace, { WorkspaceProps } from '../Workspace';
+import { Tag, Colors, Tab, Tabs as BaseTabs } from '@blueprintjs/core';
 import { normalizeObject } from '../../util';
 import type { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
@@ -131,6 +131,11 @@ function ({
     JSON.stringify(normalizeObject(sidebarConfig)),
   ]);
 
+  const handleSelectedTabChange = useCallback((idx: number, oldIdx: number) => dispatch({
+    type: 'focus-tab',
+    payload: { idx },
+  }), [dispatch]);
+
   return (
     <Workspace
         sidebar={sidebar}
@@ -142,56 +147,7 @@ function ({
           id="detailTabs"
           renderActiveTabPanelOnly
           selectedTabId={state.focusedTabIdx}
-          onChange={(idx: number, oldIdx: number) => dispatch({ type: 'focus-tab', payload: { idx } })}
-          css={css`
-            background: ${Colors.LIGHT_GRAY2};
-            .bp4-dark & { background: ${Colors.GRAY1}; }
-            flex: 1;
-            display: flex;
-            flex-flow: column nowrap;
-
-            position: relative;
-
-            .bp4-tab-list {
-              overflow-x: auto;
-              height: 24px;
-              position: relative;
-
-              background: ${Colors.GRAY1};
-              .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
-
-              /* Accommodate the new tab button, absolutely positioned */
-              white-space: nowrap;
-
-              /* Remove spacing between tabs */
-              > *:not(:last-child) {
-                margin-right: 2px;
-              }
-
-              /* Hide horizontal scrollbar (overlaps with tab titles on macOS) */
-              ::-webkit-scrollbar {
-                height: 0px;
-                background: transparent;
-              }
-            }
-            .bp4-tab-indicator { display: none; }
-            .bp4-tab {
-              line-height: unset;
-              position: unset;
-              display: inline-block;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              max-width: 400px;
-            }
-            .bp4-tab-panel {
-              flex: 1;
-              margin: 0;
-              padding: 5px;
-              position: relative;
-              background: ${Colors.LIGHT_GRAY3};
-              .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
-            }
-          `}>
+          onChange={handleSelectedTabChange}>
         {title
           ? <Helmet>
               <title>{title}</title>
@@ -232,6 +188,57 @@ function ({
     </Workspace>
   );
 };
+
+
+const Tabs = styled(BaseTabs)`
+  background: ${Colors.LIGHT_GRAY2};
+  .bp4-dark & { background: ${Colors.GRAY1}; }
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+
+  position: relative;
+
+  .bp4-tab-list {
+    overflow-x: auto;
+    height: 24px;
+    position: relative;
+
+    background: ${Colors.GRAY1};
+    .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
+
+    /* Accommodate the new tab button, absolutely positioned */
+    white-space: nowrap;
+
+    /* Remove spacing between tabs */
+    > *:not(:last-child) {
+      margin-right: 2px;
+    }
+
+    /* Hide horizontal scrollbar (overlaps with tab titles on macOS) */
+    ::-webkit-scrollbar {
+      height: 0px;
+      background: transparent;
+    }
+  }
+  .bp4-tab-indicator { display: none; }
+  .bp4-tab {
+    line-height: unset;
+    position: unset;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+  }
+  .bp4-tab-panel {
+    flex: 1;
+    margin: 0;
+    padding: 5px;
+    position: relative;
+    background: ${Colors.LIGHT_GRAY3};
+    .bp4-dark & { background: ${Colors.DARK_GRAY3}; }
+  }
+`;
 
 
 // NOTE: Minimal is set when it’s *not* selected
