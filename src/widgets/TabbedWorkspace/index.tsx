@@ -7,6 +7,7 @@ import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Tag, Colors, Tab, Tabs } from '@blueprintjs/core';
 import Workspace, { WorkspaceProps } from '../Workspace';
+import { normalizeObject } from '../../util';
 import type { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
 import { DetailTab, DetailTabTitle } from './detail';
@@ -122,11 +123,12 @@ function ({
         : undefined}
     />
   }, [
-    JSON.stringify(sidebarConfig),
-    JSON.stringify(sidebarIDs),
+    dispatch,
     state.selectedSidebarID,
+    sidebarIDs.join(''),
     sidebarWidth,
     onSidebarResize,
+    JSON.stringify(normalizeObject(sidebarConfig)),
   ]);
 
   return (
