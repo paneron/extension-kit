@@ -13,6 +13,9 @@ import { DetailTab, DetailTabTitle } from './detail';
 import SuperSidebar from './SuperSidebar';
 
 
+const DEFAULT_TAB_TITLE = '(unnamed tab)';
+
+
 /**
  * Wraps Workspace, adding tabbed GUI features.
  * Use inside TabbedWorkspaceContextProvider.
@@ -67,12 +70,12 @@ function ({
 }) {
   const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
   const focusedTabRef = useRef<HTMLDivElement>(null);
-  const [title, setTitle] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>(DEFAULT_TAB_TITLE);
 
   useEffect(() => {
     let cancelled = false;
     if (!focusedTabURI) {
-      setTitle(null);
+      setTitle(DEFAULT_TAB_TITLE);
       return;
     }
     (async () => {
@@ -85,7 +88,7 @@ function ({
         if (title) {
           setTitle(title);
         } else {
-          setTitle(null);
+          setTitle(DEFAULT_TAB_TITLE);
         }
       }
     })();
