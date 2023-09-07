@@ -1,11 +1,12 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react';
+import React, { useContext, useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Tag, Colors, Tab, Tabs as BaseTabs } from '@blueprintjs/core';
+
 import { normalizeObject } from '../../util';
 import Workspace, { type WorkspaceProps } from '../Workspace';
 import type { SuperSidebarConfig } from './types';
@@ -131,6 +132,56 @@ function ({
     JSON.stringify(normalizeObject(sidebarConfig)),
   ]);
 
+  const tabPanes: Map<string, [JSX.Element, JSX.Element]> = useMemo(() => {
+    return (state.detailTabURIs ?? []).
+      map(uri => [
+        uri,
+        [<DetailTab uri={uri} />, <DetailTabTitle uri={uri} />],
+      ] as [string, [JSX.Element, JSX.Element]]).
+      reduce(
+        ((prev, curr) => prev.set(curr[0], curr[1])),
+        new Map() as Map<string, [JSX.Element, JSX.Element]>,
+      );
+  }, [(state.detailTabURIs ?? []).slice().sort().join('')]);
+
+  const tabTitles: Map<string, JSX.Element> = useMemo(() => {
+    return (state.detailTabURIs ?? []).
+      map((uri, idx) => [
+        uri,
+        <div
+            css={css`height: 24px;`}
+            ref={idx === state.focusedTabIdx ? focusedTabRef : undefined}>
+          <TabTitleButton
+              interactive={idx !== state.focusedTabIdx}
+              minimal={idx !== state.focusedTabIdx}
+              onRemove={(evt: React.MouseEvent) => {
+                dispatch({ type: 'close-tab', payload: { idx }});
+                evt.stopPropagation();
+              }}>
+            {tabPanes.get(uri)?.[1] ?? DEFAULT_TAB_TITLE}
+          </TabTitleButton>
+        </div>,
+      ] as [string, JSX.Element]).
+      reduce(
+        ((prev, curr) => prev.set(curr[0], curr[1])),
+        new Map() as Map<string, JSX.Element>,
+      );
+  }, [dispatch, tabPanes, state.focusedTabIdx, focusedTabRef.current]);
+
+  const homeTab = useMemo(() => (
+    <Tab
+      id={SPECIAL_TAB_IDX.new}
+      title={
+        <TabTitleButton
+            minimal={state.focusedTabIdx !== SPECIAL_TAB_IDX.new}
+            icon="home">
+          Home
+        </TabTitleButton>
+      }
+      panel={newTabPrompt}
+    />
+  ), [state.focusedTabIdx === SPECIAL_TAB_IDX.new]);
+
   const handleSelectedTabChange = useCallback((idx: number, oldIdx: number) => dispatch({
     type: 'focus-tab',
     payload: { idx },
@@ -148,40 +199,21 @@ function ({
           renderActiveTabPanelOnly
           selectedTabId={state.focusedTabIdx}
           onChange={handleSelectedTabChange}>
+
         {title
           ? <Helmet>
               <title>{title}</title>
             </Helmet>
           : null}
-        <Tab
-          id={SPECIAL_TAB_IDX.new}
-          title={
-            <TabTitleButton
-                minimal={state.focusedTabIdx !== SPECIAL_TAB_IDX.new}
-                icon="home">
-              Home
-            </TabTitleButton>
-          }
-          panel={newTabPrompt}
-        />
+
+        {homeTab}
+
         {(state.detailTabURIs ?? []).map((uri, idx) =>
           <Tab
             id={idx}
             key={uri}
-            panel={<DetailTab uri={uri} />}
-            title={
-              <div css={css`height: 24px;`} ref={idx === state.focusedTabIdx ? focusedTabRef : undefined}>
-                <TabTitleButton
-                    interactive={idx !== state.focusedTabIdx}
-                    minimal={idx !== state.focusedTabIdx}
-                    onRemove={(evt: React.MouseEvent) => {
-                      dispatch({ type: 'close-tab', payload: { idx }});
-                      evt.stopPropagation();
-                    }}>
-                  <DetailTabTitle uri={uri} />
-                </TabTitleButton>
-              </div>
-            }
+            panel={tabPanes.get(uri)?.[0]}
+            title={tabTitles.get(uri)}
           />
         )}
       </Tabs>
