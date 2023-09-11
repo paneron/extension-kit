@@ -39,6 +39,13 @@ function makeSidebar(
         reduce((prev, curr) => ({ ...prev, ...curr }));
     }, [blocks]);
 
+    const initialState: State = useMemo(() => ({
+      blockState:
+        blocks.
+          map(b => ({ [b.key]: b.collapsedByDefault === true ? false : true })).
+          reduce((prev, curr) => ({ ...prev, ...curr })),
+    }), [blocks]);
+
     const [ state, dispatch, stateLoaded ] = persistentReducer(
       stateKey,
       undefined,
@@ -67,12 +74,7 @@ function makeSidebar(
             throw new Error("Unexpected sidebar state");
         }
       },
-      {
-        blockState:
-          blocks.
-            map(b => ({ [b.key]: b.collapsedByDefault === true ? false : true })).
-            reduce((prev, curr) => ({ ...prev, ...curr })),
-      },
+      initialState,
       null);
 
     function hasOthersCollapsed(blockKey: string): boolean {
