@@ -1,10 +1,10 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
-import BlockStateButtonGroup from './BlockStateButtonGroup';
 import React from 'react';
+import { Button, Classes, Colors } from '@blueprintjs/core';
+import BlockStateButtonGroup from './BlockStateButtonGroup';
 
 
 export interface SidebarBlockConfig {
