@@ -126,7 +126,7 @@ function ({
   }, [
     dispatch,
     state.selectedSidebarID,
-    sidebarIDs.join(''),
+    sidebarIDs.toString(),
     sidebarWidth,
     onSidebarResize,
     JSON.stringify(normalizeObject(sidebarConfig)),
