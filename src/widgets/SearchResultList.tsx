@@ -137,12 +137,12 @@ React.FC<SearchResultListProps> {
       } catch (e) {
         console.error("Unable to select item by position");
       }
-    }, [selectedItemPath, indexID]);
+    }, [selectedItemPath, indexID, onSelectItem]);
 
-    const extraData: SearchResultListData = {
+    const extraData: SearchResultListData = useMemo((() => ({
       indexID,
       selectedItemPath,
-    };
+    })), [indexID, selectedItemPath]);
 
     const getListData = useCallback(function _getListData(): ListData<SearchResultListData> | null {
       if (indexID) {
@@ -177,7 +177,7 @@ React.FC<SearchResultListProps> {
       } else {
         return null;
       }
-    }, [selectedIndexPos, selectItemByPosition, indexID, stubs]);
+    }, [selectedIndexPos, selectItemByPosition, indexID, stubs, extraData, onOpenItem, onSelectItem]);
 
     return <List
       className={className}
