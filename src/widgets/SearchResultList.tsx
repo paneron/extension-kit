@@ -181,7 +181,8 @@ React.FC<SearchResultListProps> {
 
     return <List
       className={className}
-      getListData={getListData} />;
+      getListData={getListData}
+    />;
   };
 
   return SearchResultList;
