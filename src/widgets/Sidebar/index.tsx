@@ -5,7 +5,7 @@ import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
 import React, { useMemo, useCallback } from 'react';
 import type { PersistentStateReducerHook } from '../../usePersistentStateReducer';
-import SidebarBlock, { SidebarBlockConfig } from './Block';
+import SidebarBlock, { type SidebarBlockConfig } from './Block';
 import BlockStateButtonGroup from './BlockStateButtonGroup';
 
 
