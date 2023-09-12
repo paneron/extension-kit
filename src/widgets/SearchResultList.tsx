@@ -73,7 +73,7 @@ React.FC<SearchResultListProps> {
           isSelected={objPath !== '' && extraData.selectedItemPath === objPath}
           onSelect={onSelect}
           onOpen={onOpen}
-          contentClassName={isUpdating ? Classes.SKELETON : undefined}
+          contentClassName={(isUpdating && !objData) ? Classes.SKELETON : undefined}
           entityType={getEntityInfoForObjectPath(objPath)}>
         {itemView}
       </LabelledListIcon>
