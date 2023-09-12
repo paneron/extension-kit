@@ -219,3 +219,4 @@ export interface TabbedWorkspaceContextProviderProps {
   stateKey: string
   onFocusedTabChange?: (newFocusedTabURI: string | undefined) => void
 
+}
