@@ -45,35 +45,28 @@ React.FC<SearchResultListProps> {
       indexID: extraData.indexID,
       position,
     });
+
     const objPath = filteredObjectResp.value.objectPath;
 
-    const stringItemDescription = objPath ? `item at ${objPath}` : `item #${listItemRef}`;
-
-    const fallbackView = <span css={css`opacity: .4`}>{stringItemDescription}</span>;
+    const fallbackView = useMemo(() => {
+      const stringItemDescription = objPath ? `item at ${objPath}` : `item #${listItemRef}`;
+      return <span css={css`opacity: .4`}>{stringItemDescription}</span>;
+    }, [objPath, listItemRef]);
 
     const objectDataResp = useObjectData({
       objectPaths: objPath ? [objPath] : [],
     });
 
-    let isUpdating: boolean = filteredObjectResp.isUpdating;
-    let itemView: JSX.Element;
+    const isUpdating = (objPath ? objectDataResp.isUpdating : false) || filteredObjectResp.isUpdating;
+    const objData = (objPath ? objectDataResp.value.data[objPath] : null) as ObjectData | null;
 
-    if (objPath.trim() !== '') {
-      try {
-        const objData = objectDataResp.value.data[objPath] as ObjectData | null;
-        isUpdating = isUpdating || objectDataResp.isUpdating;
-        if (objData) {
-          itemView = <InnerItemView objectData={objData} objectPath={objPath} />
-        } else {
-          itemView = fallbackView;
-        }
-      } catch (e) {
-        itemView = fallbackView;
+    let itemView: JSX.Element = useMemo(() => {
+      if (objData) {
+        return <InnerItemView objectData={objData} objectPath={objPath} />;
+      } else {
+        return fallbackView;
       }
-    } else {
-      itemView = fallbackView;
-    }
-
+    }, [objPath, objData, fallbackView]);
 
     return (
       <LabelledListIcon
