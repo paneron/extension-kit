@@ -1,24 +1,26 @@
 /** @jsx jsx */
 
-import React, { createContext, useMemo, useContext, useEffect } from 'react';
+import React, { createContext, useCallback, useMemo, useContext, useEffect } from 'react';
 import { jsx } from '@emotion/react';
 import { DatasetContext } from '../../context';
 import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
 import type { TabbedWorkspaceContext as TabbedWorkspaceContextSpec, Action, ProtocolRegistry, State } from './types';
 
 
-const initialState: State<''> = {
-  detailTabURIs: [],
-  focusedTabIdx: 0,
-  selectedSidebarID: '',
-}
+export const SPECIAL_TAB_IDX: Record<'new', number> = {
+  new: -2,
+};
 
 
 export const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<any, any>>({
   spawnTab: () => void 0,
   closeTabWithURI: () => void 0,
   protocolConfiguration: {},
-  state: initialState,
+  state: {
+    detailTabURIs: [],
+    focusedTabIdx: SPECIAL_TAB_IDX.new,
+    selectedSidebarID: '',
+  },
   dispatch: () => void 0,
 });
 
@@ -158,31 +160,48 @@ React.FC<TabbedWorkspaceContextProviderProps> {
       initialState,
       null);
 
-    const focusedTabURI: string | undefined =
+    const tabsCacheKey = state.detailTabURIs.toString();
+
+    const focusedTabURI: string | undefined = useMemo((() =>
       state.focusedTabIdx >= 0
         ? state.detailTabURIs[state.focusedTabIdx]
-        : undefined;
+        : undefined
+    ), [state.focusedTabIdx, tabsCacheKey]);
 
     useEffect(() => {
       if (onFocusedTabChange) {
         onFocusedTabChange(focusedTabURI);
       }
-    }, [focusedTabURI]);
+    }, [onFocusedTabChange, focusedTabURI]);
 
-    const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = useMemo(() => ({
-      spawnTab: uri => dispatch({ type: 'spawn-tab', payload: { uri } }),
+    const spawnTab = useCallback(
+      (uri => dispatch({ type: 'spawn-tab', payload: { uri } })),
+      [dispatch]);
 
-      closeTabWithURI: uri => {
+    const closeTabWithURI = useCallback(
+      (uri => {
         const idx = state.detailTabURIs.indexOf(uri);
-        if (idx >= 0) { dispatch({ type: 'close-tab', payload: { idx } }); }
-      },
+        if (idx >= 0) {
+          dispatch({ type: 'close-tab', payload: { idx } });
+        }
+      }),
+      [dispatch, tabsCacheKey]);
 
-      navigateFocusedTab: uri => dispatch({ type: 'navigate-focused-tab', payload: { uri }}),
-      protocolConfiguration,
+    const navigateFocusedTab = useCallback(
+      (uri => dispatch({ type: 'navigate-focused-tab', payload: { uri }})),
+      [dispatch]);
+
+    const protoConfig = useMemo(() => protocolConfiguration, []);
+
+    const ctx: TabbedWorkspaceContextSpec<Proto, SidebarID> = useMemo((() => ({
+      spawnTab,
+      closeTabWithURI,
+      navigateFocusedTab,
+      protocolConfiguration: protoConfig,
       focusedTabURI,
-      state,
       dispatch,
-    }), [dispatch, state]);
+      state,
+    })), [focusedTabURI, spawnTab, closeTabWithURI, navigateFocusedTab, state, protoConfig, dispatch]);
 
     return (
       <TabbedWorkspaceContext.Provider value={ctx}>
@@ -199,9 +218,4 @@ React.FC<TabbedWorkspaceContextProviderProps> {
 export interface TabbedWorkspaceContextProviderProps {
   stateKey: string
   onFocusedTabChange?: (newFocusedTabURI: string | undefined) => void
-}
 
-
-export const SPECIAL_TAB_IDX: Record<'new', number> = {
-  new: -2,
-};
