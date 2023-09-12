@@ -2,10 +2,10 @@
 /** @jsxFrag React.Fragment */
 
 import { jsx, css } from '@emotion/react';
-import React, { useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { Toaster, Spinner, SpinnerSize, ProgressBar } from '@blueprintjs/core';
 
-import Context from './context';
+import Context, { type ContextSpec } from './context';
 
 
 const toaster = Toaster.create({ position: 'bottom' });
@@ -51,74 +51,83 @@ function ({ children }) {
     if (isBlocking) {
       setLockingOperationKey(null);
     }
-
     _opKeys.set(opKey, (_opKeys.get(opKey) ?? 1) - 1);
     notify(opKey, isBlocking);
-  }, [_lockingOperationKey]);
+  }, []);
 
   const queue = useCallback(function _queue(opKey: string, isBlocking: boolean) {
-    if (_lockingOperationKey && isBlocking) {
-      toaster.show({
-        message: `Can’t handle ${opKey} again: already busy`,
-        intent: 'warning',
-      });
-      throw new Error("Failed to queue operation: queue busy");
-    }
     if (isBlocking) {
-      setLockingOperationKey(opKey);
+      setLockingOperationKey(oldKey => {
+        if (oldKey === null) {
+          return opKey;
+        } else {
+          throw new Error("Failed to queue operation: queue is busy");
+        }
+      });
     }
-
     _opKeys.set(opKey, (_opKeys.get(opKey) ?? 0) + 1);
     notify(opKey, isBlocking);
-  }, [_lockingOperationKey]);
+  }, []);
+
+  const performOperation: ContextSpec["performOperation"] =
+  useCallback(function performOperation(gerund, func, opts) {
+    const opKey = gerund;
+
+    // We block by default for backwards compatibility.
+    const isBlocking = opts?.blocking !== false;
+
+    return async (...args) => {
+      if (!toaster) {
+        throw new Error("Failed to perform operation: toaster not initialized");
+      }
+
+      try {
+        queue(opKey, isBlocking);
+      } catch (e) {
+        toaster.show({
+          message: `Couldn’t queue ${opKey}`,
+          intent: 'warning',
+        });
+        throw new Error(`Couldn’t queue ${opKey}`);
+      }
+
+      try {
+        const result = await func(...args);
+
+        dequeue(opKey, isBlocking);
+
+        return result;
+      } catch (e) {
+        let errMsg: string;
+        const rawErrMsg = (e as any).toString?.();
+        if (rawErrMsg.indexOf('Error:')) {
+          const msgParts = rawErrMsg.split('Error:');
+          errMsg = msgParts[msgParts.length - 1].trim();
+        } else {
+          errMsg = rawErrMsg;
+        }
+
+        toaster.show({
+          message: `Problem ${gerund}. The error said: “${errMsg}”`,
+          intent: isBlocking ? 'danger' : 'warning',
+          icon: 'error',
+          timeout: 0,
+          onDismiss: () => {
+            dequeue(opKey, isBlocking);
+          },
+        }, opKey);
+
+        throw e;
+      }
+    }
+  }, [queue, dequeue]);
+
+  const ctx = useMemo(
+    (() => ({ isBusy, performOperation })),
+    [performOperation, isBusy]);
 
   return (
-    <Context.Provider value={{
-      isBusy,
-      performOperation: useCallback(function performOperation(gerund, func, opts) {
-        const opKey = gerund;
-
-        // We block by default for backwards compatibility.
-        const isBlocking = opts?.blocking !== false;
-
-        return async (...args) => {
-          if (!toaster) {
-            throw new Error("Failed to perform operation: toaster not initialized");
-          }
-
-          queue(opKey, isBlocking);
-
-          try {
-            const result = await func(...args);
-
-            dequeue(opKey, isBlocking);
-
-            return result;
-          } catch (e) {
-            let errMsg: string;
-            const rawErrMsg = (e as any).toString?.();
-            if (rawErrMsg.indexOf('Error:')) {
-              const msgParts = rawErrMsg.split('Error:');
-              errMsg = msgParts[msgParts.length - 1].trim();
-            } else {
-              errMsg = rawErrMsg;
-            }
-
-            toaster.show({
-              message: `Problem ${gerund}. The error said: “${errMsg}”`,
-              intent: isBlocking ? 'danger' : 'warning',
-              icon: 'error',
-              timeout: 0,
-              onDismiss: () => {
-                dequeue(opKey, isBlocking);
-              },
-            }, opKey);
-
-            throw e;
-          }
-        }
-      }, [queue, dequeue]),
-    }}>
+    <Context.Provider value={ctx}>
       {children}
     </Context.Provider>
   );
