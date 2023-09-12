@@ -77,56 +77,75 @@ function ({
             </ErrorBoundary>
         };
       }).
-      reduce((prev, curr) => ({ ...prev, ...curr })) as Record<string, JSX.Element>),
-    []);
+      reduce((prev, curr) => ({ ...prev, ...curr }))),
+    [config, usePersistentDatasetStateReducer]);
+
+  const buttons: JSX.Element | null = useMemo(() => (
+    sidebarIDs.length > 1
+      ? <ButtonGroup vertical className={className}>
+          {sidebarIDs.map(sid => {
+            const Icon = config[sid].icon;
+            return <SidebarButton
+              key={sid}
+              icon={<Icon />}
+              active={selectedSidebarID === sid}
+              onClick={onSelectSidebar ? () => onSelectSidebar(sid) : undefined}
+              disabled={!onSelectSidebar}
+            />
+          })}
+        </ButtonGroup>
+      : null
+  ), [selectedSidebarID, sidebarIDs.join(','), className, onSelectSidebar]);
+
+
+  const currentSidebar = useMemo(() => (
+    <Resizable
+        minConstraints={[minWidth ?? DEFAULT_MIN_WIDTH, Infinity]}
+        maxConstraints={[maxWidth ?? 600, Infinity]}
+        width={effectiveSidebarWidthPX}
+        axis='x'
+        // Grid means we store nice round values and also debounce the event
+        draggableOpts={{ grid: [50, 50] }}
+        resizeHandles={onResize
+          ? resizeSensorPosition === 'right'
+            ? ['se']
+            : ['sw']
+          : []}
+        handle={onResize && resizeSensorPosition
+          ? <div
+              className={`
+                react-resizable-handle
+                react-resizable-handle-${resizeSensorPosition === 'right' ? 'se' : 'sw'}
+              `}
+              style={{ zIndex: 20 }}
+            />
+          : undefined}
+        onResize={onResize && resizeSensorPosition
+          ? (_, { size }) => setResizedWidthPX(size.width)
+          : undefined}>
+      <div css={css`
+          width: ${effectiveSidebarWidthPX}px; position: relative;
+          & > :first-child { position: absolute; inset: 0; }
+        `}>
+        {sidebarEls[selectedSidebarID]}
+      </div>
+    </Resizable>
+  ), [
+    selectedSidebarID,
+    effectiveSidebarWidthPX,
+    sidebarEls,
+    onResize,
+    resizeSensorPosition,
+    setResizedWidthPX,
+    minWidth,
+    maxWidth,
+    DEFAULT_MIN_WIDTH,
+  ]);
 
   return (
     <>
-      <Resizable
-          minConstraints={[minWidth ?? DEFAULT_MIN_WIDTH, Infinity]}
-          maxConstraints={[maxWidth ?? 600, Infinity]}
-          width={effectiveSidebarWidthPX}
-          axis='x'
-          // Grid means we store nice round values and also debounce the event
-          draggableOpts={{ grid: [50, 50] }}
-          resizeHandles={onResize
-            ? resizeSensorPosition === 'right'
-              ? ['se']
-              : ['sw']
-            : []}
-          handle={onResize && resizeSensorPosition
-            ? <div
-                className={`
-                  react-resizable-handle
-                  react-resizable-handle-${resizeSensorPosition === 'right' ? 'se' : 'sw'}
-                `}
-                style={{ zIndex: 20 }}
-              />
-            : undefined}
-          onResize={onResize && resizeSensorPosition
-            ? (_, { size }) => setResizedWidthPX(size.width)
-            : undefined}>
-        <div css={css`
-            width: ${effectiveSidebarWidthPX}px; position: relative;
-            & > :first-child { position: absolute; inset: 0; }
-          `}>
-          {sidebarEls[selectedSidebarID]}
-        </div>
-      </Resizable>
-      {sidebarIDs.length > 1
-        ? <ButtonGroup vertical className={className}>
-            {sidebarIDs.map(sid => {
-              const Icon = config[sid].icon;
-              return <SidebarButton
-                key={sid}
-                icon={<Icon />}
-                active={selectedSidebarID === sid}
-                onClick={onSelectSidebar ? () => onSelectSidebar(sid) : undefined}
-                disabled={!onSelectSidebar}
-              />
-            })}
-          </ButtonGroup>
-        : null}
+      {currentSidebar}
+      {buttons}
     </>
   );
 };
