@@ -129,6 +129,7 @@ function ({
     sidebarIDs.toString(),
     sidebarWidth,
     onSidebarResize,
+    sidebarPosition,
     JSON.stringify(normalizeObject(sidebarConfig)),
   ]);
 
@@ -166,7 +167,7 @@ function ({
         ((prev, curr) => prev.set(curr[0], curr[1])),
         new Map() as Map<string, JSX.Element>,
       );
-  }, [dispatch, tabPanes, state.focusedTabIdx, focusedTabRef.current]);
+  }, [state.focusedTabIdx, tabPanes, dispatch, focusedTabRef.current]);
 
   const homeTab = useMemo(() => (
     <Tab
@@ -180,7 +181,7 @@ function ({
       }
       panel={newTabPrompt}
     />
-  ), [state.focusedTabIdx === SPECIAL_TAB_IDX.new]);
+  ), [state.focusedTabIdx === SPECIAL_TAB_IDX.new, newTabPrompt]);
 
   const handleSelectedTabChange = useCallback((idx: number, oldIdx: number) => dispatch({
     type: 'focus-tab',
