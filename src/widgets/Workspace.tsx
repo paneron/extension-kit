@@ -4,7 +4,7 @@
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
-import { Classes, Colors, TagProps, Tag } from '@blueprintjs/core';
+import { Classes, Colors, type TagProps, Tag } from '@blueprintjs/core';
 import Navbar, { type NavbarProps }from './Navbar';
 
 
