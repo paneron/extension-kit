@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { INITIAL_GLOBAL_SETTINGS } from './settings';
 import type {
   DatasetContext as DatasetContextSpec,
@@ -106,16 +106,21 @@ React.FC<DatasetContextSpec> {
   // TODO: Check again whether `withDatasetContext()` helper is needed.
   // Why can’t we wrap the entire view in DatasetContext.Provider
   // in Paneron and gain access to it normally?
-  return (props: DatasetContextSpec) => {
+
+  return memo(function extensionView(props: DatasetContextSpec) {
     const settings = props.useGlobalSettings();
     return (
       <DatasetContext.Provider value={props}>
-        <GlobalSettingsContext.Provider value={{ settings: settings.value.settings, refresh: settings.refresh }}>
+        <GlobalSettingsContext.Provider
+          value={useMemo(
+            (() => ({ settings: settings.value.settings, refresh: settings.refresh }
+          )), [settings])}
+        >
           <Component />
         </GlobalSettingsContext.Provider>
       </DatasetContext.Provider>
     );
-  };
+  });
 }
 
 
