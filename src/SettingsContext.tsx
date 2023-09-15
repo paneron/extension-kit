@@ -1,5 +1,5 @@
 import React from 'react';
-import { GlobalSettings, INITIAL_GLOBAL_SETTINGS } from './settings';
+import { type GlobalSettings, INITIAL_GLOBAL_SETTINGS } from './settings';
 
 
 interface ContextSpec {
