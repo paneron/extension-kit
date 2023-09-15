@@ -4,9 +4,9 @@
 import { debounce } from 'throttle-debounce';
 import { jsx, css } from '@emotion/react';
 import React, { ComponentType, useEffect, useRef, useCallback } from 'react';
-import { FixedSizeList as List, ListChildComponentProps, areEqual } from 'react-window';
+import { FixedSizeList as List, type ListChildComponentProps, areEqual } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Colors, Icon, IconProps } from '@blueprintjs/core';
+import { Colors, Icon, type IconProps } from '@blueprintjs/core';
 
 
 const COMPACT = false;

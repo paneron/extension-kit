@@ -3,9 +3,9 @@
 
 import React, { useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { jsx, css } from '@emotion/react';
-import { Classes, IconProps } from '@blueprintjs/core';
+import { Classes, type IconProps } from '@blueprintjs/core';
 
-import makeList, { ItemProps, LabelledListIcon, ListData } from './List';
+import makeList, { type ItemProps, LabelledListIcon, type ListData } from './List';
 import { DatasetContext } from '../context';
 
 
