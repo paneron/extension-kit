@@ -1,14 +1,14 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext } from 'react';
+import React, { memo, useContext } from 'react';
 import { jsx } from '@emotion/react';
 import { NonIdealState } from '@blueprintjs/core';
 import ErrorBoundary from '../ErrorBoundary';
 import { TabbedWorkspaceContext } from './context';
 
 
-export const DetailTab: React.FC<{ uri: string }> = function ({ uri }) {
+export const DetailTab: React.FC<{ uri: string }> = memo(function ({ uri }) {
   const { protocolConfiguration } = useContext(TabbedWorkspaceContext);
   const [proto, _path] = uri.split(':');
   const protoConf = protocolConfiguration[proto];
@@ -18,10 +18,10 @@ export const DetailTab: React.FC<{ uri: string }> = function ({ uri }) {
   } else {
     return <NonIdealState icon="heart-broken" description={`Unknown protocol ${proto}`} />;
   }
-};
+});
 
 
-export const DetailTabTitle: React.FC<{ uri: string }> = function ({ uri }) {
+export const DetailTabTitle: React.FC<{ uri: string }> = memo(function ({ uri }) {
   const { protocolConfiguration } = useContext(TabbedWorkspaceContext);
   const [proto, _path] = uri.split(':');
   const protoConf = protocolConfiguration[proto];
@@ -31,4 +31,4 @@ export const DetailTabTitle: React.FC<{ uri: string }> = function ({ uri }) {
   } else {
     return <>{uri}</>;
   }
-};
+});

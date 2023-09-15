@@ -2,7 +2,7 @@
 /** @jsxFrag React.Fragment */
 
 import { jsx, css } from '@emotion/react';
-import React from 'react';
+import React, { memo } from 'react';
 import { Button, Classes, Colors } from '@blueprintjs/core';
 import BlockStateButtonGroup from './BlockStateButtonGroup';
 
@@ -28,7 +28,7 @@ interface SidebarBlockProps {
 
 
 const SidebarBlock: React.FC<SidebarBlockProps> =
-function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }) {
+memo(function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }) {
   return (
     <div css={css`
           display: flex; flex-flow: column nowrap; background: ${Colors.LIGHT_GRAY2};
@@ -107,7 +107,7 @@ function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }
         : null}
     </div>
   );
-}
+});
 
 
 export default SidebarBlock;

@@ -3,7 +3,7 @@
 
 import { Button, Classes, Colors } from '@blueprintjs/core';
 import { jsx, css } from '@emotion/react';
-import React, { useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import type { PersistentStateReducerHook } from '../../usePersistentStateReducer';
 import SidebarBlock, { type SidebarBlockConfig } from './Block';
 import BlockStateButtonGroup from './BlockStateButtonGroup';
@@ -32,7 +32,7 @@ function makeSidebar(
   persistentReducer: PersistentStateReducerHook<State, Action>,
 ) {
   const Sidebar: React.FC<SidebarProps> =
-  function ({ title, stateKey, blocks, representsSelection, className }) {
+  memo(function ({ title, stateKey, blocks, representsSelection, className }) {
     const withOtherBlocksCollapsed = useCallback((blockKey: string) => {
       return blocks.
         map(b => ({ [b.key]: b.nonCollapsible !== true && b.key !== blockKey ? false : true })).
@@ -181,7 +181,7 @@ function makeSidebar(
         </div>
       </div>
     );
-  }
+  })
 
   return Sidebar;
 }

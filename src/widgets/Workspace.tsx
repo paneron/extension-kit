@@ -3,7 +3,7 @@
 
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { memo } from 'react';
 import { Classes, Colors, type TagProps, Tag } from '@blueprintjs/core';
 import Navbar, { type NavbarProps }from './Navbar';
 
@@ -37,7 +37,7 @@ export interface WorkspaceProps {
   className?: string
   style?: React.CSSProperties
 }
-const Workspace: React.FC<WorkspaceProps> = function ({
+const Workspace: React.FC<WorkspaceProps> = memo(function ({
   navbarProps,
   globalMode,
   toolbar,
@@ -134,7 +134,7 @@ const Workspace: React.FC<WorkspaceProps> = function ({
         : null}
     </div>
   );
-}
+})
 
 const Bar = styled(Tag)`
   border-radius: 0;

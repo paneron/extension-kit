@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useState, useContext, useMemo, useEffect } from 'react';
+import React, { memo, useState, useContext, useMemo, useEffect } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Resizable } from 'react-resizable';
 import { Button, ButtonGroup, ButtonProps } from '@blueprintjs/core';
@@ -42,7 +42,7 @@ interface SuperSidebarProps<SidebarID extends string> {
   className?: string
 }
 const SuperSidebar: React.FC<SuperSidebarProps<any>> =
-function ({
+memo(function ({
   config, resizeSensorPosition, sidebarIDs, selectedSidebarID,
   onSelectSidebar,
   width, maxWidth, minWidth, onResize,
@@ -148,7 +148,7 @@ function ({
       {buttons}
     </>
   );
-};
+});
 
 export default SuperSidebar;
 
@@ -156,6 +156,6 @@ const StyledSidebarButton = styled(Button)`
   border-radius: 0 !important;
 `;
 
-const SidebarButton: React.FC<ButtonProps> = function (props) {
+const SidebarButton: React.FC<ButtonProps> = memo(function (props) {
   return <StyledSidebarButton minimal large {...props} />;
-};
+});

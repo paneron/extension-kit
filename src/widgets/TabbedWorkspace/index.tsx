@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext, useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import React, { memo, useContext, useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -57,7 +57,7 @@ export interface TabbedWorkspaceProps<SidebarID extends string> {
   className?: string
 }
 const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
-function ({
+memo(function ({
   sidebarConfig,
   sidebarIDs,
   newTabPrompt,
@@ -220,7 +220,7 @@ function ({
       </Tabs>
     </Workspace>
   );
-};
+});
 
 
 const Tabs = styled(BaseTabs)`
