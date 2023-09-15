@@ -2,7 +2,7 @@
 /** @jsxFrag React.Fragment */
 
 import { jsx, css } from '@emotion/react';
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { memo, useMemo, useCallback, useState } from 'react';
 import { Toaster, Spinner, SpinnerSize, ProgressBar } from '@blueprintjs/core';
 
 import Context, { type ContextSpec } from './context';
@@ -42,7 +42,7 @@ function notify(opKey: string, blocking: boolean) {
  * Handles singleton, app-global operation queue context.
  */
 const OperationQueueContextProvider: React.FC<Record<never, never>> =
-function ({ children }) {
+memo(function ({ children }) {
   const [_lockingOperationKey, setLockingOperationKey] = useState<string | null>(null);
 
   const isBusy = _lockingOperationKey !== null && _lockingOperationKey !== undefined;
@@ -131,7 +131,7 @@ function ({ children }) {
       {children}
     </Context.Provider>
   );
-}
+});
 
 
 export default OperationQueueContextProvider;
