@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Colors, Icon, type InputGroupProps2, InputGroup, UL, HTMLSelect, type HTMLSelectProps, Intent } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/popover2';
@@ -17,7 +17,7 @@ interface PropertyViewProps {
   className?: string 
 }
 const PropertyView: React.FC<PropertyViewProps> =
-function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, children }) {
+memo(function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, children }) {
   return (
     <div
         className={className}
@@ -67,7 +67,7 @@ function ({ label, title, tooltip, tooltipIntent, tooltipClassName, className, c
       </div>
     </div>
   );
-}
+});
 
 
 interface TextInputProps {
@@ -81,9 +81,13 @@ interface TextInputProps {
   style?: React.CSSProperties
 }
 export const TextInput: React.FC<TextInputProps> =
-function ({ value, placeholder, onChange, validationErrors, inputGroupProps, className, style }) {
+memo(function ({ value, placeholder, onChange, validationErrors, inputGroupProps, className, style }) {
   const errs = validationErrors ?? [];
   const invalid = errs.length > 0;
+  const handleChange = useCallback(
+    ((evt: React.FormEvent<HTMLInputElement>) => onChange?.(evt.currentTarget.value)),
+    [onChange]);
+
   return (
     <InputGroup
       fill
@@ -121,16 +125,16 @@ function ({ value, placeholder, onChange, validationErrors, inputGroupProps, cla
           </Tooltip2>
         : undefined}
       {...inputGroupProps}
-      onChange={onChange ? (evt: React.FormEvent<HTMLInputElement>) => onChange!(evt.currentTarget.value) : undefined}
+      onChange={onChange ? handleChange : undefined}
       className={className}
       style={style}
     />
   )
-}
+});
 
 interface SelectProps extends HTMLSelectProps {}
 export const Select: React.FC<SelectProps> =
-function ({ value, options, onChange, large, minimal, fill }) {
+memo(function ({ value, options, onChange, large, minimal, fill }) {
   return (
     <HTMLSelect
       options={options}
@@ -152,7 +156,7 @@ function ({ value, options, onChange, large, minimal, fill }) {
       `}
     />
   )
-}
+});
 
 
 export default PropertyView;
