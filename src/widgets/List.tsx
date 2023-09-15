@@ -50,7 +50,7 @@ React.FC<ListProps<P>> {
   }
 
   const Item: ComponentType<ListChildComponentProps> =
-  React.memo(function ({ index, data, style }) {
+  memo(function ({ index, data, style }) {
     const _data: ListData<P> = data;
     const ref = _data?.items?.[index];
     if (ref) {
