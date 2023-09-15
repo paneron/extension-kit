@@ -3,7 +3,7 @@
 
 import { debounce } from 'throttle-debounce';
 import { jsx, css } from '@emotion/react';
-import React, { ComponentType, useEffect, useRef, useCallback } from 'react';
+import React, { type ComponentType, memo, useEffect, useRef, useCallback, useMemo } from 'react';
 import { FixedSizeList as List, type ListChildComponentProps, areEqual } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Colors, Icon, type IconProps } from '@blueprintjs/core';
@@ -99,10 +99,10 @@ React.FC<ListProps<P>> {
   }
   const maybeScrollToItemDebounced = debounce(100, maybeScrollToItem);
 
-  return ({ getListData, className }) => {
+  return memo(function ItemList({ getListData, className }) {
     const ref = useRef<List>(null);
 
-    const listData = getListData();
+    const listData = useMemo(getListData, [getListData]);
     listDataCache = listData;
 
     useEffect(() => {
@@ -142,7 +142,7 @@ React.FC<ListProps<P>> {
         }, [listData, ref.current])}
       </AutoSizer>
     );
-  };
+  });
 }
 
 
@@ -159,7 +159,7 @@ interface LabelledListIconProps {
 }
 
 export const LabelledListIcon: React.FC<LabelledListIconProps> =
-function ({ isSelected, onSelect, onOpen, contentClassName, entityType, className, children }) {
+memo(function ({ isSelected, onSelect, onOpen, contentClassName, entityType, className, children }) {
   return (
     <div
         onClick={onSelect}
@@ -215,7 +215,7 @@ function ({ isSelected, onSelect, onOpen, contentClassName, entityType, classNam
       </div>
     </div>
   );
-};
+});
 
 
 export default makeList;
