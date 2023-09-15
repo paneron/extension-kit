@@ -1,9 +1,9 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { ClassNames, jsx, css } from '@emotion/react';
-import { Popover2InteractionKind, Tooltip2, Tooltip2Props } from '@blueprintjs/popover2';
+import { Popover2InteractionKind, Tooltip2, type Tooltip2Props } from '@blueprintjs/popover2';
 import { Icon, IconName, IconSize, Intent } from '@blueprintjs/core';
 
 
@@ -24,7 +24,27 @@ export interface HelpTooltipProps {
 
 /** Info icon with a customized BP3 tooltip. */
 const HelpTooltip: React.VoidFunctionComponent<HelpTooltipProps> =
-function ({ content: tooltip, icon, intent, iconSize, tooltipProps }) {
+memo(function ({ content: tooltip, icon, intent, iconSize, tooltipProps }) {
+  const handleRenderTarget = useCallback((({ ref, isOpen, ...targetProps }) => (
+    <span
+        {...targetProps}
+        css={css`
+          display: inline !important /* BP4 overrides it to block in a few niche scenarios. */;
+          padding: .15em;
+          margin: -.15em;
+          transition: opacity .2s linear;
+          ${isOpen ? 'opacity: 1;' : 'opacity: .3;'}
+        `}
+        ref={ref}>
+      <Icon
+        icon={icon ?? 'help'}
+        intent={intent}
+        css={css`margin-bottom: 1px;`}
+        size={iconSize ?? 12}
+      />
+    </span>
+  )), []);
+
   return (
     <ClassNames>
       {({ css: css2, cx }) => (
@@ -45,31 +65,13 @@ function ({ content: tooltip, icon, intent, iconSize, tooltipProps }) {
             css={css`
               cursor: help;
             `}
-            renderTarget={({ ref, isOpen, ...targetProps }) => (
-              <span
-                  {...targetProps}
-                  css={css`
-                    display: inline !important /* BP4 overrides it to block in a few niche scenarios. */;
-                    padding: .15em;
-                    margin: -.15em;
-                    transition: opacity .2s linear;
-                    ${isOpen ? 'opacity: 1;' : 'opacity: .3;'}
-                  `}
-                  ref={ref}>
-                <Icon
-                  icon={icon ?? 'help'}
-                  intent={intent}
-                  css={css`margin-bottom: 1px;`}
-                  size={iconSize ?? 12}
-                />
-              </span>
-            )}
+            renderTarget={handleRenderTarget}
             content={tooltip}>
         </Tooltip2>
       )}
     </ClassNames>
   );
-};
+});
 
 
 export default HelpTooltip;
