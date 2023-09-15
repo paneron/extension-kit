@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 
-import React, { useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import React, { memo, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Classes, type IconProps } from '@blueprintjs/core';
 
@@ -83,7 +83,7 @@ React.FC<SearchResultListProps> {
   const List = makeList<SearchResultListData>(IndexedListItem);
 
   const SearchResultList: React.FC<SearchResultListProps> =
-  function ({ queryExpression, selectedItemPath, onSelectItem, onOpenItem, keyExpression, className }) {
+  memo(function ({ queryExpression, selectedItemPath, onSelectItem, onOpenItem, keyExpression, className }) {
     const {
       useFilteredIndex, useIndexDescription, getFilteredIndexPosition, getObjectPathFromFilteredIndex,
     } = useContext(DatasetContext);
@@ -176,7 +176,7 @@ React.FC<SearchResultListProps> {
       className={className}
       getListData={getListData}
     />;
-  };
+  });
 
   return SearchResultList;
 }
