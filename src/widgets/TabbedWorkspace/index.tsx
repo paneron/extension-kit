@@ -143,7 +143,7 @@ memo(function ({
         ((prev, curr) => prev.set(curr[0], curr[1])),
         new Map() as Map<string, [JSX.Element, JSX.Element]>,
       );
-  }, [(state.detailTabURIs ?? []).slice().sort().join('')]);
+  }, [(state.detailTabURIs ?? []).slice().sort().toString()]);
 
   const tabTitles: Map<string, JSX.Element> = useMemo(() => {
     return (state.detailTabURIs ?? []).
