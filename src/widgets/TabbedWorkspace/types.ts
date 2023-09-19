@@ -4,7 +4,7 @@ import type { SidebarBlockConfig } from '../Sidebar/Block';
 
 // Detail view protocols
 
-export type URIDetailView = React.FC<{ uri: string }>;
+export type URIDetailView = React.VoidFunctionComponent<{ uri: string }>;
 
 export interface ProtocolConfig {
   main: URIDetailView
