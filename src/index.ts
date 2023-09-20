@@ -5,11 +5,6 @@ import type { MigrationInfo } from './types/migrations';
 import { withDatasetContext } from './context';
 
 
-function isView(val: unknown): val is React.FC {
-  return typeof val === 'function' &&  String(val).includes('react.jsx');
-}
-
-
 /**
  * The default export of Paneron extension’s extension.ts entry file
  * should be the result of calling this function.
@@ -25,9 +20,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
   };
 
   // Await dynamic import for compatibility with old API
-  const mainView = isView(options.mainView)
-    ? options.mainView
-    : (await (options as any).mainView()).default;
+  const mainView = options.mainView;
 
   //const objectSpecsWithCachedViews = (await Promise.all(objectSpecs.
   //  filter(spec => spec.views !== undefined).
