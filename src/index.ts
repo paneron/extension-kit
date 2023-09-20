@@ -1,5 +1,4 @@
 import semver from 'semver';
-import { memo } from 'react';
 import type { ExtensionMaker } from './types/extension-maker';
 import type { MigrationInfo } from './types/migrations';
 import { withDatasetContext } from './context';
@@ -27,7 +26,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
   //  map(async (spec) => ({ ...spec, _viewCache: (await spec.views!()).default }))));
 
   return {
-    mainView: withDatasetContext(memo(mainView)),
+    mainView: withDatasetContext(mainView),
 
     requiredHostAppVersionSpec: options.requiredHostAppVersion,
 
