@@ -68,3 +68,15 @@ export const makeExtension: ExtensionMaker = async (options) => {
     initialMigration: migration,
   };
 }
+
+
+import { DatasetContext } from './context';
+import HelpTooltip from './widgets/HelpTooltip';
+import ErrorBoundary from './widgets/ErrorBoundary';
+
+export default {
+  DatasetContext,
+  makeExtension,
+  HelpTooltip,
+  ErrorBoundary,
+};
