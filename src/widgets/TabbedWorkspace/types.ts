@@ -14,7 +14,7 @@ export interface ProtocolConfig {
    * Provides plain-text title.
    *
    * @deprecated do not use.
-   * For window titles, use <Helmet> in relevant component.
+   * For window titles, put <Helmet> within relevant tab component.
    */
   plainTitle?: (uri: string) => Promise<string>
 }
