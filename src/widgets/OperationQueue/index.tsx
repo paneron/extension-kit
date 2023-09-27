@@ -59,14 +59,17 @@ memo(function ({ children }) {
     if (isBlocking) {
       setLockingOperationKey(oldKey => {
         if (oldKey === null) {
+          _opKeys.set(opKey, (_opKeys.get(opKey) ?? 0) + 1);
+          notify(opKey, isBlocking);
           return opKey;
         } else {
-          throw new Error("Failed to queue operation: queue is busy");
+          return oldKey;
         }
       });
+    } else {
+      _opKeys.set(opKey, (_opKeys.get(opKey) ?? 0) + 1);
+      notify(opKey, isBlocking);
     }
-    _opKeys.set(opKey, (_opKeys.get(opKey) ?? 0) + 1);
-    notify(opKey, isBlocking);
   }, []);
 
   const performOperation: ContextSpec["performOperation"] =
