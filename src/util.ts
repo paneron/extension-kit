@@ -42,9 +42,14 @@ export function toJSONPreservingUndefined(data: any): string {
 /**
  * NOTE: This is NOT a very fast implementation yet. Try to avoid.
  */
-export function JSONStringifyNormalized(val: any) {
+export function toJSONNormalized(val: any) {
   return toJSONPreservingUndefined(normalizeVal(val));
 }
+
+/**
+ * @deprecated use `toJSONNormalized()` instead.
+ */
+export const JSONStringifyNormalized = toJSONNormalized;
 
 export function objectsHaveSameShape(l: any, r: any): boolean {
   return JSONStringifyNormalized(l) === JSONStringifyNormalized(r);
