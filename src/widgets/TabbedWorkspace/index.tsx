@@ -254,7 +254,10 @@ const Tabs = styled(BaseTabs)`
       background: transparent;
     }
   }
+
   .bp4-tab-indicator { display: none; }
+
+  /* Tab header. */
   .bp4-tab {
     line-height: unset;
     position: unset;
@@ -263,6 +266,8 @@ const Tabs = styled(BaseTabs)`
     text-overflow: ellipsis;
     max-width: 400px;
   }
+
+  /* Tab contents. */
   .bp4-tab-panel {
     flex: 1;
     margin: 0;
