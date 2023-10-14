@@ -29,12 +29,12 @@ export const ErrorState: React.FC<ErrorStateProps> = function ({ technicalDetail
         </Callout>
         {technicalDetails || error
           ? <Callout style={{ textAlign: 'left', transform: 'scale(0.9)' }} title="Technical details">
-            {technicalDetails}
-            {error
-              ? <pre style={{ overflow: 'auto', paddingBottom: '1em' }}>
-                {error || 'error information is unavailable'}
-              </pre>
-              : null}
+              {technicalDetails}
+              {error
+                ? <pre style={{ overflow: 'auto', paddingBottom: '1em' }}>
+                    {error || 'error information is unavailable'}
+                  </pre>
+                : null}
           </Callout>
           : null}
       </>} />
