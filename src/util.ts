@@ -31,19 +31,23 @@ export function normalizeObject<T extends Record<string, any>>(obj: T): T {
   return Object.fromEntries(Object.entries(obj).sort()) as T;
 }
 
-export function toJSONPreservingUndefined(data: any): string {
+export function toJSONPreservingUndefined(
+  data: any,
+  indentation?: number,
+): string {
   return (JSON.
     stringify(
       data || {},
-      (_, v) => (v === undefined) ? '__undefined' : v).
+      (_, v) => (v === undefined) ? '__undefined' : v,
+      indentation).
     replace(/\"__undefined\"/g, 'undefined'));
 }
 
 /**
  * NOTE: This is NOT a very fast implementation yet. Try to avoid.
  */
-export function toJSONNormalized(val: any) {
-  return toJSONPreservingUndefined(normalizeVal(val));
+export function toJSONNormalized(val: any, indentation?: number) {
+  return toJSONPreservingUndefined(normalizeVal(val), indentation);
 }
 
 /**
