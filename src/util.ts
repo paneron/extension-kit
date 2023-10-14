@@ -63,7 +63,7 @@ export function objectsHaveSameShape(l: any, r: any): boolean {
  * Does the equivalent of `normalizeObject` on given object
  * as well as any objects encountered within.
  */
-function normalizeObjectRecursively
+export function normalizeObjectRecursively
 <T extends Record<string, any>>
 (obj: T, _seen: null | WeakSet<any> = null): T {
   const seen: WeakSet<any> = _seen ?? new WeakSet();
