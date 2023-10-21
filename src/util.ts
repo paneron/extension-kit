@@ -96,7 +96,10 @@ function normalizeVal<T>(val: T, _seen: null | WeakSet<any> = null): T {
   const seen: WeakSet<any> = _seen ?? new WeakSet();
 
   if (Array.isArray(val)) {
-    return val.map(v => isObject(v) ? normalizeObjectRecursively(v, seen) : v) as unknown as T;
+    return val.map(v => isObject(v)
+      ? normalizeObjectRecursively(v, seen)
+      : v
+    ) as unknown as T;
   } else if (isObject(val)) {
     return normalizeObjectRecursively(val, seen);
   } else {
