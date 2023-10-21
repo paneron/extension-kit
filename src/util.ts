@@ -107,8 +107,18 @@ function normalizeVal<T>(val: T, _seen: null | WeakSet<any> = null): T {
   }
 }
 
-function isObject(val: unknown): val is Record<string, any> {
-  return val !== null && typeof val === 'object' && !Array.isArray(val);
+/**
+ * Returns true if given value is a regular object (‘hash’),
+ * excluding “special” objects like dates etc.
+ */
+export function isObject(val: unknown): val is Record<string, any> {
+  return (
+    val !== null &&
+    typeof val === 'object' &&
+    !Array.isArray(val) &&
+    val?.constructor === Object &&
+    val?.toString?.() === '[object Object]'
+  );
 }
 
 //function isArray(val: unknown): val is unknown[] {
