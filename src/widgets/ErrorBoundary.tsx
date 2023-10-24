@@ -6,8 +6,8 @@ import { jsx } from '@emotion/react';
 import ErrorState from './ErrorState';
 
 
-class ErrorBoundary extends React.Component<{ viewName?: string; }, { error?: string; }> {
-  constructor(props: { viewName: string; }) {
+class ErrorBoundary extends React.Component<{ viewName?: string; inline?: boolean; }, { error?: string; }> {
+  constructor(props: { viewName?: string; inline?: boolean }) {
     super(props);
     this.state = { error: undefined };
   }
@@ -17,7 +17,11 @@ class ErrorBoundary extends React.Component<{ viewName?: string; }, { error?: st
   }
   render() {
     if (this.state.error !== undefined) {
-      return <ErrorState viewName={this.props.viewName} technicalDetails={this.state.error} />;
+      return <ErrorState
+        inline={this.props.inline}
+        viewName={this.props.viewName}
+        technicalDetails={this.state.error}
+      />;
     }
     return this.props.children;
   }
@@ -25,4 +29,3 @@ class ErrorBoundary extends React.Component<{ viewName?: string; }, { error?: st
 
 
 export default ErrorBoundary;
-
