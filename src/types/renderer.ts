@@ -105,17 +105,19 @@ export interface DatasetContext extends OperationContext {
    * The final result is an object where each key is one of given chain IDs,
    * and the value corresponding to the output of map-reduce chain
    * (if `reduceFunc` is not provided, the corresponding value is always a list).
+   * `predicateFunc` is required.
+   *
    */
   useMapReducedData:
     <C extends Record<string, any>>
-    (opts: { chains: Hooks.Data.MapReduceChains }) => ValueHook<C>
+    (opts: { chains: Record<string, Omit<Hooks.Data.MapReduceChain, 'predicateFunc'> & { predicateFunc: string }> }) => ValueHook<C>
 
   /**
    * As useMapReducedData, but in the shape of a regular async function.
    */
   getMapReducedData:
     <C extends Record<string, any>>
-    (opts: { chains: Hooks.Data.MapReduceChains }) => Promise<C>
+    (opts: { chains: Record<string, Hooks.Data.MapReduceChain> }) => Promise<C>
 
   // TODO: Document state reducer hooks available to extensions.
 
@@ -574,28 +576,35 @@ export namespace Hooks {
       args: any[],
     ) => void
 
-    export type MapReduceChains =
-      Record<string, {
-        /**
-         * Definition of the map function as a string.
-         *
-         * Available arguments:
-         * `key` (string, object path),
-         * `value` (anything, deserialized object data),
-         * `emit` (call instead of return, possibly multiple times).
-         */
-        mapFunc: string,
-        /**
-         * Definition of the reduce function as a string,
-         * complete with return statement.
-         * Doesn’t have to be provided.
-         *
-         * Available arguments:
-         * `accumulator` (data reduced so far),
-         * `value` (next value emitted by the mapper).
-         */
-        reduceFunc?: string,
-      }>
+    export interface MapReduceChain {
+      /*
+       * `predicateFunc` is supported in order to detect changes to matching objects
+       * and update response. `predicateFunc` should be as lightweight as possible.
+       */
+      predicateFunc?: string
+
+      /**
+       * Definition of the map function as a string.
+       *
+       * Available arguments:
+       * `key` (string, object path),
+       * `value` (anything, deserialized object data),
+       * `emit` (call instead of return, possibly multiple times).
+       */
+      mapFunc: string
+      /**
+       * Definition of the reduce function as a string,
+       * complete with return statement.
+       * Doesn’t have to be provided.
+       *
+       * Available arguments:
+       * `accumulator` (data reduced so far),
+       * `value` (next value emitted by the mapper).
+       */
+      reduceFunc?: string,
+    };
+
+    export type MapReduceChains = Record<string, MapReduceChain>;
 
   }
 
