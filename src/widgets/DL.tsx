@@ -25,7 +25,10 @@ const DL = styled.dl`
 /**
  * Definition list where definitions can be very long
  * and therefore scrollable.
+ *
  * Same rule as DL (DT+DD combos must have wrappers).
+ *
+ * DD with large content can have overflow-y: auto.
  */
 export const DLFlex = styled(DL)`
   overflow: hidden;
@@ -34,10 +37,6 @@ export const DLFlex = styled(DL)`
   > * {
     /** NOTE: CONSTRAINT: Same as surrounding line height. */
     min-height: 1.28em;
-    overflow: hidden;
-    > dd {
-      overflow-y: auto;
-    }
   }
 `;
 
