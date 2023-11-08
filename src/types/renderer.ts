@@ -9,7 +9,7 @@ export interface FileFilter {
 }
 
 import type { ObjectDataset, ObjectChangeset } from './objects';
-import type { CommitOutcome, ChangeStatus } from './changes';
+import type { CommitOutcome } from './changes';
 import type { IndexStatus } from './indexes';
 import type { BaseAction, PersistentStateReducerHook } from '../usePersistentStateReducer';
 import type { TimeTravelingPersistentStateReducerHook } from '../useTimeTravelingPersistentStateReducer';
@@ -569,12 +569,12 @@ export namespace Hooks {
       commitMessage: string
     }) => Promise<CommitOutcome>
 
-    export type ListenToObjectChanges = (
-      eventCallback:
-        (evt: { objects?: { [objectPath: string]: ChangeStatus | true } }) =>
-          Promise<void>,
-      args: any[],
-    ) => void
+    // export type ListenToObjectChanges = (
+    //   eventCallback:
+    //     (evt: { objects?: { [objectPath: string]: ChangeStatus | true } }) =>
+    //       Promise<void>,
+    //   args: any[],
+    // ) => void
 
     export interface MapReduceChain {
       /*
