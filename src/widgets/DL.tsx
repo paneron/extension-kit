@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 /**
  * Definition list.
  * Nest wrappers (like divs) with dt and dd within.
+ * NOTE: Wrappers are required. Only one DD per DT is allowed.
  */
 const DL = styled.dl`
   margin: 0;
