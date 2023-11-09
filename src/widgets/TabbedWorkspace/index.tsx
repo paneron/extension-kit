@@ -105,28 +105,33 @@ memo(function ({
   }, [state.focusedTabIdx]);
 
   const sidebar = useMemo(() => {
-    return <SuperSidebar
-      config={sidebarConfig}
-      sidebarIDs={sidebarIDs}
-      width={sidebarWidth}
-      onResize={onSidebarResize}
-      resizeSensorPosition={
-        //Resize sensor is on the side where main content is,
-        //i.e. opposite of where sidebar is relative to main content.
-        sidebarPosition === 'left' ? 'right' : 'left'}
-      minWidth={250}
-      maxWidth={600}
-      selectedSidebarID={sidebarIDs.length > 1
-        ? state.selectedSidebarID
-        : sidebarIDs[0]}
-      onSelectSidebar={sidebarIDs.length > 1
-        ? id => dispatch({ type: 'focus-sidebar', payload: { id } })
-        : undefined}
-    />
+    if (sidebarIDs.length > 0) {
+      return <SuperSidebar
+        config={sidebarConfig}
+        sidebarIDs={sidebarIDs}
+        width={sidebarWidth}
+        onResize={onSidebarResize}
+        resizeSensorPosition={
+          //Resize sensor is on the side where main content is,
+          //i.e. opposite of where sidebar is relative to main content.
+          sidebarPosition === 'left' ? 'right' : 'left'}
+        minWidth={250}
+        maxWidth={600}
+        selectedSidebarID={sidebarIDs.length > 1
+          ? state.selectedSidebarID
+          : sidebarIDs[0]}
+        onSelectSidebar={sidebarIDs.length > 1
+          ? id => dispatch({ type: 'focus-sidebar', payload: { id } })
+          : undefined}
+      />
+    } else {
+      return undefined;
+    }
   }, [
-    dispatch,
-    state.selectedSidebarID,
+    sidebarIDs.length > 0,
     sidebarIDs.toString(),
+    state.selectedSidebarID,
+    dispatch,
     sidebarWidth,
     onSidebarResize,
     sidebarPosition,
