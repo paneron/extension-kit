@@ -209,7 +209,14 @@ memo(function ({ isSelected, onSelect, onOpen, contentClassName, entityType, cla
           </div>
         : null}
       <div
-          css={css`z-index: 2; flex: 1; font-size: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`}
+          css={css`
+            z-index: 2;
+            flex: 1;
+            font-size: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          `}
           className={contentClassName}>
         {children}
       </div>
