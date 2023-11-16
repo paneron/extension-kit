@@ -216,6 +216,7 @@ memo(function ({ isSelected, onSelect, onOpen, contentClassName, entityType, cla
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding: 0 5px;
           `}
           className={contentClassName}>
         {children}
