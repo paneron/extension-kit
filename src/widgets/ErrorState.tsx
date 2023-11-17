@@ -31,7 +31,7 @@ export const ErrorState: React.FC<ErrorStateProps> = function ({
         description={<>
           <Callout style={{ textAlign: 'left' }} intent="primary">
             <p>
-              We encountered an error in {viewName || 'a'} view.
+              We encountered an error in {viewName || 'a'}.
               <br />
               In some cases reloading or reopening Paneron should address this,
               but please let us know if this repeats.
