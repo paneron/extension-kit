@@ -9,7 +9,7 @@ import type { TabbedWorkspaceContext as TabbedWorkspaceContextSpec, Action, Prot
 
 export const SPECIAL_TAB_IDX: Record<'new', number> = {
   new: -2,
-};
+} as const;
 
 
 export const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<any, any>>({
