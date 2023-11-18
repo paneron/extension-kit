@@ -37,7 +37,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
     detailTabURIs: [],
     focusedTabIdx: SPECIAL_TAB_IDX.new,
     selectedSidebarID: initialSidebarID,
-  };
+  } as const;
 
   function reducer(prevState: State<SidebarID>, action: Action<SidebarID>): State<SidebarID> {
     switch (action.type) {

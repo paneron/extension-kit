@@ -65,7 +65,7 @@ export interface State<SidebarID extends string> {
    * Tabs, according to the order
    * (would be left-to-right in LTR, currently the only direction supported).
    */
-  detailTabURIs: string[]
+  detailTabURIs: Readonly<string[]>
 
   /** Selected tab index in `detailTabURIs`. */
   focusedTabIdx: number
