@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useMemo, useContext, useEffect } from 'react';
 import { jsx } from '@emotion/react';
 import { DatasetContext } from '../../context';
-import { PersistentStateReducerHook } from '../../usePersistentStateReducer';
+import type { PersistentStateReducerHook } from '../../usePersistentStateReducer';
 import type { TabbedWorkspaceContext as TabbedWorkspaceContextSpec, Action, ProtocolRegistry, State } from './types';
 
 
