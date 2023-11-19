@@ -73,10 +73,11 @@ export const makeExtension: ExtensionMaker = async (options) => {
 import { DatasetContext } from './context';
 import HelpTooltip from './widgets/HelpTooltip';
 import ErrorBoundary from './widgets/ErrorBoundary';
+import { isObject } from './util';
 
-export default {
+export {
   DatasetContext,
-  makeExtension,
   HelpTooltip,
   ErrorBoundary,
+  isObject,
 };
