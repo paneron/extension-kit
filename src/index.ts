@@ -74,10 +74,12 @@ import { DatasetContext } from './context';
 import HelpTooltip from './widgets/HelpTooltip';
 import ErrorBoundary from './widgets/ErrorBoundary';
 import { isObject } from './util';
+import useDebounce from './useDebounce';
 
 export {
   DatasetContext,
   HelpTooltip,
   ErrorBoundary,
   isObject,
+  useDebounce,
 };
