@@ -183,12 +183,6 @@ function _doReset<S>(timeline: Timeline<S>) {
 export default useTimeTravelingPersistentStateReducer;
 
 
-export const initialHook: TimeTravelingPersistentStateReducerHook<any, any> = () => ({
-  timeline: { present: {}, future: [], past: [] },
-  state: {},
-  dispatch: () => ({}),
-  undo: () => void 0,
-  redo: () => void 0,
-  reset: () => void 0,
-  initialized: false,
-});
+export const initialHook: TimeTravelingPersistentStateReducerHook<any, any> =
+  (...args: Parameters<TimeTravelingPersistentStateReducerHook<any, any>>) =>
+    useTimeTravelingPersistentStateReducer(...args);
