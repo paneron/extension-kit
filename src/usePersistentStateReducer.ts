@@ -3,7 +3,7 @@
  * using provided functions.
  */
 
-import { useReducer, useEffect, useState } from 'react';
+import { useReducer, useEffect, useCallback, useState } from 'react';
 import type { Reducer, Dispatch } from 'react';
 
 
@@ -49,24 +49,6 @@ export type PersistentStateReducerHook<S, A extends BaseAction> =
   ) => [state: S, dispatch: Dispatch<A>, stateRecalled: boolean];
 
 
-/**
- * Creates a reducer that handles a special `loadedState` action,
- * relevant to persistent state reducer, in addition to any other
- * action handled by component-specific reducer function passed in.
- */
-function reducerFactory<S, A extends BaseAction>(
-  reducer: Reducer<S, A>,
-): Reducer<S, A | LoadStateAction<S>> {
-  return (prevState: S, action: A | LoadStateAction<S>) => {
-    switch (action.type) {
-      case LOAD_STATE_ACTION_TYPE:
-        return action.payload;
-      default:
-        return reducer(prevState, action as A);
-    }
-  }
-}
-
 
 /**
  * A reducer that persists each new state,
@@ -85,7 +67,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
 
   const debounceDelay = storageDebounceMS ?? DEFAULT_DEBOUNCE_DELAY;
 
-  const effectiveReducer = reducerFactory(reducer);
+  const effectiveReducer = useCallback(convertToPersistentReducer(reducer), [reducer]);
 
   const [initialized, setInitialized] = useState(false);
   const [state, dispatch] = initializer
@@ -138,3 +120,21 @@ export default usePersistentStateReducer;
 
 
 export const initialHook: PersistentStateReducerHook<any, any> = () => [{}, () => ({}), false];
+
+/**
+ * Creates a reducer that handles a special `loadedState` action,
+ * relevant to persistent state reducer, in addition to any other
+ * action handled by component-specific reducer function passed in.
+ */
+function convertToPersistentReducer<S, A extends BaseAction>(
+  reducer: Reducer<S, A>,
+): Reducer<S, A | LoadStateAction<S>> {
+  return (prevState: S, action: A | LoadStateAction<S>) => {
+    switch (action.type) {
+      case LOAD_STATE_ACTION_TYPE:
+        return action.payload;
+      default:
+        return reducer(prevState, action as A);
+    }
+  }
+}
