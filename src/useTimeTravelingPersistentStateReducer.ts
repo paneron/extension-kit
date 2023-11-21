@@ -42,6 +42,8 @@ type TimeTravelingPersistentStateReducerHookParams<S, A extends BaseAction> = [
   /** Persistent reducer hook iplementation to delegate to. */
   usePersistentReducer: PersistentStateReducerHook<Timeline<S>, A | TimeTravelAction>,
 
+  // These are duplicated from PersistentStateReducerHook
+
   /** Each component should specify a unique storage key. */
   storageKey: string,
 
