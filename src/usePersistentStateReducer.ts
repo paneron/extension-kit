@@ -57,6 +57,9 @@ export type PersistentStateReducerHook<S, A extends BaseAction> =
  * During the initial load, `initialized` is set to false.
  *
  * `storeState` is called on each change of state but debounced.
+ *
+ * NOTE: that state S cannot be an empty object,
+ * in such a case `initialState` will always be used.
  */
 function usePersistentStateReducer<S, A extends BaseAction>(
   storeState: (key: string, newState: S) => void,
@@ -78,14 +81,18 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       if (cancelled) { return; }
 
       let effectiveState: S | undefined;
-      if (loadedState && validator) {
-        if (validator(loadedState)) {
-          effectiveState = loadedState;
+      if (loadedState && Object.keys(loadedState).length > 0) {
+        if (validator) {
+          if (validator(loadedState)) {
+            effectiveState = loadedState;
+          } else {
+            effectiveState = initialState;
+          }
         } else {
-          effectiveState = initialState;
+          effectiveState = loadedState || initialState;
         }
       } else {
-        effectiveState = loadedState ?? initialState;
+        effectiveState = initialState;
       }
       dispatch({
         type: LOAD_STATE_ACTION_TYPE,
@@ -110,9 +117,12 @@ function usePersistentStateReducer<S, A extends BaseAction>(
     return () => void 0;
   }, [debounceDelay, storeState, storageKey, state]);
 
-  return [state, dispatch, initialized];
-}
+  const effectiveState = state && Object.keys(state).length > 0
+    ? state
+    : initialState;
 
+  return [effectiveState, dispatch, initialized];
+}
 
 export default usePersistentStateReducer;
 
