@@ -65,8 +65,6 @@ function usePersistentStateReducer<S, A extends BaseAction>(
 ): [state: S, dispatch: Dispatch<A>, initialized: boolean] {
   const [storageKey, storageDebounceMS, validator, reducer, initialState, initializer] = args;
 
-  const debounceDelay = storageDebounceMS ?? DEFAULT_DEBOUNCE_DELAY;
-
   const effectiveReducer = useCallback(convertToPersistentReducer(reducer), [reducer]);
 
   const [initialized, setInitialized] = useState(false);
@@ -102,6 +100,8 @@ function usePersistentStateReducer<S, A extends BaseAction>(
     }
   }, [dispatch, validator, loadState, initialState, storageKey]);
 
+
+  const debounceDelay = storageDebounceMS ?? DEFAULT_DEBOUNCE_DELAY;
   useEffect(() => {
     if (initialized === true) {
       let timeout = setTimeout(() => {
@@ -110,7 +110,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       return () => clearTimeout(timeout);
     }
     return () => void 0;
-  }, [storeState, storageKey, state]);
+  }, [debounceDelay, storeState, storageKey, state]);
 
   return [state, dispatch, initialized];
 }
