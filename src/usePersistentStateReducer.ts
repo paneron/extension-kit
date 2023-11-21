@@ -66,11 +66,9 @@ function usePersistentStateReducer<S, A extends BaseAction>(
   const [storageKey, storageDebounceMS, validator, reducer, initialState, initializer] = args;
 
   const effectiveReducer = useCallback(convertToPersistentReducer(reducer), [reducer]);
+  const [state, dispatch] = useReducer(effectiveReducer, initialState, initializer ?? defaultInitializer)
 
   const [initialized, setInitialized] = useState(false);
-  const [state, dispatch] = initializer
-    ? useReducer(effectiveReducer, initialState, initializer)
-    : useReducer(effectiveReducer, initialState);
 
   useEffect(() => {
     setInitialized(false);
@@ -137,6 +135,8 @@ function convertToPersistentReducer<S, A extends BaseAction>(
     }
   }
 }
+
+function defaultInitializer<T>(s: T) { return s }
 
 async function noOpLoadState() { return {} }
 
