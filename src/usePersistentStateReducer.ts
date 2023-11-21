@@ -119,7 +119,6 @@ function usePersistentStateReducer<S, A extends BaseAction>(
 export default usePersistentStateReducer;
 
 
-export const initialHook: PersistentStateReducerHook<any, any> = () => [{}, () => ({}), false];
 
 /**
  * Creates a reducer that handles a special `loadedState` action,
@@ -138,3 +137,9 @@ function convertToPersistentReducer<S, A extends BaseAction>(
     }
   }
 }
+
+async function noOpLoadState() { return {} }
+
+export const initialHook: PersistentStateReducerHook<any, any> =
+  (...args: Parameters<PersistentStateReducerHook<any, any>>) =>
+    usePersistentStateReducer(() => void 0, noOpLoadState, ...args);
