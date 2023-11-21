@@ -86,6 +86,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
           if (validator(loadedState)) {
             effectiveState = loadedState;
           } else {
+            console.error("Failed to validate loaded state for key", storageKey, loadedState, initialState);
             effectiveState = initialState;
           }
         } else {
