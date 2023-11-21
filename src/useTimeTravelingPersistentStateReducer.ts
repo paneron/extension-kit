@@ -102,11 +102,11 @@ interface TimeTravelingPersistentStateReducerInterface<S, A extends BaseAction> 
 export function useTimeTravelingPersistentStateReducer<S, A extends BaseAction>(
   ...args: TimeTravelingPersistentStateReducerHookParams<S, A>
 ): TimeTravelingPersistentStateReducerInterface<S, A> {
-  const [maxHistorySteps, usePersistentReducer, storageKey, storageDebounceMS, , reducer, initialState,] = args;
+  const [maxHistorySteps, usePersistentReducer, storageKey, storageDebounceMS, , reducer, initialState, initializer] = args;
 
   const timeline: Timeline<S> = {
     past: [],
-    present: initialState,
+    present: initializer ? initializer(initialState) : initialState,
     future: [],
   };
 
