@@ -1,5 +1,6 @@
 import produce, { type Draft } from 'immer';
 import type { Dispatch } from 'react';
+import { useMemo, useCallback } from 'react';
 import type { BaseAction, PersistentStateReducerHook, StateReducerHook } from './usePersistentStateReducer';
 
 
@@ -104,13 +105,13 @@ export function useTimeTravelingPersistentStateReducer<S, A extends BaseAction>(
 ): TimeTravelingPersistentStateReducerInterface<S, A> {
   const [maxHistorySteps, usePersistentReducer, storageKey, storageDebounceMS, , reducer, initialState, initializer] = args;
 
-  const timeline: Timeline<S> = {
+  const initialTimeline: Timeline<S> = useMemo(() => ({
     past: [],
     present: initializer ? initializer(initialState) : initialState,
     future: [],
-  };
+  }), [initialState, initializer]);
 
-  const proxiedReducer = (tl: Timeline<S>, action: A | TimeTravelAction): Timeline<S> => {
+  const proxiedReducer = useCallback((tl: Timeline<S>, action: A | TimeTravelAction): Timeline<S> => {
     switch (action.type) {
       case UNDO_ACTION_TYPE:
         return _doUndo(tl);
@@ -122,10 +123,10 @@ export function useTimeTravelingPersistentStateReducer<S, A extends BaseAction>(
         const newState = produce(tl.present, (draft) => reducer(draft as S, action as A) as Draft<S>);
         return _addNewPresent(tl, newState, maxHistorySteps);
     }
-  };
+  }, [reducer, maxHistorySteps]);
 
   const [_timeline, _dispatch, _initialized] = usePersistentReducer(
-    storageKey, storageDebounceMS, undefined, proxiedReducer, timeline, null);
+    storageKey, storageDebounceMS, undefined, proxiedReducer, initialTimeline, null);
 
   return {
     state: _timeline.present,
