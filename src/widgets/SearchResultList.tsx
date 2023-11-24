@@ -9,29 +9,35 @@ import makeList, { type ItemProps, LabelledListIcon, type ListData } from './Lis
 import { DatasetContext } from '../context';
 
 
-export interface SearchResultListData {
+export interface SearchResultListData<Extra extends undefined | Record<string, any>> {
   indexID: string;
   selectedItemPath: string | null;
+  extraItemViewData?: Extra extends undefined ? never : Extra;
 }
 
-interface SearchResultListProps {
+interface SearchResultListProps<Extra extends undefined | Record<string, any>> {
   queryExpression: string;
   selectedItemPath: string | null;
   onSelectItem: (itemPath: string | null) => void;
   onOpenItem?: (itemPath: string) => void;
   keyExpression?: string;
   className?: string;
+  extraItemViewData?: Extra extends undefined ? never : Extra;
 }
 
 
-export default function makeSearchResultList
-<ObjectData extends Record<string, any>>(
-  InnerItemView: React.FC<{ objectData: ObjectData, objectPath: string }>,
+export default function makeSearchResultList<
+  /** Data passed to item views as `itemData` prop. Different per item. */
+  ObjectData extends Record<string, any>,
+  /** Data passed to item views as `extraData` prop. Same for all items. */
+  ExtraData extends undefined | Record<string, any> = undefined>
+(
+  InnerItemView: React.FC<{ objectData: ObjectData, extraData?: ExtraData, objectPath: string }>,
   getEntityInfoForObjectPath: (objPath: string) => { name: string, iconProps: IconProps },
 ):
-React.FC<SearchResultListProps> {
+React.FC<SearchResultListProps<ExtraData>> {
 
-  const IndexedListItem: React.FC<ItemProps<SearchResultListData>> =
+  const IndexedListItem: React.FC<ItemProps<SearchResultListData<ExtraData>>> =
   function ({ onSelect, onOpen, extraData, itemRef: listItemRef }) {
     const { useObjectPathFromFilteredIndex, useObjectData } = useContext(DatasetContext);
 
@@ -62,11 +68,15 @@ React.FC<SearchResultListProps> {
 
     let itemView: JSX.Element = useMemo(() => {
       if (objData) {
-        return <InnerItemView objectData={objData} objectPath={objPath} />;
+        return <InnerItemView
+          objectData={objData}
+          extraData={extraData.extraItemViewData}
+          objectPath={objPath}
+        />;
       } else {
         return fallbackView;
       }
-    }, [objPath, objData, fallbackView]);
+    }, [objPath, objData, fallbackView, extraData.extraItemViewData]);
 
     return (
       <LabelledListIcon
@@ -80,10 +90,10 @@ React.FC<SearchResultListProps> {
     );
   };
 
-  const List = makeList<SearchResultListData>(IndexedListItem);
+  const List = makeList<SearchResultListData<ExtraData>>(IndexedListItem);
 
-  const SearchResultList: React.FC<SearchResultListProps> =
-  memo(function ({ queryExpression, selectedItemPath, onSelectItem, onOpenItem, keyExpression, className }) {
+  const SearchResultList: React.FC<SearchResultListProps<ExtraData>> =
+  memo(function ({ queryExpression, extraItemViewData, selectedItemPath, onSelectItem, onOpenItem, keyExpression, className }) {
     const {
       useFilteredIndex, useIndexDescription, getFilteredIndexPosition, getObjectPathFromFilteredIndex,
     } = useContext(DatasetContext);
@@ -132,12 +142,13 @@ React.FC<SearchResultListProps> {
       }
     }, [selectedItemPath, indexID, onSelectItem]);
 
-    const extraData: SearchResultListData = useMemo((() => ({
+    const extraData: SearchResultListData<ExtraData> = useMemo((() => ({
       indexID,
+      extraItemViewData,
       selectedItemPath,
-    })), [indexID, selectedItemPath]);
+    })), [indexID, selectedItemPath, extraItemViewData]);
 
-    const getListData = useCallback(function _getListData(): ListData<SearchResultListData> | null {
+    const getListData = useCallback(function _getListData(): ListData<SearchResultListData<ExtraData>> | null {
       if (indexID) {
         return {
           items: stubs,
