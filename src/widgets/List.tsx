@@ -179,17 +179,27 @@ memo(function ({ isSelected, onSelect, onOpen, contentClassName, entityType, cla
           .bp4-dark & {
             background: ${isSelected ? `linear-gradient(345deg, ${Colors.DARK_GRAY4}, ${Colors.BLACK})` : Colors.DARK_GRAY5};
             ${!isSelected
-              ? `box-shadow: 1px 1px 0 ${Colors.DARK_GRAY5} inset, -1px -1px 0 ${Colors.DARK_GRAY1} inset;`
+              ? `box-shadow: 1px 1px 0 ${Colors.DARK_GRAY5} inset, -1px -1px 0 ${Colors.DARK_GRAY3} inset;`
               : ''}
           }
         `}>
       {entityType
         ? <div css={css`
               z-index: 3; font-size: 85%; line-height: 1.4;
-              background: ${isSelected ? Colors.BLUE2 : Colors.LIGHT_GRAY3};
-              .bp4-dark & {
-                background: ${isSelected ? Colors.BLUE1 : Colors.DARK_GRAY4};
-              }
+              ${isSelected
+                ? `
+                    background: ${Colors.BLUE2};
+                    color: ${Colors.LIGHT_GRAY4};
+                    .bp4-dark & {
+                      background: ${Colors.BLUE1};
+                    }
+                  `
+                : `
+                    color: ${Colors.GRAY1};
+                    .bp4-dark & {
+                      color: ${Colors.GRAY2};
+                    }
+                  `}
               padding: 10px 5px;
               margin-right: 5px;
               letter-spacing: -0.03em;
