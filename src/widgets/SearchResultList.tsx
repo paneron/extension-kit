@@ -174,7 +174,7 @@ React.FC<SearchResultListProps<ExtraData>> {
                 }
               }
             : undefined,
-          itemHeight: 24,
+          itemHeight: 32,
           padding: 0,
           extraData,
         };
