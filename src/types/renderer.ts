@@ -218,7 +218,11 @@ export interface DatasetContext extends OperationContext {
 
   // Below are generally useful for write-enabled repositories only:
 
-  /** Generates a UUID (not really useful in read-only mode, so is optional) */
+  /**
+   * Generates a UUID (not really useful in read-only mode, so is optional)
+   *
+   * @deprecated use browser’s `crypto.randomUUID()` instead?
+   */
   makeRandomID?: () => Promise<string>
 
   /** 
