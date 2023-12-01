@@ -78,13 +78,15 @@ React.FC<SearchResultListProps<ExtraData>> {
       }
     }, [objPath, objData, fallbackView, extraData.extraItemViewData]);
 
+    const entityType = useMemo((() => getEntityInfoForObjectPath(objPath)), [objPath]);
+
     return (
       <LabelledListIcon
           isSelected={objPath !== '' && extraData.selectedItemPath === objPath}
           onSelect={onSelect}
           onOpen={onOpen}
           contentClassName={(isUpdating && !objData) ? Classes.SKELETON : undefined}
-          entityType={getEntityInfoForObjectPath(objPath)}>
+          entityType={entityType}>
         {itemView}
       </LabelledListIcon>
     );
