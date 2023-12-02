@@ -75,7 +75,7 @@ export interface State<SidebarID extends string> {
    * (see `TabbedWorkspaceProps['sidebarConfig']`, sidebar configuration
    * is not part of state (though maybe it should be?)).
    */
-  selectedSidebarID: SidebarID
+  selectedSidebarID?: SidebarID
 }
 
 export type Action<SidebarID extends string> =

@@ -26,8 +26,8 @@ export const TabbedWorkspaceContext = createContext<TabbedWorkspaceContextSpec<a
 
 
 export function makeContextProvider
-<Proto extends string, SidebarID extends string>(
-  initialSidebarID: SidebarID,
+<Proto extends string, SidebarID extends string | never>(
+  initialSidebarID: SidebarID | undefined,
   sidebarIDs: readonly SidebarID[],
   protocolConfiguration: ProtocolRegistry<Proto>,
 ):
@@ -140,7 +140,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
   function validateState(state: Partial<State<any>>): state is State<any> {
     return (
       state.detailTabURIs?.map !== undefined &&
-      typeof state.selectedSidebarID === 'string' &&
+      (typeof state.selectedSidebarID === 'string' || state.selectedSidebarID === undefined) &&
       sidebarIDs.indexOf(state.selectedSidebarID as any) >= 0
     );
   }
