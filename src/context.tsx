@@ -112,10 +112,9 @@ React.FC<DatasetContextSpec> {
     return (
       <DatasetContext.Provider value={props}>
         <GlobalSettingsContext.Provider
-          value={useMemo(
-            (() => ({ settings: settings.value.settings, refresh: settings.refresh }
-          )), [settings])}
-        >
+            value={useMemo(
+              (() => ({ settings: settings.value.settings, refresh: settings.refresh })),
+              [settings])}>
           <Component />
         </GlobalSettingsContext.Provider>
       </DatasetContext.Provider>
