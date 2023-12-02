@@ -21,7 +21,9 @@ export interface BaseAction {
 /** Action issued when previously stored state is loaded. */
 export interface LoadStateAction<S> extends BaseAction {
   type: typeof LOAD_STATE_ACTION_TYPE
-  payload?: S
+
+  /** Loaded state. */
+  payload: S
 }
 
 
