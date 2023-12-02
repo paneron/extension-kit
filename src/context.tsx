@@ -96,11 +96,13 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 } as const;
 
 
-/* A higher-order component that:
-
-   - takes dataset view component;
-   - returns a component that takes dataset context as props,
-     and renders dataset view wrapped inside dataset context provider. */
+/**
+ * A higher-order component that:
+ *
+ * - takes dataset view component;
+ * - returns a component that takes dataset context as props,
+ *   and renders dataset view wrapped inside dataset context provider.
+ */
 export function withDatasetContext(Component: React.FC<any>):
 React.FC<DatasetContextSpec> {
   // TODO: Check again whether `withDatasetContext()` helper is needed.
