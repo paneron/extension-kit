@@ -117,9 +117,7 @@ memo(function ({
           sidebarPosition === 'left' ? 'right' : 'left'}
         minWidth={250}
         maxWidth={600}
-        selectedSidebarID={sidebarIDs.length > 1
-          ? state.selectedSidebarID
-          : sidebarIDs[0]}
+        selectedSidebarID={state.selectedSidebarID ?? sidebarIDs[0]}
         onSelectSidebar={sidebarIDs.length > 1
           ? id => dispatch({ type: 'focus-sidebar', payload: { id } })
           : undefined}
