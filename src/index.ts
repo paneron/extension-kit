@@ -66,7 +66,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
     ),
 
     initialMigration: migration,
-  };
+  } as const;
 }
 
 
