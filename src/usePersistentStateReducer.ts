@@ -4,6 +4,7 @@
  */
 
 import { useReducer, useEffect, useCallback, useState } from 'react';
+import { isObject } from './util';
 import type { Reducer, Dispatch } from 'react';
 
 
@@ -142,7 +143,12 @@ function convertToPersistentReducer<S, A extends BaseAction>(
   return (prevState: S, action: A | LoadStateAction<S>) => {
     switch (action.type) {
       case LOAD_STATE_ACTION_TYPE:
-        return action.payload;
+        if (isObject((action as LoadStateAction<S>).payload)) {
+          // TODO: Why action type needs casting, not narrowed?
+          return { ...action.payload };
+        } else {
+          throw new Error("Invalid state loaded: not an object");
+        }
       default:
         return reducer(prevState, action as A);
     }
