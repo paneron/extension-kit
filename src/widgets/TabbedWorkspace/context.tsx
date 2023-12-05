@@ -141,7 +141,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
     return (
       state.detailTabURIs?.map !== undefined &&
       (typeof state.selectedSidebarID === 'string' || state.selectedSidebarID === undefined) &&
-      sidebarIDs.indexOf(state.selectedSidebarID as any) >= 0
+      (!state.selectedSidebarID || sidebarIDs.indexOf(state.selectedSidebarID) >= 0)
     );
   }
 
