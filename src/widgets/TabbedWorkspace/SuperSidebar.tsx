@@ -11,16 +11,17 @@ import { DatasetContext } from '../../context';
 import makeSidebar from '../Sidebar';
 import ErrorBoundary from '../ErrorBoundary';
 import type { SuperSidebarConfig } from './types';
+import type { Entries } from '../../util';
 
 
 const DEFAULT_MIN_WIDTH = 250;
 
 
-interface SuperSidebarProps<SidebarID extends string> {
-  config: SuperSidebarConfig<SidebarID>
-  sidebarIDs: readonly SidebarID[]
-  selectedSidebarID: SidebarID
-  onSelectSidebar?: (id: SidebarID) => void 
+interface SuperSidebarProps<SidebarIDs extends Readonly<string[]>> {
+  config: SuperSidebarConfig<SidebarIDs>
+  sidebarIDs: SidebarIDs
+  selectedSidebarID: SidebarIDs[number]
+  onSelectSidebar?: (id: SidebarIDs[number]) => void 
 
   width?: number
   maxWidth?: number
@@ -41,13 +42,12 @@ interface SuperSidebarProps<SidebarID extends string> {
 
   className?: string
 }
-const SuperSidebar: React.FC<SuperSidebarProps<any>> =
-memo(function ({
+function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
   config, resizeSensorPosition, sidebarIDs, selectedSidebarID,
   onSelectSidebar,
   width, maxWidth, minWidth, onResize,
   className,
-}) {
+}: SuperSidebarProps<SidebarIDs>) {
   const { usePersistentDatasetStateReducer } = useContext(DatasetContext);
   const [ resizedWidthPX, setResizedWidthPX ] = useState<number | undefined>(undefined);
   // While undefined, we fall back to sidebar width stored in settings or default value.
@@ -62,7 +62,7 @@ memo(function ({
   }, [onResize, resizedWidthPX, resizeSensorPosition]);
 
   const sidebarEls = useMemo(
-    (() => Object.entries(config).
+    (() => (Object.entries(config) as Entries<typeof config>).
       map(([sid, sconf]) => {
         const Sidebar = makeSidebar(usePersistentDatasetStateReducer);
         return {
@@ -83,7 +83,7 @@ memo(function ({
   const buttons: JSX.Element | null = useMemo(() => (
     sidebarIDs.length > 1
       ? <ButtonGroup vertical className={className}>
-          {sidebarIDs.map(sid => {
+          {sidebarIDs.map((sid: SidebarIDs[number]) => {
             const Icon = config[sid].icon;
             return <SidebarButton
               key={sid}
@@ -148,7 +148,9 @@ memo(function ({
       {buttons}
     </>
   );
-});
+};
+
+const SuperSidebar = memo(SuperSidebar_);
 
 export default SuperSidebar;
 

@@ -1,6 +1,11 @@
 import type { Progress } from './types/progress';
 
 
+export type Entries<T> = {
+  [K in keyof T]: [K, T[K]];
+}[keyof T][];
+
+
 export function stripLeadingSlash(fp: string): string {
   return fp.replace(/^\//, '');
 }

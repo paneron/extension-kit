@@ -22,18 +22,20 @@ const DEFAULT_TAB_TITLE = '(unnamed tab)';
  * Wraps Workspace, adding tabbed GUI features.
  * Use inside TabbedWorkspaceContextProvider.
  */
-export interface TabbedWorkspaceProps<SidebarID extends string> {
+export interface TabbedWorkspaceProps<SidebarIDs extends Readonly<string[]> = []> {
   /**
    * Configuration for individual sidebars, keyed by internal sidebar ID.
    * If there is more than one sidebar, sidebar selector is shown.
    */
-  sidebarConfig: SuperSidebarConfig<SidebarID>
+  sidebarConfig: SidebarIDs['length'] extends 0
+    ? undefined
+    : SuperSidebarConfig<SidebarIDs>
 
   /**
    * Sidebar IDs as a list. This is used to order sidebars.
    * TODO: Eliminate in favor of using weights or another way of ordering?
    */
-  sidebarIDs: readonly SidebarID[]
+  sidebarIDs: SidebarIDs
 
   /**
    * “Home” view shown by default when there are no tabs
@@ -56,8 +58,10 @@ export interface TabbedWorkspaceProps<SidebarID extends string> {
 
   className?: string
 }
-const TabbedWorkspace: React.VoidFunctionComponent<TabbedWorkspaceProps<any>> =
-memo(function ({
+
+const TabbedWorkspace = memo(TabbedWorkspace_);
+
+function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
   sidebarConfig,
   sidebarIDs,
   newTabPrompt,
@@ -69,7 +73,7 @@ memo(function ({
   onSidebarResize,
 
   className,
-}) {
+}: TabbedWorkspaceProps<SidebarIDs>) {
   const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
   const focusedTabRef = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState<string>(DEFAULT_TAB_TITLE);
@@ -107,7 +111,7 @@ memo(function ({
   const sidebar = useMemo(() => {
     if (sidebarIDs.length > 0) {
       return <SuperSidebar
-        config={sidebarConfig}
+        config={sidebarConfig as SuperSidebarConfig<SidebarIDs>}
         sidebarIDs={sidebarIDs}
         width={sidebarWidth}
         onResize={onSidebarResize}
@@ -133,7 +137,7 @@ memo(function ({
     sidebarWidth,
     onSidebarResize,
     sidebarPosition,
-    JSON.stringify(normalizeObject(sidebarConfig)),
+    JSON.stringify(normalizeObject(sidebarConfig ?? {})),
   ]);
 
   const tabPanes: Map<string, [JSX.Element, JSX.Element]> = useMemo(() => {
@@ -223,7 +227,7 @@ memo(function ({
       </Tabs>
     </Workspace>
   );
-});
+};
 
 
 const Tabs = styled(BaseTabs)`

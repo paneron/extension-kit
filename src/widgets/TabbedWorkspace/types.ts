@@ -32,7 +32,12 @@ interface SidebarConfig {
   description?: string
 }
 
-export type SuperSidebarConfig<SidebarID extends string> = Record<SidebarID, SidebarConfig>;
+export type SuperSidebarConfig<SidebarIDs extends Readonly<string[]>> =
+  { [sidebarID in SidebarIDs[number]]: SidebarConfig };
+  // Would be nice to disallow empty list, but this causes problems:
+  // SidebarIDs['length'] extends 0
+  //   ? never
+  //   : { [sidebarID in SidebarIDs[number]]: SidebarConfig };
 
 
 // Workspace
