@@ -347,8 +347,12 @@ export interface DatasetContext extends OperationContext {
 }
 
 
+/**
+ * A hook that contains the result of calling some endpoint
+ * and a way of refreshing the result.
+ */
 export interface ValueHook<T> {
-  /** The value returned from the hook. */
+  /** The value returned from the call. */
   value: T
 
   /**
