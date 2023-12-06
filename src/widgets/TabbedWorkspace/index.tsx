@@ -109,7 +109,7 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
   }, [state.focusedTabIdx]);
 
   const sidebar = useMemo(() => {
-    if (sidebarIDs.length > 0) {
+    if (sidebarIDs.length > 0 && sidebarConfig !== undefined) {
       return <SuperSidebar
         config={sidebarConfig as SuperSidebarConfig<SidebarIDs>}
         sidebarIDs={sidebarIDs}
