@@ -152,6 +152,7 @@ function convertToPersistentReducer<S, A extends BaseAction>(
           // TODO: Why action type needs casting, not narrowed?
           return { ...action.payload };
         } else {
+          console.error("usePersistentStateReducer: Loaded state is not an object", action?.payload);
           throw new Error("Invalid state loaded: not an object");
         }
       default:
