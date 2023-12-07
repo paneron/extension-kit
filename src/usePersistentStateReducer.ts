@@ -89,7 +89,7 @@ function usePersistentStateReducer<S, A extends BaseAction>(
       if (cancelled) { return; }
 
       let effectiveState: S | undefined;
-      if (loadedState && Object.keys(loadedState).length > 0) {
+      if (loadedState && isObject(loadedState) && Object.keys(loadedState).length > 0) {
         if (validator) {
           if (validator(loadedState)) {
             effectiveState = loadedState;
