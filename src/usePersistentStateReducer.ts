@@ -140,7 +140,7 @@ export default usePersistentStateReducer;
 function convertToPersistentReducer<S, A extends BaseAction>(
   reducer: Reducer<S, A>,
 ): Reducer<S, A | LoadStateAction<S>> {
-  return (prevState: S, action: A | LoadStateAction<S>) => {
+  return function wrappedReducer(prevState: S, action: A | LoadStateAction<S>) {
     switch (action.type) {
       case LOAD_STATE_ACTION_TYPE:
         if (isObject((action as LoadStateAction<S>).payload)) {
