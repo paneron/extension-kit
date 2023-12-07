@@ -72,6 +72,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
 
 import { DatasetContext } from './context';
 import HelpTooltip from './widgets/HelpTooltip';
+import makeSearchResultList from './widgets/SearchResultList';
 import ErrorBoundary from './widgets/ErrorBoundary';
 import { isObject } from './util';
 import useDebounce from './useDebounce';
@@ -80,6 +81,7 @@ export {
   DatasetContext,
   HelpTooltip,
   ErrorBoundary,
+  makeSearchResultList,
   isObject,
   useDebounce,
 };
