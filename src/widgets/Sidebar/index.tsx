@@ -50,7 +50,7 @@ function makeSidebar(
       stateKey,
       undefined,
       undefined,
-      (prevState, action) => {
+      useCallback((prevState, action) => {
         switch (action.type) {
           case 'expand-all':
             return { blockState: blocks.
@@ -73,7 +73,7 @@ function makeSidebar(
           default:
             throw new Error("Unexpected sidebar state");
         }
-      },
+      }, [blocks]),
       initialState,
       null);
 
