@@ -74,6 +74,11 @@ function usePersistentStateReducer<S, A extends BaseAction>(
   const effectiveReducer = useCallback(convertToPersistentReducer(reducer), [reducer]);
   const [state, dispatch] = useReducer(effectiveReducer, initialState, initializer ?? defaultInitializer)
 
+  if (!isObject(initialState)) {
+    console.error("usePersistentStateReducer: initialState is not an object", initialState);
+    throw new Error("initialState is not an object");
+  }
+
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
