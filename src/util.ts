@@ -121,7 +121,7 @@ export function isObject(val: unknown): val is Record<string, any> {
     val !== null &&
     typeof val === 'object' &&
     !Array.isArray(val) &&
-    val?.constructor === Object &&
+    // val?.constructor === Object && // normal objects fail this one in extensions
     val?.toString?.() === '[object Object]'
   );
 }
