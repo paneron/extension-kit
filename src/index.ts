@@ -72,6 +72,7 @@ export const makeExtension: ExtensionMaker = async (options) => {
 
 import { DatasetContext } from './context';
 import HelpTooltip from './widgets/HelpTooltip';
+import PropertyView, { Select, TextInput } from './widgets/Sidebar/PropertyView';
 import makeSearchResultList from './widgets/SearchResultList';
 import ErrorBoundary from './widgets/ErrorBoundary';
 import { isObject } from './util';
@@ -84,4 +85,8 @@ export {
   makeSearchResultList,
   isObject,
   useDebounce,
+
+  PropertyView,
+  Select,
+  TextInput,
 };
