@@ -18,7 +18,6 @@ export const makeExtension: ExtensionMaker = async (options) => {
     migrator: async function* defaultDatasetInitializer() { yield {} },
   };
 
-  // Await dynamic import for compatibility with old API
   const mainView = options.mainView;
 
   //const objectSpecsWithCachedViews = (await Promise.all(objectSpecs.
