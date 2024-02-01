@@ -76,6 +76,8 @@ import makeSearchResultList from './widgets/SearchResultList';
 import ErrorBoundary from './widgets/ErrorBoundary';
 import { isObject } from './util';
 import useDebounce from './useDebounce';
+import { TabbedWorkspaceContext } from './widgets/TabbedWorkspace/context';
+import TabbedWorkspace, { type TabbedWorkspaceProps } from './widgets/TabbedWorkspace';
 
 export {
   DatasetContext,
@@ -88,4 +90,8 @@ export {
   PropertyView,
   Select,
   TextInput,
+
+  TabbedWorkspace,
+  TabbedWorkspaceContext,
+  TabbedWorkspaceProps,
 };
