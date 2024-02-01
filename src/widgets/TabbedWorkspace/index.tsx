@@ -7,7 +7,6 @@ import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Tag, Colors, Tab, Tabs as BaseTabs } from '@blueprintjs/core';
 
-import { normalizeObject } from '../../util';
 import Workspace, { type WorkspaceProps } from '../Workspace';
 import type { SuperSidebarConfig } from './types';
 import { SPECIAL_TAB_IDX, TabbedWorkspaceContext } from './context';
@@ -137,7 +136,7 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
     sidebarWidth,
     onSidebarResize,
     sidebarPosition,
-    JSON.stringify(normalizeObject(sidebarConfig ?? {})),
+    sidebarConfig,
   ]);
 
   const tabPanes: Map<string, [JSX.Element, JSX.Element]> = useMemo(() => {
