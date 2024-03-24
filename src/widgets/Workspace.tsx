@@ -20,7 +20,7 @@ export interface WorkspaceProps {
   /** Global mode bar. Use sparingly. */
   globalMode?: {
     content: JSX.Element
-    intent: TagProps["intent"]
+    intent?: TagProps["intent"]
     icon?: TagProps["icon"]
     onClick?: () => void
   }
