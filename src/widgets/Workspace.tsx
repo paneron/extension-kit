@@ -22,6 +22,8 @@ export interface WorkspaceProps {
     content: JSX.Element
     intent?: TagProps["intent"]
     icon?: TagProps["icon"]
+    minimal?: TagProps["minimal"]
+    style?: React.CSSProperties
     onClick?: () => void
   }
 
@@ -56,22 +58,27 @@ const Workspace: React.FC<WorkspaceProps> = memo(function ({
           overflow: hidden;
           background: ${Colors.LIGHT_GRAY2};
           .bp4-dark & { background: ${Colors.DARK_GRAY2}; color: ${Colors.LIGHT_GRAY4}; }
-          margin-top: ${globalMode ? '0' : '-20px'};
+          /*margin-top: ${globalMode ? '0' : '-20px'};*/
+          margin-top: 0;
         `}
         className={className}
         style={style}>
-      <Bar
-          css={css`
-            position: relative;
-            opacity: ${globalMode ? '1' : '0'};
-            transition: opacity .8s;
-          `}
-          interactive={globalMode?.onClick !== undefined}
-          onClick={globalMode?.onClick}
-          icon={globalMode?.icon}
-          intent={globalMode?.intent}>
-        {globalMode?.content ?? ' '}
-      </Bar>
+      {globalMode
+        ? <Bar
+              css={css`
+                position: relative;
+                opacity: ${globalMode ? '1' : '0'};
+                transition: opacity .8s;
+              `}
+              interactive={globalMode.onClick !== undefined}
+              onClick={globalMode.onClick}
+              icon={globalMode.icon}
+              style={globalMode.style}
+              minimal={globalMode.minimal}
+              intent={globalMode.intent}>
+            {globalMode.content || ' '}
+          </Bar>
+        : null}
       <div css={css`flex: 1; display: flex; flex-flow: ${sidebarPosition === 'left' ? 'row-reverse' : 'row'} nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
           {navbarProps
