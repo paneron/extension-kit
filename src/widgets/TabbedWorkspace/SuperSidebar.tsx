@@ -69,7 +69,7 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
           [sid]:
             <ErrorBoundary viewName={`Sidebar ${sconf.title}`}>
               <Sidebar
-                css={css`z-index: 5`}
+                css={css`z-index: 21`}
                 title={sconf.title}
                 stateKey={sid}
                 blocks={sconf.blocks}
@@ -117,7 +117,7 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
                 react-resizable-handle
                 react-resizable-handle-${resizeSensorPosition === 'right' ? 'se' : 'sw'}
               `}
-              style={{ zIndex: 20 }}
+              style={{ zIndex: 21 }}
             />
           : undefined}
         onResize={onResize && resizeSensorPosition
