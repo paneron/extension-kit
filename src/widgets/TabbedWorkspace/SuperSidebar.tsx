@@ -69,7 +69,8 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
           [sid]:
             <ErrorBoundary viewName={`Sidebar ${sconf.title}`}>
               <Sidebar
-                css={css`z-index: 21`}
+                css={css`z-index: 19`}
+                // NOTE: ^ z-index must be more than 20 if we want to contain Blueprint’s overlay within tab panel
                 title={sconf.title}
                 stateKey={sid}
                 blocks={sconf.blocks}
