@@ -84,7 +84,18 @@ export interface State<SidebarID extends string> {
 }
 
 export type Action<SidebarID extends string> =
-  | { type: 'spawn-tab'; payload: { uri: string } }
+  | {
+      type: 'spawn-tab';
+      payload: {
+        /**
+         * If specified, tab will be spawned at this index.
+         * Every tab at index >= atIdx will be shifted to the right,
+         * increasing index by 1.
+         */
+        atIdx?: number
+        uri: string
+      }
+    }
   | { type: 'focus-tab'; payload: { idx: number } }
   | { type: 'navigate-focused-tab'; payload: { uri: string } }
   | { type: 'move-tab'; payload: { sourceIdx: number, destinationIdx: number } }
