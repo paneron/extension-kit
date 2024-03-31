@@ -100,4 +100,5 @@ export type Action<SidebarID extends string> =
   | { type: 'navigate-focused-tab'; payload: { uri: string } }
   | { type: 'move-tab'; payload: { sourceIdx: number, destinationIdx: number } }
   | { type: 'close-tab'; payload: { idx: number } }
+  | { type: 'close-tab-with-uri'; payload: { uri: string } }
   | { type: 'focus-sidebar'; payload: { id: SidebarID } }

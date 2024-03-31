@@ -121,6 +121,32 @@ React.FC<TabbedWorkspaceContextProviderProps> {
         };
       }
 
+      case 'close-tab-with-uri': {
+        const detailTabURIs = [ ...prevState.detailTabURIs ];
+        const idx = detailTabURIs.indexOf(action.payload.uri);
+        const closedFocused = idx === prevState.focusedTabIdx;
+
+        detailTabURIs.splice(idx, 1);
+
+        const focusedTabIdx = closedFocused
+          ? detailTabURIs.length > 0
+            // If a focused tab is closed and there are any tabs left, switch to previous tab
+            ? idx > 0
+              ? idx - 1
+              : 0
+            : SPECIAL_TAB_IDX.new
+          : prevState.focusedTabIdx > idx
+            // If a tab before focused tab is closed, adjust focused index to maintain tab selection
+            ? prevState.focusedTabIdx - 1
+            : prevState.focusedTabIdx;
+
+        return {
+          ...prevState,
+          detailTabURIs,
+          focusedTabIdx,
+        };
+      }
+
       // TODO: Reducer knows how to move tabs, but we want to hook up a nice drag-and-drop mechanism.
       case 'move-tab': {
         const detailTabURIs = [ ...prevState.detailTabURIs ];
