@@ -126,7 +126,8 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
           ? (_, { size }) => setResizedWidthPX(size.width)
           : undefined}>
       <div css={css`
-          width: ${effectiveSidebarWidthPX}px; position: relative;
+          width: ${effectiveSidebarWidthPX}px;
+          position: relative;
           & > :first-child { position: absolute; inset: 0; }
         `}>
         {sidebarEls[selectedSidebarID]}
