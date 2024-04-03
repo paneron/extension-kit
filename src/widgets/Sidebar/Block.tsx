@@ -34,7 +34,10 @@ const SidebarBlock: React.FC<SidebarBlockProps> =
 memo(function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, className }) {
   return (
     <div css={css`
-          display: flex; flex-flow: column nowrap; background: ${Colors.LIGHT_GRAY2};
+          display: flex;
+          flex-flow:
+          column nowrap;
+          background: ${Colors.LIGHT_GRAY2};
         `}
         className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
       <div
