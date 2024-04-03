@@ -13,7 +13,10 @@ export interface SidebarBlockConfig {
   content: JSX.Element
   nonCollapsible?: boolean
   collapsedByDefault?: boolean
-  height?: number // Height in pixels.
+  /** Do not wrap block contents. */
+  disableWrapper?: boolean
+  /** Height in pixels. Has no effect if `disableWrapper` is true. */
+  height?: number
 }
 
 
@@ -91,7 +94,9 @@ memo(function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, classN
           : null}
       </div>
       {expanded
-        ? <div css={css`
+        ? block.disableWrapper
+          ? block.content
+          : <div css={css`
                 overflow-x: hidden; overflow-y: auto;
                 padding: 5px;
                 position: relative;
