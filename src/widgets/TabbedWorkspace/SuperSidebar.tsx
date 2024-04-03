@@ -83,7 +83,7 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
 
   const buttons: JSX.Element | null = useMemo(() => (
     sidebarIDs.length > 1
-      ? <ButtonGroup vertical className={className}>
+      ? <ButtonGroup vertical>
           {sidebarIDs.map((sid: SidebarIDs[number]) => {
             const Icon = config[sid].icon;
             return <SidebarButton
@@ -96,7 +96,7 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
           })}
         </ButtonGroup>
       : null
-  ), [selectedSidebarID, sidebarIDs.join(','), className, onSelectSidebar]);
+  ), [selectedSidebarID, sidebarIDs.join(','), onSelectSidebar]);
 
 
   const currentSidebar = useMemo(() => (
@@ -104,6 +104,7 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
         minConstraints={[minWidth ?? DEFAULT_MIN_WIDTH, Infinity]}
         maxConstraints={[maxWidth ?? 600, Infinity]}
         width={effectiveSidebarWidthPX}
+        className={className}
         axis='x'
         // Grid means we store nice round values and also debounce the event
         draggableOpts={{ grid: [50, 50] }}
@@ -141,6 +142,7 @@ function SuperSidebar_<SidebarIDs extends Readonly<string[]>> ({
     minWidth,
     maxWidth,
     DEFAULT_MIN_WIDTH,
+    className,
   ]);
 
   return (
