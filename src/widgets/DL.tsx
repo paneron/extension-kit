@@ -5,6 +5,9 @@ import styled from '@emotion/styled';
  * Definition list.
  * Nest wrappers (like divs) with dt and dd within.
  * NOTE: Wrappers are required. Only one DD per DT is allowed.
+ *
+ * Doesn’t work in narrow containers if DT and/or DD is too long,
+ * since DT and DD always begin on the same line.
  */
 const DL = styled.dl`
   margin: 0;
