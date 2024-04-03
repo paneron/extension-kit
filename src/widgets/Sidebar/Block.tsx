@@ -38,6 +38,9 @@ memo(function ({ expanded, onExpand, onCollapse, onCollapseOthers, block, classN
           flex-flow:
           column nowrap;
           background: ${Colors.LIGHT_GRAY2};
+          .bp4-dark & {
+            background: ${Colors.DARK_GRAY4};
+          }
         `}
         className={`${block.nonCollapsible !== true ? Classes.ELEVATION_1 : undefined} ${className ?? ''}`}>
       <div
