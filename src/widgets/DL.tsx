@@ -25,4 +25,14 @@ const DL = styled.dl`
   }
 `;
 
+
+/**
+ * Definition list where DT and DD can start on separate lines.
+ */
+export const WrappableDL = styled(DL)`
+  > * {
+    flex-flow: row wrap;
+  }
+`;
+
 export default DL;
