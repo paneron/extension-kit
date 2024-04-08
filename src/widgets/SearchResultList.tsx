@@ -15,7 +15,7 @@ export interface SearchResultListData<Extra extends undefined | Record<string, a
   extraItemViewData?: Extra extends undefined ? never : Extra;
 }
 
-interface SearchResultListProps<Extra extends undefined | Record<string, any>> {
+export interface SearchResultListProps<Extra extends undefined | Record<string, any>> {
   queryExpression: string;
   selectedItemPath: string | null;
   onSelectItem: (itemPath: string | null) => void;
