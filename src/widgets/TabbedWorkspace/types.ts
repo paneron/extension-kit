@@ -50,7 +50,7 @@ export type TabbedWorkspaceContext<Proto extends string, SidebarID extends strin
   navigateFocusedTab?: (newURI: string) => void
 
   /** Open a new tab with specified URI next to the focused one. */
-  spawnTab: (uri: string) => void
+  spawnTab: (uri: string, opts?: { atIdx?: number }) => void
 
   /** Despawns tab with given URI. */
   closeTabWithURI: (uri: string) => void

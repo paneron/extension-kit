@@ -59,9 +59,11 @@ React.FC<TabbedWorkspaceContextProviderProps> {
             focusedTabIdx: existingTabIdx,
           };
         } else {
-          const idxToInsertAt = prevState.focusedTabIdx >= 0
-            ? prevState.focusedTabIdx + 1
-            : 0;
+          const idxToInsertAt = action.payload.atIdx ?? (
+            prevState.focusedTabIdx >= 0
+              ? prevState.focusedTabIdx + 1
+              : 0
+          );
           detailTabURIs.splice(idxToInsertAt, 0, action.payload.uri);
           return {
             ...prevState,
@@ -202,8 +204,8 @@ React.FC<TabbedWorkspaceContextProviderProps> {
       }
     }, [onFocusedTabChange, focusedTabURI]);
 
-    const spawnTab = useCallback(
-      (uri => dispatch({ type: 'spawn-tab', payload: { uri } })),
+    const spawnTab: TabbedWorkspaceContextSpec<any, any>["spawnTab"] = useCallback(
+      ((uri: string, opts) => dispatch({ type: 'spawn-tab', payload: { uri, atIdx: opts?.atIdx } })),
       [dispatch]);
 
     const closeTabWithURI = useCallback(
