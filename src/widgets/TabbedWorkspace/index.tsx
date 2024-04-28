@@ -272,6 +272,15 @@ const Tabs = styled(BaseTabs)`
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 400px;
+
+    &.pinned-tab {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      box-shadow: 0 0 0 1px rgb(17 20 24 / 10%), 0 1px 1px rgb(17 20 24 / 20%), 0 2px 6px rgb(17 20 24 / 20%) !important;
+      background-color: ${Colors.LIGHT_GRAY3} !important;
+      .bp4-dark & { background: ${Colors.DARK_GRAY3} !important; }
+    }
   }
 
   /* Tab contents. */
