@@ -28,6 +28,10 @@ const DL = styled.dl`
 
 /**
  * Definition list where DT and DD can start on separate lines.
+ *
+ * Doesn’t work well for generic listings where it’s important
+ * for a nested object to always start to the right of key
+ * (never wrap to below).
  */
 export const WrappableDL = styled(DL)`
   > * {
