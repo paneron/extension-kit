@@ -83,6 +83,7 @@ React.FC<TabbedWorkspaceContextProviderProps> {
       case 'navigate-focused-tab':
         const existingTabIdx = prevState.detailTabURIs.indexOf(action.payload.uri);
         if (existingTabIdx >= 0) {
+          // TODO: Is switching to preexisting tab with given URI the right behavior here?
           return {
             ...prevState,
             focusedTabIdx: existingTabIdx,
@@ -125,6 +126,9 @@ React.FC<TabbedWorkspaceContextProviderProps> {
 
       case 'close-tab-with-uri': {
         const detailTabURIs = [ ...prevState.detailTabURIs ];
+
+        // FIXME: Handle cases when there’re multiple tabs with the same URI
+
         const idx = detailTabURIs.indexOf(action.payload.uri);
         const closedFocused = idx === prevState.focusedTabIdx;
 
