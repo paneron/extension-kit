@@ -162,6 +162,7 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
           <TabTitleButton
               interactive={idx !== state.focusedTabIdx}
               minimal={idx !== state.focusedTabIdx}
+              title={uri}
               onRemove={(evt: React.MouseEvent) => {
                 dispatch({ type: 'close-tab', payload: { idx }});
                 evt.stopPropagation();
