@@ -76,6 +76,7 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
   const { state, dispatch, protocolConfiguration, focusedTabURI } = useContext(TabbedWorkspaceContext);
   const focusedTabRef = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState<string>(DEFAULT_TAB_TITLE);
+  const paneHasTitle = title !== DEFAULT_TAB_TITLE;
 
   useEffect(() => {
     let cancelled = false;
@@ -207,7 +208,7 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
           selectedTabId={state.focusedTabIdx}
           onChange={handleSelectedTabChange}>
 
-        {title
+        {paneHasTitle
           ? <Helmet>
               <title>{title}</title>
             </Helmet>
