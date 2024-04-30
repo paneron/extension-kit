@@ -24,6 +24,7 @@ export interface WorkspaceProps {
     icon?: TagProps["icon"]
     minimal?: TagProps["minimal"]
     style?: React.CSSProperties
+    action?: JSX.Element
     onClick?: () => void
   }
 
@@ -75,6 +76,7 @@ const Workspace: React.FC<WorkspaceProps> = memo(function ({
               icon={globalMode.icon}
               style={globalMode.style}
               minimal={globalMode.minimal}
+              rightIcon={globalMode.action}
               intent={globalMode.intent}>
             {globalMode.content || ' '}
           </Bar>
