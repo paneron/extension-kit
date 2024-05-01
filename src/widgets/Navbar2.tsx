@@ -4,7 +4,7 @@
 import styled from '@emotion/styled';
 import { jsx, css } from '@emotion/react';
 import React, { useMemo } from 'react';
-import { Colors, Icon } from '@blueprintjs/core';
+import { Colors, Icon, Button, type ButtonProps } from '@blueprintjs/core';
 
 
 export interface NavProps {
@@ -70,6 +70,22 @@ const BreadcrumbSeparator = styled(Icon)`
   transform: skew(45deg);
   align-self: center;
 `;
+
+
+export const NavbarButton: React.FC<ButtonProps & { title?: string }> = function (props) {
+  return <Button
+    small
+    minimal
+    css={css`
+      transform: skew(45deg);
+      border-radius: 0;
+      .bp4-icon {
+        transform: scale(0.7);
+      }
+    `}
+    {...props}
+  />;
+};
 
 
 export default Navbar;
