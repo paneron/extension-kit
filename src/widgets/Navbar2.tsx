@@ -21,7 +21,12 @@ const Navbar: React.FC<NavProps> = function ({ breadcrumbs, anchor, children, cl
   const padding = anchor === 'end' ? '25px' : '15px';
 
   const breadcrumbsWithSeparators = useMemo(() => {
-    return breadcrumbs.map((bc, idx) =>
+
+    const b = [ ...breadcrumbs ];
+
+    if (anchor === 'start') { b.reverse(); }
+
+    return b.map((bc, idx) =>
       <React.Fragment key={idx}>
         {idx !== 0
           ? <BreadcrumbSeparator
@@ -32,7 +37,7 @@ const Navbar: React.FC<NavProps> = function ({ breadcrumbs, anchor, children, cl
         {bc}
       </React.Fragment>
     );
-  }, [breadcrumbs]);
+  }, [anchor, breadcrumbs]);
 
   return (
     <div
