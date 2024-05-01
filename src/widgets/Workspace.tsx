@@ -5,7 +5,6 @@ import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { memo } from 'react';
 import { Classes, Colors, type TagProps, Tag } from '@blueprintjs/core';
-import Navbar, { type NavbarProps }from './Navbar';
 
 
 /**
@@ -29,7 +28,6 @@ export interface WorkspaceProps {
   }
 
   // These may be obsolete.
-  navbarProps?: NavbarProps
   toolbar?: JSX.Element
 
   /** Status bar, shown on the bottom. Should not be turned on or off willy-nilly. */
@@ -41,7 +39,6 @@ export interface WorkspaceProps {
   style?: React.CSSProperties
 }
 const Workspace: React.FC<WorkspaceProps> = memo(function ({
-  navbarProps,
   globalMode,
   toolbar,
   sidebar,
@@ -83,19 +80,6 @@ const Workspace: React.FC<WorkspaceProps> = memo(function ({
         : null}
       <div css={css`flex: 1; display: flex; flex-flow: ${sidebarPosition === 'left' ? 'row-reverse' : 'row'} nowrap; overflow: hidden;`}>
         <div css={css`flex: 1; display: flex; flex-flow: column nowrap; overflow: hidden;`}>
-          {navbarProps
-            ? <div
-                  css={css`
-                    display: flex; flex-flow: row nowrap; align-items: center;
-                    background: linear-gradient(to bottom, ${Colors.LIGHT_GRAY5}, ${Colors.LIGHT_GRAY4});
-                    height: 24px;
-                    overflow: hidden;
-                    z-index: 5;
-                  `}
-                  className={Classes.ELEVATION_2}>
-                <Navbar css={css`flex: 1;`} {...navbarProps} />
-              </div>
-            : null}
 
           {toolbar
             ? <div
