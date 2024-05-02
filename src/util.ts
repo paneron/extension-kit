@@ -169,9 +169,11 @@ export const BP4_RESET_CSS = `
     cursor: default !important;
   }
 
-  .bp4-tree-node-content:hover {
-    background: unset;
-  }
+  /* Why was it added? It breaks hover, definitely.
+    .bp4-tree-node-content:hover {
+      background: unset;
+    }
+  */
 
   .bp4-html-select select {
     cursor: default !important;
