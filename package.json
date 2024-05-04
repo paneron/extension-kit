@@ -1,7 +1,7 @@
 {
   "name": "@riboseinc/paneron-extension-kit",
   "description": "Types and widgets to simplify building Paneron dataset extensions.",
-  "version": "2.2.26",
+  "version": "2.2.27",
   "main": "index.js",
   "repository": "https://github.com/paneron/extension-kit",
   "author": "Ribose Inc. <open.source@ribose.com>",
