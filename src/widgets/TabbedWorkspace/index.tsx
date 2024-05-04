@@ -5,7 +5,7 @@ import React, { memo, useContext, useCallback, useEffect, useRef, useState, useM
 import { Helmet } from 'react-helmet';
 import { jsx, css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Tag, Colors, Tab, Tabs as BaseTabs } from '@blueprintjs/core';
+import { Tag, Colors, Tab, Tabs as BaseTabs, type IconName } from '@blueprintjs/core';
 
 import Workspace, { type WorkspaceProps } from '../Workspace';
 import type { SuperSidebarConfig } from './types';
@@ -37,10 +37,25 @@ export interface TabbedWorkspaceProps<SidebarIDs extends Readonly<string[]> = []
   sidebarIDs: SidebarIDs
 
   /**
+   * @deprecated use `defaultTabPrompt`
+   *
    * “Home” view shown by default when there are no tabs
    * or when explicitly invoked by the user.
    */
-  newTabPrompt: JSX.Element
+  newTabPrompt?: JSX.Element
+
+  /**
+   * View shown by default when there are no tabs
+   * or when explicitly navigated to by the user.
+   *
+   * If not provided, some tab must be spawned programmatically
+   * or user will see nothing.
+   */
+  defaultTab?: {
+    panel: JSX.Element
+    title?: JSX.Element | string
+    icon?: IconName
+  }
 
   /** Set global mode bar for the workspace. */
   globalMode?: WorkspaceProps['globalMode']
@@ -63,7 +78,8 @@ const TabbedWorkspace = memo(TabbedWorkspace_);
 function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
   sidebarConfig,
   sidebarIDs,
-  newTabPrompt,
+  newTabPrompt: defaultTabLegacy,
+  defaultTab,
   globalMode,
   statusBar,
 
@@ -177,19 +193,20 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
       );
   }, [state.focusedTabIdx, tabPanes, dispatch, focusedTabRef.current]);
 
-  const homeTab = useMemo(() => (
-    <Tab
-      id={SPECIAL_TAB_IDX.new}
-      title={
-        <TabTitleButton
-            minimal={state.focusedTabIdx !== SPECIAL_TAB_IDX.new}
-            icon="home">
-          Home
-        </TabTitleButton>
-      }
-      panel={newTabPrompt}
-    />
-  ), [state.focusedTabIdx === SPECIAL_TAB_IDX.new, newTabPrompt]);
+  const homeTab = useMemo(() => (defaultTab
+    ? <Tab
+          id={SPECIAL_TAB_IDX.new}
+          title={
+            <TabTitleButton
+                minimal={state.focusedTabIdx !== SPECIAL_TAB_IDX.new}
+                icon={defaultTab?.icon ?? 'home'}>
+              {defaultTab?.title ?? "Home"}
+            </TabTitleButton>
+          }
+          panel={defaultTab?.panel ?? defaultTabLegacy}
+        />
+    : null
+  ), [state.focusedTabIdx === SPECIAL_TAB_IDX.new, defaultTab, defaultTabLegacy]);
 
   const handleSelectedTabChange = useCallback((idx: number, oldIdx: number) => dispatch({
     type: 'focus-tab',
