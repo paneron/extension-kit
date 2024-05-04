@@ -193,7 +193,7 @@ function TabbedWorkspace_<SidebarIDs extends Readonly<string[]> = []> ({
       );
   }, [state.focusedTabIdx, tabPanes, dispatch, focusedTabRef.current]);
 
-  const homeTab = useMemo(() => (defaultTab
+  const homeTab = useMemo(() => ((defaultTab || defaultTabLegacy)
     ? <Tab
           id={SPECIAL_TAB_IDX.new}
           title={
