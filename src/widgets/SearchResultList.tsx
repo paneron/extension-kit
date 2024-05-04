@@ -17,6 +17,7 @@ export interface SearchResultListData<Extra extends undefined | Record<string, a
 
 export interface SearchResultListProps<Extra extends undefined | Record<string, any>> {
   queryExpression: string;
+  zeroResultsView?: JSX.Element,
   selectedItemPath: string | null;
   onSelectItem: (itemPath: string | null) => void;
   onOpenItem?: (itemPath: string) => void;
@@ -95,7 +96,7 @@ React.FC<SearchResultListProps<ExtraData>> {
   const List = makeList<SearchResultListData<ExtraData>>(IndexedListItem);
 
   const SearchResultList: React.FC<SearchResultListProps<ExtraData>> =
-  memo(function ({ queryExpression, extraItemViewData, selectedItemPath, onSelectItem, onOpenItem, keyExpression, className }) {
+  memo(function ({ queryExpression, zeroResultsView, extraItemViewData, selectedItemPath, onSelectItem, onOpenItem, keyExpression, className }) {
     const {
       useFilteredIndex, useIndexDescription, getFilteredIndexPosition, getObjectPathFromFilteredIndex,
     } = useContext(DatasetContext);
@@ -185,10 +186,14 @@ React.FC<SearchResultListProps<ExtraData>> {
       }
     }, [selectedIndexPos, selectItemByPosition, indexID, stubs, extraData, onOpenItem, onSelectItem]);
 
-    return <List
-      className={className}
-      getListData={getListData}
-    />;
+    if (!indexDescReq.isUpdating && itemCount === 0 && zeroResultsView) {
+      return zeroResultsView;
+    } else {
+      return <List
+        className={className}
+        getListData={getListData}
+      />;
+    }
   });
 
   return SearchResultList;
