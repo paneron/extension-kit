@@ -186,7 +186,13 @@ React.FC<SearchResultListProps<ExtraData>> {
       }
     }, [selectedIndexPos, selectItemByPosition, indexID, stubs, extraData, onOpenItem, onSelectItem]);
 
-    if (!indexDescReq.isUpdating && itemCount === 0 && zeroResultsView) {
+    const zeroResultsFound = (
+      !indexDescReq.isUpdating
+      && !indexReq.isUpdating
+      && !indexDescReq.value.status.progress
+      && itemCount === 0);
+
+    if (zeroResultsFound && zeroResultsView) {
       return zeroResultsView;
     } else {
       return <List
