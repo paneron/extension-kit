@@ -151,6 +151,7 @@ interface LabelledListIconProps {
   onSelect?: () => void
   onOpen?: () => void
   contentClassName?: string
+  contentStyle?: React.CSSProperties
   entityType?: {
     iconProps?: IconProps
     name: string
@@ -159,7 +160,7 @@ interface LabelledListIconProps {
 }
 
 export const LabelledListIcon: React.FC<LabelledListIconProps> =
-memo(function ({ isSelected, onSelect, onOpen, contentClassName, entityType, className, children }) {
+memo(function ({ isSelected, onSelect, onOpen, contentClassName, contentStyle, entityType, className, children }) {
   return (
     <div
         onClick={onSelect}
@@ -228,7 +229,8 @@ memo(function ({ isSelected, onSelect, onOpen, contentClassName, entityType, cla
             text-overflow: ellipsis;
             padding: 0 5px;
           `}
-          className={contentClassName}>
+          className={contentClassName}
+          style={contentStyle}>
         {children}
       </div>
     </div>
