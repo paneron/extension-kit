@@ -77,11 +77,12 @@ interface TextInputProps {
   placeholder?: string
   inputGroupProps?: InputGroupProps2 
   validationErrors?: string[]
+  title?: string
   className?: string
   style?: React.CSSProperties
 }
 export const TextInput: React.FC<TextInputProps> =
-memo(function ({ value, placeholder, onChange, validationErrors, inputGroupProps, className, style }) {
+memo(function ({ value, placeholder, onChange, validationErrors, inputGroupProps, title, className, style }) {
   const errs = validationErrors ?? [];
   const invalid = errs.length > 0;
   const handleChange = useCallback(
@@ -126,6 +127,7 @@ memo(function ({ value, placeholder, onChange, validationErrors, inputGroupProps
         : undefined}
       {...inputGroupProps}
       onChange={onChange ? handleChange : undefined}
+      title={title}
       className={className}
       style={style}
     />
