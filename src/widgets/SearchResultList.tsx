@@ -56,7 +56,9 @@ React.FC<SearchResultListProps<ExtraData>> {
     const objPath = filteredObjectResp.value.objectPath;
 
     const fallbackView = useMemo(() => {
-      const stringItemDescription = objPath ? `item at ${objPath}` : `item #${listItemRef}`;
+      const stringItemDescription = objPath
+        ? `item at ${objPath}`
+        : `item #${listItemRef}`;
       return <span css={css`opacity: .4`}>{stringItemDescription}</span>;
     }, [objPath, listItemRef]);
 
