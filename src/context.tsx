@@ -44,6 +44,8 @@ const INITIAL_CONTEXT: DatasetContextSpec = {
 
   useRemoteUsername: getValueHookPlaceholder({}),
 
+  useInjectedJs: getValueHookPlaceholder({}),
+
   useDecodedBlob: () => ({
     asString: '',
   }),

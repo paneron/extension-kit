@@ -626,3 +626,10 @@ export type RemoteUsernameHook = () => ValueHook<{
    */
   username?: string
 }>
+
+export type InjectedJsHook = () => ValueHook<{
+  /**
+   * JS injection code, e.g. for web analytics
+   */
+  injectedJs?: string
+}>
